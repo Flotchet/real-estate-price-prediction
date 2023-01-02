@@ -12,3 +12,7 @@ import pandas as pd
 
 from requests import Session
 from bs4 import BeautifulSoup
+
+
+def immoweb_destructurer(content : str) -> tuple[*str]:
+    pass
