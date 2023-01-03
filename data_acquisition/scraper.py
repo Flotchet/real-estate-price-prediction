@@ -327,7 +327,7 @@ def scrape_html_with_selenium_with_save(urls : list[str] or str, folder_path : s
     return len(urls)
    
 
-def immoweb_page_scrapping(csv_name : str = "urls.csv", folder_path : str = "./raw_html", time_stamp : bool = True) -> None:
+def immoweb_page_scrapping(csv_name : str = "urls.csv", folder_path : str = "././raw_html", time_stamp : bool = True) -> None:
     """Scrape the pages of the houses from immoweb
     in a memory optimized way and store the files.
 
@@ -370,8 +370,8 @@ def immoweb_page_scrapping(csv_name : str = "urls.csv", folder_path : str = "./r
     urls = [item for sublist in urls for item in sublist]
 
     #create a folder to store the html files
-    if not os.path.exists("./raw_html"):
-        os.mkdir("./raw_html")
+    if not os.path.exists(folder_path):
+        os.mkdir(folder_path)
 
     #This task is IO limited so we can use a lot of process at the same
     #time to speed up the process even if they are more process than the
@@ -379,7 +379,7 @@ def immoweb_page_scrapping(csv_name : str = "urls.csv", folder_path : str = "./r
 
     #Get the number of logical cpus
     n_cpus = os.cpu_count()
-    n_process = n_cpus*4
+    n_process = n_cpus*2
 
     #Divide the work with numpy as a list of list of urls
     urls = np.array_split(urls, n_process)
