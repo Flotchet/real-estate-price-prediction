@@ -1,9 +1,5 @@
 import itertools 
-import requests
-import functools
-import warnings
-import os
-import re
+import time
 
 from multiprocessing import Pool
 
@@ -33,9 +29,9 @@ def immoweb_url_constructor(n : int = 333) -> list[str]:
     """
     belgian_provinces = ["anvers", 
                         "limbourg", 
-                        "flandre-Orientale", 
+                        "flandre-orientale", 
                         "brabant-flamand", 
-                        "flandre-Occidentale", 
+                        "flandre-occidentale", 
                         "brabant-wallon", 
                         "hainaut", 
                         "liege", 
@@ -254,12 +250,13 @@ def immoweb_page_scrapping() -> None:
     #Flatten the list of list into a list
     urls = [item for sublist in urls for item in sublist]
 
-    interval = 256
+    interval = 4096
     segmented = list(map(list, zip(*([iter(urls)]*interval))))
     if len(urls) % interval != 0:
         segmented.append(urls[-(len(urls) % interval):])
 
     for i, urls in enumerate(segmented):
+        time.sleep(5)
         html = multi_process_scrape_html_content_with_selenium(urls, 8)
 
         #transform the list of list of str to list of str
@@ -269,10 +266,6 @@ def immoweb_page_scrapping() -> None:
         for url, h in zip(urls, html):
             with open(f"./raw_html/{url.split('/')[-1]}.html", "w") as f:
                 f.write(h)
-    
-
-        #save the lists as a csv urls first collum html second in the raw_html_csv folder
-        pd.DataFrame(list(zip(urls, html))).to_csv(f"./raw_html_csv/pages_{i*interval}_to_{(i+1)*interval}.csv", index = False)
 
 
 if __name__ == "__main__":
