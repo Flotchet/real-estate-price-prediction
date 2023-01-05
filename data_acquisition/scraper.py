@@ -17,6 +17,8 @@ import pandas as pd
 #-I-WEB-----------------------------------------------------------------------------------------
 from bs4 import BeautifulSoup
 from selenium import webdriver
+#-I-txt-----------------------------------------------------------------------------------------
+from unidecode import unidecode
 #-----------------------------------------------------------------------------------------------
 
 #-01-S------------------------------------------------------------------------------------------
@@ -610,25 +612,293 @@ def html_a_louer_vendre_excluder(html_folder : str =
 
     return None
 
+#-03-T------------------------------------------------------------------------------------------
 
+def clean_data(keys : list[str], values : list[str]) -> dict[str : bool or int or float or str]:
+
+    """
+    Clean the data and return a dictionary with the keys and the values
+
+    Parameters
+    ----------
+    keys : list[str]
+        The keys
+
+    values : list[str]
+        The values
+
+    Returns
+    -------
+    dict[str : bool or int or float or str]
+        The dictionary with the keys and the values
+
+    Raises
+    ------
+    Exception
+        If the keys is not a list
+
+    Exception
+        If the values is not a list
+
+    """
+
+
+    """
+    The keys and the values are the following:
+- To rent
+- To sell
+- Price : Loyermensueldemandé or prix
+- Number of rooms : Chambres
+- Living Area : Surfacehabitable
+- Fully equipped kitchen (Yes/No) : Typedecuisine
+- Furnished (Yes/No) : Meublé
+- Open fire (Yes/No) : Foyer
+- Terrace (Yes/No) : Terrasse
+  - If yes: Area : Surfacedelaterasse
+- Garden (Yes/No) : Jardin
+  - If yes: Area : Surfacedujardin
+- Surface of the land : Surfaceareabâtir
+- Surface area of the plot of land : Jardin + Surfaceareabâtir
+- Number of facades : Nombredefaçades
+- Swimming pool (Yes/No) : Piscine
+- State of the building (New, to be renovated, ...) : Étatdubâtiment
+    
+    """
+
+    #create the dictionary 
+    data = {
+        "To rent" : None,
+        "To sell" : None,
+        "Price" : None,
+        "Number of rooms" : None,
+        "Living Area" : None,
+        "Fully equipped kitchen" : None,
+        "Furnished" : None,
+        "Open fire" : None,
+        "Terrace" : None,
+        "Area of the terrace" : None,
+        "Garden" : None,
+        "Area of the garden" : None,
+        "Surface of the land" : None,
+        "Surface area of the plot of land" : None,
+        "Number of facades" : None,
+        "Swimming pool" : None,
+        "State of the building" : None
+    }
+
+
+    if len(keys) > len(values):
+        #remove element "" from keys
+        keys = [i for i in keys if i != ""]
+        #remove element "" from values
+        values = [i for i in values if i != ""]
+
+    
+    #find the index of the values that correspond to the keys
+    for key in keys:
+
+        key = unidecode(key)
+
+        # if loyer in key.lower()
+        if "Loyer" in key:
+            data["Price"] = values[keys.index(key)]
+            data["To rent"] = True
+            data["To sell"] = False
+
+        if "Prix" in key:
+            data["Price"] = values[keys.index(key)]
+            data["To rent"] = False
+            data["To sell"] = True
+
+        if key == "Chambres":
+            data["Number of rooms"] = values[keys.index(key)]
+
+        if key == "Surfacehabitable":
+            data["Living Area"] = values[keys.index(key)]
+
+        if key == "Typedecuisine":
+            data["Fully equipped kitchen"] = values[keys.index(key)]
+
+        if key == "Meublé":
+            data["Furnished"] = values[keys.index(key)]
+
+        if key == "Foyer":
+            data["Open fire"] = values[keys.index(key)]
+
+        if key == "Terrasse":
+            data["Terrace"] = values
+
+        if key == "Surfacedelaterasse":
+            data["Area of the terrace"] = values[keys.index(key)]
+            data["Terrace"] = True
+
+        if key == "Jardin":
+            data["Garden"] = values
+
+        if key == "Surfacedujardin":
+            data["Area of the garden"] = values[keys.index(key)]
+            data["Garden"] = True
+
+        if key == "Surfaceareabâtir":
+            data["Surface of the land"] = values[keys.index(key)]
+
+        if key == "Nombredefaçades":
+            data["Number of facades"] = values[keys.index(key)]
+
+        if key == "Piscine":
+            data["Swimming pool"] = values[keys.index(key)]
+
+        if key == "Étatdubâtiment":
+            data["State of the building"] = values[keys.index(key)]
+
+    return data
+    
+
+
+#-03-T------------------------------------------------------------------------------------------
+
+def find_values_of_soups (soup : any) -> tuple[list[str], list[str]]:
+
+    """
+    Find the values of the keys in the soup
+
+    Parameters
+    ----------
+    soup : any
+        The soup
+
+    Returns
+    -------
+    tuple[list[str], list[str]]
+        The keys and the values
+
+    Raises
+    ------
+    Exception
+        If the soup is not a BeautifulSoup object
+
+    """
+
+    #check if the soup is a BeautifulSoup object
+    if not isinstance(soup, BeautifulSoup):
+        raise Exception("The soup must be a BeautifulSoup object")
+    
+
+    keys = soup.find_all("th")
+    values = soup.find_all("td")
+
+    keys = [k.text for k in keys]
+    values = [v.text for v in values]
+
+    return (keys, values)
+
+
+#-03-S------------------------------------------------------------------------------------------
+
+def extract_data(html_content : str) -> dict[str : bool or int or float or str]:
+    
+    """
+    Extract the data from the html file and return a dictionnary with the data
+    
+    Parameters
+    ----------
+    html_content : str
+    The html file
+    
+    Returns
+    -------
+    dict[str : bool or int or float or str]
+        The data extracted from the html file
+
+    Raises
+    ------
+    Exception
+        If the html_content is not a string
+    
+    """
+    
+    #check if the html_content is a string
+    if not isinstance(html_content, str):
+        raise Exception("The html_content must be a string")
+
+
+    soup = BeautifulSoup(html_content , "html.parser")
+
+    keys, values = find_values_of_soups(soup)
+
+    return clean_data(keys, values)
+
+    
 #-03-P------------------------------------------------------------------------------------------
-def extract_data_from_html(html : str or list[str], path : str
-                                ) -> dict[str : dict[str : bool or int or float or str]]:
 
-    pass
-        
+def extract_data_from_html(path : str) -> dict[str : dict[str : bool or int or float or str]]:
 
+    """
+    Extract the data from the html files and return a dictionnary with the data
 
+    Parameters
+    ----------
 
+    path : str
+        The path to the folder where the html files are stored
 
+    Returns
+    -------
+    dict[str : dict[str : bool or int or float or str]]
+        The data extracted from the html files
 
+        structure 
+    {id :{
+        Addresse : str 
+        Price : int
+        ...
+        key1 : value1,
+        key2 : value2,
+        key3 : value3,
+        ...
+        keyn : valuen
+        postcode : int
+        }
+    }
 
+    Raises
+    ------
+    Exception
+        If the html is not a string or a list of strings
 
+    Exception
+        If the path is not a string
 
+    Warning
+        If the path does not exist or is empty
 
+    """
 
+    #check if the path is a string
+    if not isinstance(path, str): 
+        raise Exception("The path must be a string")
 
+    #check if the path exist and is not empty
+    if not os.path.exists(path) or len(os.listdir(path)) == 0:
+        warnings.warn("The path does not exist or is empty")
 
+    #the data extracted from the html files
+    data = {}
+
+    #get all the html files
+    html = os.listdir(path)
+
+    #extract the data from the html files
+    for html_file in tqdm(html):
+        with open(path + "/" + html_file, "r") as f:
+            html_content = f.read()
+
+        #without .html
+        id = int(html_file[:-5])
+
+        data[id] = extract_data(html_content)
+
+    return data
 
 #-04-P------------------------------------------------------------------------------------------
 
@@ -715,3 +985,4 @@ if __name__ == "__main__":
     #immoweb_page_scraper(folder_path = "/home/flotchet/server/first_pool/Raw_HTML")
     #html_errors_excluder()
     #html_a_louer_vendre_excluder()
+    extract_data_from_html("/home/flotchet/server/first_pool/Raw_HTML")
