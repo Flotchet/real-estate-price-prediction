@@ -645,23 +645,23 @@ def clean_data(keys : list[str], values : list[str]) -> dict[str : bool or int o
 
     """
     The keys and the values are the following:
-- To rent
-- To sell
-- Price : Loyermensueldemandé or prix
-- Number of rooms : Chambres
-- Living Area : Surfacehabitable
-- Fully equipped kitchen (Yes/No) : Typedecuisine
-- Furnished (Yes/No) : Meublé
-- Open fire (Yes/No) : Foyer
-- Terrace (Yes/No) : Terrasse
-  - If yes: Area : Surfacedelaterasse
-- Garden (Yes/No) : Jardin
-  - If yes: Area : Surfacedujardin
-- Surface of the land : Surfaceareabâtir
-- Surface area of the plot of land : Jardin + Surfaceareabâtir
-- Number of facades : Nombredefaçades
-- Swimming pool (Yes/No) : Piscine
-- State of the building (New, to be renovated, ...) : Étatdubâtiment
+    - To rent
+    - To sell
+    - Price : Loyermensueldemandé or prix
+    - Number of rooms : Chambres
+    - Living Area : Surfacehabitable
+    - Fully equipped kitchen (Yes/No) : Typedecuisine
+    - Furnished (Yes/No) : Meublé
+    - Open fire (Yes/No) : Foyer
+    - Terrace (Yes/No) : Terrasse
+    - If yes: Area : Surfacedelaterasse
+    - Garden (Yes/No) : Jardin
+    - If yes: Area : Surfacedujardin
+    - Surface of the land : Surfaceareabâtir
+    - Surface area of the plot of land : Jardin + Surfaceareabâtir
+    - Number of facades : Nombredefaçades
+    - Swimming pool (Yes/No) : Piscine
+    - State of the building (New, to be renovated, ...) : Étatdubâtiment
     
     """
 
@@ -694,61 +694,111 @@ def clean_data(keys : list[str], values : list[str]) -> dict[str : bool or int o
         values = [i for i in values if i != ""]
 
     
+    #remove " " and "" from the keys
+    keys = [i for i in keys if i != " " and i != ""]
+
+    index = None
+    for i,value in enumerate(values):
+        value = value.lower()
+
+        if "oui" in value:
+            values[i] = True 
+        elif "noncommuniqué" in value:
+            values[i] = None
+        elif "non" in value:
+            values[i] = False
+        elif re.findall(r"[0-9]+", value):
+            values[i] = int(re.findall(r"[0-9]+[.]*[0-9]*", value)[0].replace(".",""))
+        elif "assurezcebienassurezcebiencontrelesincendiesavecimmowebprotectvoirmondevis" in value:
+            index = i
+        else:
+            continue
+
+
+
+
+
+    if index != None:
+        # remove element i from the list
+        values.remove(values[index])
+
+  
     #find the index of the values that correspond to the keys
     for key in keys:
 
-        key = unidecode(key)
-
+        ke = unidecode(key)
+        ke = ke.lower()
+        ke = ke.replace(" ", "")   
+        #replace carriage
+        ke = ke.replace("\r", "")
+        #replace newline
+        ke = ke.replace("\n", "")
         # if loyer in key.lower()
-        if "Loyer" in key:
+        if ke == "loyermensueldemande":
+            #print(ke,values[keys.index(key)])
             data["Price"] = values[keys.index(key)]
+            
             data["To rent"] = True
             data["To sell"] = False
 
-        if "Prix" in key:
+        if ke == "prix":
+            #print(ke,values[keys.index(key)])
             data["Price"] = values[keys.index(key)]
             data["To rent"] = False
             data["To sell"] = True
 
-        if key == "Chambres":
+        if ke == "chambres":
+            #print(ke,values[keys.index(key)])
             data["Number of rooms"] = values[keys.index(key)]
 
-        if key == "Surfacehabitable":
+        if ke == "surfacehabitable":
+            #print(ke,values[keys.index(key)])
             data["Living Area"] = values[keys.index(key)]
 
-        if key == "Typedecuisine":
+        if ke == "typedecuisine":
+            #print(ke,values[keys.index(key)])
             data["Fully equipped kitchen"] = values[keys.index(key)]
 
-        if key == "Meublé":
+        if ke == "meuble":
+            
             data["Furnished"] = values[keys.index(key)]
 
-        if key == "Foyer":
+        if ke == "foyer":
+            #print(ke,values[keys.index(key)])
             data["Open fire"] = values[keys.index(key)]
 
-        if key == "Terrasse":
-            data["Terrace"] = values
+        if ke == "terrasse":
+            #print(ke,values[keys.index(key)])
+            data["Terrace"] = values[keys.index(key)]
 
-        if key == "Surfacedelaterasse":
+        if ke == "surfacedelaterasse":
+            #print(ke,values[keys.index(key)])
             data["Area of the terrace"] = values[keys.index(key)]
             data["Terrace"] = True
 
-        if key == "Jardin":
+        if ke == "jardin":
+            #print(ke,values[keys.index(key)])
             data["Garden"] = values
 
-        if key == "Surfacedujardin":
+        if ke == "surfacedujardin":
+            #print(ke,values[keys.index(key)])
             data["Area of the garden"] = values[keys.index(key)]
             data["Garden"] = True
 
-        if key == "Surfaceareabâtir":
+        if ke == "surfaceareabatir":
+            #print(ke,values[keys.index(key)])
             data["Surface of the land"] = values[keys.index(key)]
 
-        if key == "Nombredefaçades":
+        if ke == "nombredefacades":
+            #print(ke,values[keys.index(key)])
             data["Number of facades"] = values[keys.index(key)]
 
-        if key == "Piscine":
+        if ke == "piscine":
+            #print(ke,values[keys.index(key)])
             data["Swimming pool"] = values[keys.index(key)]
 
-        if key == "Étatdubâtiment":
+        if ke == "etatdubatiment":
+            #print(ke,values[keys.index(key)])
             data["State of the building"] = values[keys.index(key)]
 
     return data
@@ -952,30 +1002,20 @@ def save_data_to_csv(data : dict[int : dict[str : any]], csv_name : str = "data.
     if not isinstance(csv_name, str):
         raise Exception("The csv_name must be a string")
 
-    #check if the filename finish by .csv
-    if csv_name[-4:] != ".csv":
-        raise Exception("The file name must finish by .csv")
+    #check if the csv_name finish by .csv
+    if not csv_name.endswith(".csv"): 
+        raise Exception("The csv_name must finish by .csv")
 
-    #get the keys the set of all keys in the dictionaries (and the string "id" as fisrt value)
-    keys = {"id"}
-    for dictionaries in data.values():
-        for dictionary in dictionaries:
-            keys.update(list(dictionary.keys()))
+    # Convert the dictionary to a Pandas dataframe
+    df = pd.DataFrame.from_dict(data, orient='index')
 
-    #create a dataframe with the keys as columns
-    df = pd.DataFrame(columns = keys)
+    # Save the dataframe to a CSV file
+    df.to_csv('data.csv')
 
-    #fill the dataframe with the data
-    for id, dictionaries in data.items():
-        for dictionary in dictionaries:
-            df = df.append({**dictionary, "id" : id}, ignore_index = True)
-
-    #save the dataframe to a csv file
-    df.to_csv(csv_name, index = False)
 
     return None
 
-
+#-05-M------------------------------------------------------------------------------------------
 
 if __name__ == "__main__":
     pass
@@ -985,4 +1025,5 @@ if __name__ == "__main__":
     #immoweb_page_scraper(folder_path = "/home/flotchet/server/first_pool/Raw_HTML")
     #html_errors_excluder()
     #html_a_louer_vendre_excluder()
-    extract_data_from_html("/home/flotchet/server/first_pool/Raw_HTML")
+    data = extract_data_from_html("/home/flotchet/server/first_pool/Raw_HTML_a_louer_normal")
+    save_data_to_csv(data, csv_name = "data_a_louer_normal.csv")
