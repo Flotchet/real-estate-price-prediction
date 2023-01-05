@@ -1,21 +1,147 @@
+#-I-QOF-----------------------------------------------------------------------------------------
 import itertools 
+#-I-OS------------------------------------------------------------------------------------------
 import time
 import os
 import psutil
 import warnings
 import gc
-
+from tqdm import tqdm
+#-I-REGEX---------------------------------------------------------------------------------------
+import re
+#-I-PERF----------------------------------------------------------------------------------------
 from multiprocessing import Pool
-
+#-I-DS------------------------------------------------------------------------------------------
 import numpy as np
 import pandas as pd
-
+#-I-WEB-----------------------------------------------------------------------------------------
 from bs4 import BeautifulSoup
 from selenium import webdriver
+#-----------------------------------------------------------------------------------------------
+
+#-01-S------------------------------------------------------------------------------------------
+
+def url_cleaner(hrefs : list[str]):
+    """Clean the urls. by removing urls that not 
+    start with 'https://www.immoweb.be/fr/annonce/'.
+
+    Parameters
+    ----------
+    hrefs : table[str]
+        The urls of the houses.
+
+    Returns
+    -------
+    table[str]
+        The cleaned urls of the houses.
+
+    Raises
+    ------
+    Exception
+        If the url is not a list of strings.
+    """
+
+    if not isinstance(hrefs, list):
+        raise Exception("The hrefs is not a list of strings.")
+
+    return [href for href in hrefs if href.startswith("https://www.immoweb.be/fr/annonce/")]
+
+#-01-T------------------------------------------------------------------------------------------
+
+def scrape_html_href_with_selenium(url : list[str] or str) -> list[str]:
+    """Scrape the html of the page with selenium.
+
+    Parameters
+    ----------
+    urls : list[str] or str
+        The urls of the page.
+
+    Returns
+    -------
+    list[str]
+        The href of the pages.
+
+    Raises
+    ------
+    Exception
+        If the url is not a string or a list of strings.
+    """
+
+    if isinstance(url, str):
+
+        driver = webdriver.Firefox()
+
+        driver.get(url)
+        html = driver.page_source
+
+        driver.quit()
+        driver.close()
+
+        soup = BeautifulSoup(html, "html.parser")
+
+        return [a["href"] for a in soup.find_all("a", {"class": "card__title-link"})]
+
+    elif isinstance(url, list):
+
+        driver = webdriver.Firefox()
+        #clear the cache of the driver
+        #open the driver and set it up
+        driver = webdriver.Firefox()
+        driver.set_window_size(1080, 3840)
+        driver.set_window_position(0, 0)
+        driver.set_page_load_timeout(30)
+        driver.set_script_timeout(30)
+        driver.implicitly_wait(30)
+
+        htmls = []
+
+        for u in url:
+
+            driver.get(u)
+            html = driver.page_source
+
+            soup = BeautifulSoup(html, "html.parser")
+
+            htmls.append([a["href"] for a in soup.find_all("a", {"class": "card__title-link"})])
 
 
+        driver.quit()
+        driver.close()
 
+        return htmls
 
+    else:
+
+        raise Exception("The url is not a string or a list of strings.")
+
+#-01-S------------------------------------------------------------------------------------------
+
+def multi_process_scrape_html_href_with_selenium(urls : list[str],
+                                                 n_process : int = 4
+                                                 ) -> list[str]:
+    """Scrape the html of the pages with selenium.
+
+    Parameters
+    ----------
+    urls : list[str]
+        The urls of the pages.
+
+    Returns
+    -------
+    list[str]
+        The html of the pages.
+    """
+    
+    #Divide the work with numpy as a list of list of urls
+    urls = np.array_split(urls, n_process)
+    #transform nparray to list
+    urls = [url.tolist() for url in urls]
+
+    #Create the pool of workers
+    with Pool(n_process) as pool:
+        return pool.map(scrape_html_href_with_selenium, urls)
+
+#-01-S------------------------------------------------------------------------------------------
 
 def immoweb_url_constructor(n : int = 333) -> list[str]:
     """Construct the urls of the immoweb pages.
@@ -49,195 +175,9 @@ def immoweb_url_constructor(n : int = 333) -> list[str]:
 
     return urls
 
-def immoweb_page_href(url : str = "") -> list[str]:
-    """Extract the href of the houses from the immoweb page.
+#-01-P-------------------------------------------------------------------------------------------
 
-    Parameters
-    ----------
-    url : str
-        The url of the immoweb page.
-
-    Returns
-    -------
-    list[str]
-        The href of the houses.
-
-    Raises
-    ------
-    Exception
-        If the url is not a string.
-    """
-
-    if not isinstance(url, str):
-        raise Exception("The url is not a string.")
-
-    html = scrape_html_with_selenium(url)
-    soup = BeautifulSoup(html, "html.parser")
-
-    return [a["href"] for a in soup.find_all("a", {"class": "card__title-link"})]
-
-def immoweb_page_hrefs(urls : list[str] = []) -> list[str]:
-    """Extract the href of the houses from the immoweb pages.
-
-    Parameters
-    ----------
-    urls : list[str]
-        The urls of the immoweb pages.
-
-    Returns
-    -------
-    list[str]
-        The href of the houses.
-
-    Raises
-    ------
-    Exception
-        If the urls is not a list of strings.
-    """
-
-    if not isinstance(urls, list):
-        raise Exception("The urls is not a list of strings.")
-
-    return [immoweb_page_href(url) for url in urls]
-
-def scrape_html_with_selenium(url : list[str] or str) -> list[str]:
-    """Scrape the html of the page with selenium.
-
-    Parameters
-    ----------
-    urls : list[str] or str
-        The urls of the page.
-
-    Returns
-    -------
-    list[str]
-        The html of the pages.
-
-    Raises
-    ------
-    Exception
-        If the url is not a string or a list of strings.
-    """
-
-    if isinstance(url, str):
-        driver = webdriver.Firefox()
-        driver.get(url)
-        html = driver.page_source
-        driver.close()
-        return html
-
-    elif isinstance(url, list):
-        driver = webdriver.Firefox()
-        htmls = []
-        for u in url:
-            driver.get(u)
-            htmls.append(driver.page_source)
-        driver.close()
-        return htmls
-
-    else:
-        raise Exception("The url is not a string or a list of strings.")
-
-def scrape_html_href_with_selenium(url : list[str] or str) -> list[str]:
-    """Scrape the html of the page with selenium.
-
-    Parameters
-    ----------
-    urls : list[str] or str
-        The urls of the page.
-
-    Returns
-    -------
-    list[str]
-        The href of the pages.
-
-    Raises
-    ------
-    Exception
-        If the url is not a string or a list of strings.
-    """
-
-    if isinstance(url, str):
-        driver = webdriver.Firefox()
-        driver.get(url)
-        html = driver.page_source
-        driver.quit()
-        driver.close()
-        soup = BeautifulSoup(html, "html.parser")
-        return [a["href"] for a in soup.find_all("a", {"class": "card__title-link"})]
-
-    elif isinstance(url, list):
-        driver = webdriver.Firefox()
-        #clear the cache of the driver
-        driver.delete_all_cookies()
-
-        htmls = []
-        for u in url:
-            driver.get(u)
-            html = driver.page_source
-            soup = BeautifulSoup(html, "html.parser")
-            htmls.append([a["href"] for a in soup.find_all("a", {"class": "card__title-link"})])
-
-        driver.quit()
-        driver.close()
-        return htmls
-
-    else:
-        raise Exception("The url is not a string or a list of strings.")
-
-def url_cleaner(hrefs : list[str]):
-    """Clean the urls. by removing urls that not 
-    start with 'https://www.immoweb.be/fr/annonce/'.
-
-    Parameters
-    ----------
-    hrefs : table[str]
-        The urls of the houses.
-
-    Returns
-    -------
-    table[str]
-        The cleaned urls of the houses.
-
-    Raises
-    ------
-    Exception
-        If the url is not a list of strings.
-    """
-
-    if not isinstance(hrefs, list):
-        raise Exception("The hrefs is not a list of strings.")
-
-    return [href for href in hrefs if href.startswith("https://www.immoweb.be/fr/annonce/")]
-
-
-def multi_process_scrape_html_href_with_selenium(urls : list[str],
-                                                 n_process : int = 4
-                                                 ) -> list[str]:
-    """Scrape the html of the pages with selenium.
-
-    Parameters
-    ----------
-    urls : list[str]
-        The urls of the pages.
-
-    Returns
-    -------
-    list[str]
-        The html of the pages.
-    """
-    
-    #Divide the work with numpy as a list of list of urls
-    urls = np.array_split(urls, n_process)
-    #transform nparray to list
-    urls = [url.tolist() for url in urls]
-
-    #Create the pool of workers
-    with Pool(n_process) as pool:
-        return pool.map(scrape_html_href_with_selenium, urls)
-
-
-def immoweb_url_scrapping() -> None:
+def immoweb_url_scraper() -> None:
     """Scrape the urls of the houses from immoweb.
     """
     
@@ -254,6 +194,7 @@ def immoweb_url_scrapping() -> None:
     #save the list as a csv
     pd.DataFrame(urls).to_csv("urls.csv", index = False)
 
+#-02-S------------------------------------------------------------------------------------------
 
 def scrape_html_with_selenium_with_save(urls : list[str] or str, 
                                         folder_path : str = "./raw_html", 
@@ -431,12 +372,14 @@ def scrape_html_with_selenium_with_save(urls : list[str] or str,
     driver.close()
 
     return len(urls)
-   
 
-def immoweb_page_scrapping(csv_name : str = "urls.csv", 
-                           folder_path : str = "./raw_html", 
-                           time_stamp : bool = False, 
-                           tries : int = 10) -> None:
+#-02-P------------------------------------------------------------------------------------------
+
+def immoweb_page_scraper(csv_name : str = "urls.csv", 
+                        folder_path : str = "./raw_html", 
+                        time_stamp : bool = False, 
+                        tries : int = 10
+                        ) -> None:
     """Scrape the pages of the houses from immoweb
     in a memory optimized way and store the files.
 
@@ -516,7 +459,178 @@ def immoweb_page_scrapping(csv_name : str = "urls.csv",
 
     return None
 
+#-03-O------------------------------------------------------------------------------------------
+# Apparently error pages also contains info about a house/appartement
+def html_errors_excluder(html_folder : str = 
+                            "/home/flotchet/server/first_pool/Raw_HTML", 
+                         excluded_html_folder : str = 
+                            "/home/flotchet/server/first_pool/Raw_HTML_Rejected" 
+                        ) -> None:
 
+    """Exclude the html files that have errors.
+
+    Parameters
+    ----------
+    html_folder : str = "/home/flotchet/server/first_pool/Raw_HTML"
+        The path to the folder where the html files are stored
+
+    excluded_html_folder : str = "/home/flotchet/server/first_pool/Raw_HTML_Rejected"
+        The path to the folder where the html files with errors will be stored
+
+    Returns
+    -------
+    None
+
+    Raises
+    ------
+    Exception
+        If the html_folder is not a string
+    Exception
+        If the excluded_html_folder is not a string
+    Warning
+        If the html_folder does not exist or is empty
+
+    """
+
+    #check if the html_folder is a string
+    if not isinstance(html_folder, str):
+        raise Exception("The html_folder must be a string")
+
+    #check if the excluded_html_folder is a string
+    if not isinstance(excluded_html_folder, str):
+        raise Exception("The excluded_html_folder must be a string")
+
+    #check if the html_folder exist and is not empty
+    if not os.path.exists(html_folder) or len(os.listdir(html_folder)) == 0:
+        warnings.warn("The html_folder does not exist or is empty")
+
+    #create a folder to store the html files with errors
+    if not os.path.exists(excluded_html_folder):
+        os.mkdir(excluded_html_folder)
+
+    #get the list of html files
+    html_files = os.listdir(html_folder)
+
+    #go throught the files and move the ones that contains error ie files that contains
+    #the string "Malheureusement," and the string "404" or "500" to the excluded_html_folder
+    # and show a progress bar
+    for html_file in tqdm(html_files):
+        with open(html_folder + "/" + html_file, "r") as f:
+            html = f.read()
+        if "Malheureusement," in html and ("404" in html or "500" in html):
+            os.system("mv " + html + " " + excluded_html_folder)
+
+    return None
+                   
+#-03-O------------------------------------------------------------------------------------------
+# Apparently error pages also contains info about a house/appartement
+def html_a_louer_vendre_excluder(html_folder : str = 
+                                    "/home/flotchet/server/first_pool/Raw_HTML", 
+                                 a_louer_html_folder : str = 
+                                    "/home/flotchet/server/first_pool/Raw_HTML_a_louer", 
+                                 a_vendre_html_folder : str =
+                                    "/home/flotchet/server/first_pool/Raw_HTML_a_vendre"
+                        ) -> None:
+
+    """
+    Exclude the html files that have à vendre between two title tags.
+    Exclude the html files that have à louer between two title tags.
+
+    Parameters
+    ----------
+    html_folder : str = "/home/flotchet/server/first_pool/Raw_HTML"
+        The path to the folder where the html files are stored
+
+    a_louer_html_folder : str = "/home/flotchet/server/first_pool/Raw_HTML_a_louer"
+        The path to the folder where the html files with à louer will be stored
+
+    a_vendre_html_folder : str = "/home/flotchet/server/first_pool/Raw_HTML_a_vendre"
+        The path to the folder where the html files with à vendre will be stored
+
+    Returns
+    -------
+    None
+
+    Raises
+    ------
+    Exception
+        If the html_folder is not a string
+
+    Exception
+        If the a_louer_html_folder is not a string
+
+    Exception
+        If the a_vendre_html_folder is not a string
+
+    Warning
+        If the html_folder does not exist or is empty
+
+    """
+
+    #check if the html_folder is a string
+    if not isinstance(html_folder, str):
+        raise Exception("The html_folder must be a string")
+
+    #check if the a_louer_html_folder is a string
+    if not isinstance(a_louer_html_folder, str):    
+        raise Exception("The a_louer_html_folder must be a string")
+
+    #check if the a_vendre_html_folder is a string
+    if not isinstance(a_vendre_html_folder, str):
+        raise Exception("The a_vendre_html_folder must be a string")
+
+    #check if the html_folder exist and is not empty
+    if not os.path.exists(html_folder) or len(os.listdir(html_folder)) == 0:
+        warnings.warn("The html_folder does not exist or is empty")
+
+    #create a folder to store the html files with à louer
+    if not os.path.exists(a_louer_html_folder):
+        os.mkdir(a_louer_html_folder)
+
+    #create a folder to store the html files with à vendre
+    if not os.path.exists(a_vendre_html_folder):
+        os.mkdir(a_vendre_html_folder)
+
+    #get the list of html files
+    html_files = os.listdir(html_folder)
+
+
+    #find the string between <title> and </title>
+    for html_file in tqdm(html_files):
+        with open(html_folder + "/" + html_file, "r") as f:
+            html = f.read()
+
+        title = html[html.find("<title>") + len("<title>") : html.find("</title>")]
+
+        if "louer" in title:
+            os.system("mv " + html_folder + "/" + html_file + " " + a_louer_html_folder)
+
+        if "vendre" in title:
+            os.system("mv " + html_folder + "/" + html_file + " " + a_vendre_html_folder)
+
+    return None
+
+
+#-03-P------------------------------------------------------------------------------------------
+def extract_data_from_html(html : str or list[str], path : str
+                                ) -> dict[str : dict[str : bool or int or float or str]]:
+
+    pass
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+#-04-P------------------------------------------------------------------------------------------
 
 def save_data_to_csv(data : dict[int : dict[str : any]], csv_name : str = "data.csv") -> None:
     """Save the data to a csv file 
@@ -594,4 +708,10 @@ def save_data_to_csv(data : dict[int : dict[str : any]], csv_name : str = "data.
 
 
 if __name__ == "__main__":
-    immoweb_page_scrapping(folder_path = "/home/flotchet/server/first_pool/Raw_HTML")
+    pass
+
+
+    #immoweb_url_scraper()
+    #immoweb_page_scraper(folder_path = "/home/flotchet/server/first_pool/Raw_HTML")
+    #html_errors_excluder()
+    #html_a_louer_vendre_excluder()
