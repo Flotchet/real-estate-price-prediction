@@ -878,7 +878,6 @@ def extract_data(html_content : str) -> dict[str : bool or int or float or str]:
 
     return clean_data(keys, values)
 
-    
 #-03-P------------------------------------------------------------------------------------------
 
 def extract_data_from_html(path : str) -> dict[str : dict[str : bool or int or float or str]]:
