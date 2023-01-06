@@ -1020,9 +1020,9 @@ if __name__ == "__main__":
     pass
 
 
-    #immoweb_url_scraper()
-    #immoweb_page_scraper(folder_path = "/home/flotchet/server/first_pool/Raw_HTML")
-    #html_errors_excluder()
-    #html_a_louer_vendre_excluder()
+    immoweb_url_scraper()
+    immoweb_page_scraper(folder_path = "/home/flotchet/server/first_pool/Raw_HTML")
+    html_errors_excluder()
+    html_a_louer_vendre_excluder()
     data = extract_data_from_html("/home/flotchet/server/first_pool/Raw_HTML_a_louer_normal")
     save_data_to_csv(data, csv_name = "data_a_louer_normal.csv")
