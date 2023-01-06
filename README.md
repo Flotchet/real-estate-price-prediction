@@ -75,8 +75,7 @@ just run scraper.py and it should do the trick but your can import the file as a
 
 ## Informations about the functions
 
-### [scraper.py
-](https://github.com/Flotchet/real-estate-price-prediction/blob/main/data_acquisition/scraper.py "scraper.py")
+### scraper.py
 
 #### First part
 
