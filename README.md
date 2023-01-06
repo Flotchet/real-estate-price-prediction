@@ -6,7 +6,7 @@ Currently in polishing state
 
 ## prerequises
 
-Python 3.10
+Python 3.11.1 64-bit
 
 Firefox
 
