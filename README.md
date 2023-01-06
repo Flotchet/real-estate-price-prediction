@@ -123,7 +123,7 @@ Scrape the html of the page with selenium and saves each file to a folder as nam
 
 #### Third part
 
-###### html_errors_excluder(html_folder : str = "/home/flotchet/server/first_pool/Raw_HTML" , excluded_html_folder :str = "/home/flotchet/server/first_pool/Raw_HTML_Rejected") -> None 
+###### html_errors_excluder(html_folder : str = "/home/flotchet/server/first_pool/Raw_HTML" , excluded_html_folder :str = "/home/flotchet/server/first_pool/Raw_HTML_Rejected") -> None
 
 Exclude the html files that have errors 404 or 500.
 
@@ -149,21 +149,21 @@ Extract some data if a corresponding key is in the list
 
     - Fully equipped kitchen (Yes/No) : Typedecuisine
 
-    - Furnished (Yes/No) : Meublé
+    - Furnished (Yes/No) : meublé
 
-    - Open fire (Yes/No) : Foyer
+    - Open fire (Yes/No) : combiendefeuxouverts?
 
     - Terrace (Yes/No) : Terrasse
 
-    - If yes: Area : Surfacedelaterasse
+    - If yes: Area : Surfacedelaterrasse
 
     - Garden (Yes/No) : Jardin
 
-    - If yes: Area : Surfacedujardin
+    - If yes: Area : surfacedujardin
 
-    - Surface of the land : Surfaceareabâtir
+    - Surface of the land : surfaceduterrain
 
-    - Surface area of the plot of land : / computed : based of data already obtained
+    - Surface area of the plot of land : / computed : surfaceduterrain
 
     - Number of facades : Nombredefaçades
 

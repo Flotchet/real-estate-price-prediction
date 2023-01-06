@@ -714,15 +714,10 @@ def clean_data(keys : list[str], values : list[str]) -> dict[str : bool or int o
         else:
             continue
 
-
-
-
-
     if index != None:
         # remove element i from the list
         values.remove(values[index])
 
-  
     #find the index of the values that correspond to the keys
     for key in keys:
 
@@ -736,20 +731,20 @@ def clean_data(keys : list[str], values : list[str]) -> dict[str : bool or int o
         # if loyer in key.lower()
         if ke == "loyermensueldemande":
             #print(ke,values[keys.index(key)])
-            data["Price"] = values[keys.index(key)]
+            data["Price"] = int(values[keys.index(key)])
             
             data["To rent"] = True
             data["To sell"] = False
 
         if ke == "prix":
             #print(ke,values[keys.index(key)])
-            data["Price"] = values[keys.index(key)]
+            data["Price"] = int(values[keys.index(key)])
             data["To rent"] = False
             data["To sell"] = True
 
         if ke == "chambres":
             #print(ke,values[keys.index(key)])
-            data["Number of rooms"] = values[keys.index(key)]
+            data["Number of rooms"] = int(values[keys.index(key)])
 
         if ke == "surfacehabitable":
             #print(ke,values[keys.index(key)])
@@ -778,35 +773,39 @@ def clean_data(keys : list[str], values : list[str]) -> dict[str : bool or int o
             
             data["Furnished"] = values[keys.index(key)]
 
-        if ke == "foyer":
+        if ke == "combiendefeuxouverts?" or ke == "combiendefeuouverts":
             #print(ke,values[keys.index(key)])
-            data["Open fire"] = values[keys.index(key)]
+            if values[keys.index(key)] > 0:
+                data["Open fire"] = True
+            else:
+                data["Open fire"] = False
 
         if ke == "terrasse":
             #print(ke,values[keys.index(key)])
             data["Terrace"] = values[keys.index(key)]
 
-        if ke == "surfacedelaterasse":
+        if ke == "surfacedelaterrasse":
             #print(ke,values[keys.index(key)])
             data["Area of the terrace"] = values[keys.index(key)]
             data["Terrace"] = True
 
         if ke == "jardin":
             #print(ke,values[keys.index(key)])
-            data["Garden"] = values
+            data["Garden"] = values[keys.index(key)]
 
         if ke == "surfacedujardin":
             #print(ke,values[keys.index(key)])
             data["Area of the garden"] = values[keys.index(key)]
             data["Garden"] = True
 
-        if ke == "surfaceareabatir":
+        if ke == "surfaceduterrain":
             #print(ke,values[keys.index(key)])
             data["Surface of the land"] = values[keys.index(key)]
+            data["Surface area of the plot of land"] = values[keys.index(key)]
 
         if ke == "nombredefacades":
             #print(ke,values[keys.index(key)])
-            data["Number of facades"] = values[keys.index(key)]
+            data["Number of facades"] = int(values[keys.index(key)])
 
         if ke == "piscine":
             #print(ke,values[keys.index(key)])
@@ -814,7 +813,29 @@ def clean_data(keys : list[str], values : list[str]) -> dict[str : bool or int o
 
         if ke == "etatdubatiment":
             #print(ke,values[keys.index(key)])
-            data["State of the building"] = values[keys.index(key)]
+            #remove all " "
+            tmp = values[keys.index(key)]
+            tmp = tmp.replace(" ", "")
+            data["State of the building"] = tmp
+
+    # optianal based on our logic
+    # if Garden == None -> == false surface = 0
+    if data["Garden"] == None:
+        data["Garden"] = False
+        data["Area of the garden"] = 0
+
+    # if Terrace == None -> == false surface = 0
+    if data["Terrace"] == None:
+        data["Terrace"] = False
+        data["Area of the terrace"] = 0
+
+    # if Swimming pool == None -> == false
+    if data["Swimming pool"] == None:
+        data["Swimming pool"] = False
+
+    # if Open fire == None -> == false
+    if data["Open fire"] == None:
+        data["Open fire"] = False
 
     return data
 
@@ -1048,7 +1069,7 @@ def save_data_to_csv(data : dict[int : dict[str : any]], csv_name : str = "data.
     df = pd.DataFrame.from_dict(data, orient='index')
 
     # Save the dataframe to a CSV file
-    df.to_csv('data.csv')
+    df.to_csv(csv_name)
 
 
     return None
@@ -1056,18 +1077,22 @@ def save_data_to_csv(data : dict[int : dict[str : any]], csv_name : str = "data.
 #-05-M------------------------------------------------------------------------------------------
 
 def main():
+    """
+    The main function of the program
+    
+    Returns
+    -------
+    None
+    """
+
     immoweb_url_scraper()
     immoweb_page_scraper(folder_path = "/home/flotchet/server/first_pool/Raw_HTML")
     html_errors_excluder()
     html_a_louer_vendre_excluder()
-    data = extract_data_from_html("/home/flotchet/server/first_pool/Raw_HTML_a_louer_normal")
-    save_data_to_csv(data, csv_name = "data_a_louer_normal.csv")
+    data = extract_data_from_html("/home/flotchet/server/first_pool/Raw_HTML_a_acheter_normal")
+    save_data_to_csv(data, csv_name = "data_a_acheter_normal.csv")
 
+    return None
 
 if __name__ == "__main__":
-    data = extract_data_from_html("/home/flotchet/server/first_pool/Raw_HTML_a_louer_normal")
-    save_data_to_csv(data, csv_name = "data_a_louer_normal.csv")
-    
-
-
-    
+    main()
