@@ -23,7 +23,7 @@ from unidecode import unidecode
 
 #-01-S------------------------------------------------------------------------------------------
 
-def url_cleaner(hrefs : list[str]):
+def url_cleaner(hrefs : list[str]) ->  list[str]:
     """Clean the urls. by removing urls that not 
     start with 'https://www.immoweb.be/fr/annonce/'.
 
@@ -757,7 +757,22 @@ def clean_data(keys : list[str], values : list[str]) -> dict[str : bool or int o
 
         if ke == "typedecuisine":
             #print(ke,values[keys.index(key)])
-            data["Fully equipped kitchen"] = values[keys.index(key)]
+            tmp = values[keys.index(key)]
+        
+            data["Fully equipped kitchen"] = None
+            if type(tmp) == str:
+                tmp = tmp.lower()
+                tmp = unidecode(tmp)
+                tmp = tmp.replace(" ", "")   
+                tmp = tmp.replace("\r", "")
+                tmp = tmp.replace("\n", "")
+
+                if "pas" in tmp:
+                    data["Fully equipped kitchen"] = False
+                elif "" == tmp:
+                    data["Fully equipped kitchen"] = None
+                else:
+                    data["Fully equipped kitchen"] = True 
 
         if ke == "meuble":
             
@@ -802,15 +817,13 @@ def clean_data(keys : list[str], values : list[str]) -> dict[str : bool or int o
             data["State of the building"] = values[keys.index(key)]
 
     return data
-    
-
 
 #-03-T------------------------------------------------------------------------------------------
 
 def find_values_of_soups (soup : any) -> tuple[list[str], list[str]]:
 
     """
-    Find the values of the keys in the soup
+    Find the values and keys in the soup
 
     Parameters
     ----------
@@ -841,7 +854,6 @@ def find_values_of_soups (soup : any) -> tuple[list[str], list[str]]:
     values = [v.text for v in values]
 
     return (keys, values)
-
 
 #-03-S------------------------------------------------------------------------------------------
 
@@ -876,7 +888,34 @@ def extract_data(html_content : str) -> dict[str : bool or int or float or str]:
 
     keys, values = find_values_of_soups(soup)
 
-    return clean_data(keys, values)
+    locality = soup.find_all("span", attrs={"class": "classified__information--address-row"})
+    subtype_property = soup.find_all("h1",attrs={"class": "classified__title"})
+
+    for elem in locality :
+        pattern = "([0-9]{4})"
+        elem_text = elem.text
+        if re.findall(pattern, elem_text) :
+            zip_code = re.findall(pattern, elem_text)
+            zip_code_str = zip_code[0]
+
+    for elem in subtype_property :
+        elem_text = elem.text
+        elem_text = elem_text.replace(" ","").replace("\n","")
+
+        if elem_text.find("louer"):
+            index_a = elem_text.find("à")
+            s_type = elem_text[:index_a]
+            
+        elif elem_text.find("vendre"):
+            index_vendre = elem_text.find("à")
+            s_type = elem_text[:index_vendre] 
+
+    data = clean_data(keys, values)
+
+    data["zipcode"] = zip_code_str
+    data["type"] = s_type
+
+    return data
 
 #-03-P------------------------------------------------------------------------------------------
 
@@ -1016,13 +1055,19 @@ def save_data_to_csv(data : dict[int : dict[str : any]], csv_name : str = "data.
 
 #-05-M------------------------------------------------------------------------------------------
 
-if __name__ == "__main__":
-    pass
-
-
+def main():
     immoweb_url_scraper()
     immoweb_page_scraper(folder_path = "/home/flotchet/server/first_pool/Raw_HTML")
     html_errors_excluder()
     html_a_louer_vendre_excluder()
     data = extract_data_from_html("/home/flotchet/server/first_pool/Raw_HTML_a_louer_normal")
     save_data_to_csv(data, csv_name = "data_a_louer_normal.csv")
+
+
+if __name__ == "__main__":
+    data = extract_data_from_html("/home/flotchet/server/first_pool/Raw_HTML_a_louer_normal")
+    save_data_to_csv(data, csv_name = "data_a_louer_normal.csv")
+    
+
+
+    
