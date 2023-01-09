@@ -1,11 +1,14 @@
 #-I-QOF-----------------------------------------------------------------------------------------
 import itertools 
+import traceback
 #-I-OS------------------------------------------------------------------------------------------
 import time
 import os
 import psutil
 import warnings
 import gc
+import shutil
+#-I-PROGRESS------------------------------------------------------------------------------------
 from tqdm import tqdm
 #-I-REGEX---------------------------------------------------------------------------------------
 import re
@@ -16,7 +19,9 @@ import numpy as np
 import pandas as pd
 #-I-WEB-----------------------------------------------------------------------------------------
 from bs4 import BeautifulSoup
+from selenium.common.exceptions import WebDriverException
 from selenium import webdriver
+import urllib3
 #-I-txt-----------------------------------------------------------------------------------------
 from unidecode import unidecode
 #-----------------------------------------------------------------------------------------------
@@ -84,16 +89,9 @@ def scrape_html_href_with_selenium(url : list[str] or str) -> list[str]:
         return [a["href"] for a in soup.find_all("a", {"class": "card__title-link"})]
 
     elif isinstance(url, list):
-
-        driver = webdriver.Firefox()
-        #clear the cache of the driver
         #open the driver and set it up
         driver = webdriver.Firefox()
         driver.set_window_size(1080, 3840)
-        driver.set_window_position(0, 0)
-        driver.set_page_load_timeout(30)
-        driver.set_script_timeout(30)
-        driver.implicitly_wait(30)
 
         htmls = []
 
@@ -107,7 +105,6 @@ def scrape_html_href_with_selenium(url : list[str] or str) -> list[str]:
             htmls.append([a["href"] for a in soup.find_all("a", {"class": "card__title-link"})])
 
 
-        driver.quit()
         driver.close()
 
         return htmls
@@ -203,7 +200,7 @@ def scrape_html_with_selenium_with_save(urls : list[str] or str,
                                         time_stamp : bool = False,
                                         headless : bool = False,
                                         cache : bool = False,
-                                        css : bool = False
+                                        css : bool = True
                                         ) -> int:
     """Scrape the html of the page with selenium.
     and saves each file to a folder as name+time_stamp.html
@@ -225,7 +222,7 @@ def scrape_html_with_selenium_with_save(urls : list[str] or str,
     cache : bool = False
         If the cache is cleared
 
-    css : bool = False
+    css : bool = True
         If the css is loaded
 
 
@@ -369,9 +366,11 @@ def scrape_html_with_selenium_with_save(urls : list[str] or str,
 
         #clear ram cache
         gc.collect()
-        
+
+    #close the driver      
     driver.quit()
     driver.close()
+
 
     return len(urls)
 
@@ -443,21 +442,34 @@ def immoweb_page_scraper(csv_name : str = "urls.csv",
     urls = np.array_split(urls, n_process)
     #transform nparray to list
     urls = [url.tolist() for url in urls]
+    url_tot = len(urls)
 
     folder_path = [folder_path]*n_process
     time_stamp = [time_stamp]*n_process
 
     # if the nuùber of files in folder is different than the number of urls retries n times
     
-    while len(os.listdir(folder_path[0])) != len(urls[0]) and tries > 0:
-        #Create the pool of workers
-        with Pool(n_process) as pool:
-            print(pool.starmap(scrape_html_with_selenium_with_save, zip(urls, folder_path, time_stamp)))
-        tries -= 1
+    try:
+        for _ in range(tries):
+            #Create the pool of workers
+            with Pool(n_process) as pool:
+                pool.starmap(scrape_html_with_selenium_with_save, zip(urls, folder_path, time_stamp))
+
+            #check if the number of files in folder is less than the total number of urls
+            if len(os.listdir(folder_path[0])) < len(url_tot):
+                break
+
+    except urllib3.exceptions.MaxRetryError:
+        warnings.warn("MaxRetryError occured in immoweb_page_scraper")
+
+    except WebDriverException:
+        warnings.warn("WebDriverException occured in immoweb_page_scraper")
+
+    except Exception:
+        warnings.warn("An exception occured in immoweb_page_scraper")
 
     #kill all firefox and Web Content process
     os.system("killall firefox")
-    os.system("killall Web Content")
 
     return None
 
@@ -1071,12 +1083,11 @@ def save_data_to_csv(data : dict[int : dict[str : any]], csv_name : str = "data.
     # Save the dataframe to a CSV file
     df.to_csv(csv_name)
 
-
     return None
 
 #-05-M------------------------------------------------------------------------------------------
 
-def main():
+def main() -> None:
     """
     The main function of the program
     
@@ -1085,14 +1096,233 @@ def main():
     None
     """
 
+
+    print("starting fist phase: getting all the urls to scrape")
+    #delete the file urls.csv if it exists
+    if os.path.exists("urls.csv"):
+        os.remove("urls.csv")
+
     immoweb_url_scraper()
+
+    #delete the file geckodriver.log if it exists
+    if os.path.exists("geckodriver.log"):
+        os.remove("geckodriver.log")
+
+
+
+    print("starting second phase: scraping the in the csv file (getting all the html files)")
+    #move all files from Raw_HTML_a to Raw_HTML with os library 
+    for file in os.listdir("/home/flotchet/server/first_pool/Raw_HTML"):
+        shutil.move(
+            "/home/flotchet/server/first_pool/Raw_HTML/" + file, 
+            "/home/flotchet/server/first_pool/Raw_HTML_a")
+
+    #rename Raw_HTML_a in Raw_HTML_b
+    os.rename( 
+        "/home/flotchet/server/first_pool/Raw_HTML_a", 
+        "/home/flotchet/server/first_pool/Raw_HTML_b")
+
+    #rename Raw_HTML in Raw_HTML_a
+    os.rename(
+        "/home/flotchet/server/first_pool/Raw_HTML", 
+        "/home/flotchet/server/first_pool/Raw_HTML_a")
+
+    #rename Raw_HTML_b in Raw_HTML
+    os.rename(
+        "/home/flotchet/server/first_pool/Raw_HTML_b", 
+        "/home/flotchet/server/first_pool/Raw_HTML")
+
     immoweb_page_scraper(folder_path = "/home/flotchet/server/first_pool/Raw_HTML")
-    html_errors_excluder()
-    html_a_louer_vendre_excluder()
-    data = extract_data_from_html("/home/flotchet/server/first_pool/Raw_HTML_a_acheter_normal")
-    save_data_to_csv(data, csv_name = "data_a_acheter_normal.csv")
+    
+    #delete the file geckodriver.log if it exists
+    if os.path.exists("geckodriver.log"):
+        os.remove("geckodriver.log")
+
+
+
+    print("starting third phase: extracting the data from the html files")
+
+    html_a_louer_vendre_excluder(
+        a_louer_html_folder  = "/home/flotchet/server/first_pool/Raw_HTML_a",
+        a_vendre_html_folder = "/home/flotchet/server/first_pool/Raw_HTML_a")
+
+
+    data = extract_data_from_html("/home/flotchet/server/first_pool/Raw_HTML_a")
+
+
+
+    print("starting fourth phase: saving the data to a csv file")
+    #delete data_a.csv if it exists
+    if os.path.exists("data_a.csv"):
+        os.remove("data_a.csv")
+
+    save_data_to_csv(data, csv_name = "data_a.csv")
+
+
+
+    print("starting fifth phase: calculating the average price to rent and to buy")
+    #load data_a.csv with collumns names using pandas
+    data_a = pd.read_csv("data_a.csv")
+    print(data_a)
+    #variable collumn price where to_rent collumn is True with pandas
+    data_a_to_rent = data_a[data_a["To rent"] == True]["Price"]
+    #variable collumn price where to_rent collumn is False with pandas
+    data_a_to_buy = data_a[data_a["To rent"] == False]["Price"]
+
+    #remove None values
+    data_a_to_rent = data_a_to_rent.dropna()
+    data_a_to_buy = data_a_to_buy.dropna()
+    multiplicator = data_a_to_buy.mean() / data_a_to_rent.mean()
+
+    #print average
+    print("average price to rent: ", data_a_to_rent.mean())
+    print("average price to buy: ", data_a_to_buy.mean())
+    print("average value multiplicator: ", multiplicator)
 
     return None
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+
+        print(
+"""
+                                                                                                                        
+                                                                                                                        
+                                                                                                                        
+                                               @@@@@@@@@@@@@@@@@@                                                       
+                                           @@@@@@@@@@@@@@@@@@@@@@@@@                                                    
+                                       @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                                                 
+                                    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                                              
+                                  *@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                                            
+                                  @@@@@@@@@@@@@ ***@@@@@@@@@#@@@@@@@@@@@@@@@@                                           
+                                  @@@@@@@@@@                     @@@@@@@@@@@@                                           
+                                   @@@@@@@@@                      (@@@@@@@@@#                                           
+                                    @@@@@@@/                       @@@@@@@@@                                            
+                                     &@@@@@,                       @@@@@@*                                              
+                                      *@@@@  @@@@@.           @@@@@@@@@@@@                                              
+                                      @  @@    @.@@@@@    @@@%%@&@. @ @#  %                                             
+                                       @  @    *@./.      @&  @# @    ,  @                                              
+                                        (                 @   &.        &                                               
+                                        @                  @@        @  @                                               
+                                         .@@               @@@       @@.                                                
+                                           *   @@@@@@@@@@@@@@@@@@@@ &@                                                  
+                                            @ ( @&@@@@@@@@@@@%@@@@@ @@                                                  
+                                             @      #@  *   %@& % /&@                                                   
+                                             .@       . #@@@@.   %.@@                                                   
+                 .                            @ @ .             @ @@@                                *@#                
+               @   .&                         @.  @ &        @@&@@% @@@                            @    #               
+               @    (                       @@@@@%   (@ &@@@@@@%   @@@@@@@.                       ,     @               
+                @    @                  (@ @@@@@@@@@@*          @@@@@@@@@@  @                     @   .@                
+                 @    @              @@@    @@@@@@@@@@@@@@@#@@@@@@@@@@@@@@@  .  @&               @    @                 
+           *.         @@       ,@@,@   .    @@@@@@@@@@#      /@@@@@@@@@@@@@         .&@@        @@          ,           
+         (&    @@&,   . @@%       /          @@@@@@@@@@@    @@@@@@@@@@@@@@            @      (@@./   &@&%*   .@         
+         %            @         .            ,@@@@@@@@@@@  &@@@@@@@@@@@@@@             @         @            @,        
+       @      .,.@&   @ @      @              @@@@@@@@@@@*  @@@@@@@@@@@@@@   *          *      % ,  /@,         @       
+       @             @          *@#            @@@@@@@@@&   @@@@@@@@@@@@@   @         @@        * @            @*       
+       @          .@                .          &@@@@@@@@     @@@@@@@@@@@@           .            * %@.          /       
+        @@@ *      * &           (              @@@@@@@        @@@@@@@@@.              #          @ &     ,  (@@        
+         @@@(       @          @         @       @@@@@@        .@@@@@@@@                 @         @       ,@@@         
+        .@@@@@@ *@* @ (  (     .#                (@@@@@         @@@@@@@*            @   @     @  / @  @@ *@@@@@,        
+        @@@@@      @  @   @     @@        @       @@@@@          @@@@@@                (%    @   @  @      @@@@@        
+                                                                                                                        
+     @@@@@@@@ @@@@@@@@ @@@@@@@@ @@@@@@   @@@@@@@@    .@@@@@@@& @@   @@@ @@@@@@@@ @@@@@@@@ @@@@@@@@ @@@@@@@@ @@@@@@@@    
+     @@       @@,  @@@ @@%  @@@ @@@ @@.  @@@  %@@     @@@  @@& @@   @@@ @@(  @@@ @@&  @@@ @@@  &@@ ,@@@ /@@  @@@ .@@    
+     @@       @@,  @@@ @@%      @@@ @@@       &@@      @@@.    @@   @@@ @@(      @@&      @@@        @@@      @@@       
+     @@  @@@@ @@@@@@@# @@@@@    @@@  @@*      &@@       @@@%   @@   @@@ @@(      @@&      @@@@@       @@@      @@@      
+     @@   @@@ @@,@@@   @@%  @@@ @@@  @@@      &@@    ,@@ ,@@@  @@   @@@ @@(  @@@ @@&  @@@ @@@  @@@ @@@ @@@  @@@ @@@.    
+     @@@@@@@@ @@, @@@  @@@@@@@@ @@@@@@@@      &@@    ,@@@@@@@@ @@@@@@@@ @@@@@@@@ @@@@@@@@ @@@@@@@@ @@@@@@@@ @@@@@@@@ """)
+
+    except KeyboardInterrupt:
+        print("""Keyboard interupt""")
+
+        
+
+    except Exception as e:
+
+        # print the exception
+        print(traceback.format_exc())
+
+        print(
+"""Sh*t happened. Sorry bruh...
+
+    #@%%%%%&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&@@@@@@@@@@@@@@@@@@@@@@@@@&&@#   
+    %&,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,%(((((((((((((((((((((((((@%   
+    &&,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,.,,,,,,/*,,,,,,,,,,,*#(((((((((((((((((((((((@%   
+    &@,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,*/#%&%(,.               &,,,,,,,,,,,,@((((((((((((((((((((((@%   
+    &@,,,,,,,,,,,,,,,,,,,,,,.,,,,,,,,,,,,,,,,,/#&%%,.% %                                ,*,,,,,,,,,,,((((((((((((((((((((((@%   
+    &@,,,,,,,,,,,,,,,,,,,,,,,,/%@&/.               .*,/                                   &,,,,,,,,,,,,&(((((((((((((((((((@%   
+    &@,,,,,,,,,,,*#&#,                               %,*,            A good old error      *,,,,,,,,,,,,#((((((((((((((((((@%   
+    &@,##*                                            @,,%                                   &,,,,,,,,,,,,%((((((((((((((((@%   
+    &@,/              Good code execution              &,,@                                   /,,,,,,,,,,,,&(((((((((((((((@%   
+    &@,,(                                               (,,#                                    %,,,,,,,,,,,,&(((((((((((((@%   
+    &@,,,(                                                (,/                   ./*#######       %.,,,,,,,,,,,#((((((((((((@%   
+    &@,,,,/                                                &,,/               #*(###########      ,*,,,,,,,,,,,,%((((((((((@%   
+    &@,,,,,/                                                @,,%             %%#############,       %,,,,,,,,,,,,&(((((((((@%   
+    @@,,,,,,/                                                #,,&            &#%#############        %,,,,,,,,,,.,,%(((((((@&   
+    @@,,,,,,,/.                       #,########&*            /,,(           .##&##########&.         *,.,,,,,,,,,,,&((((((@%   
+    @@,,,,,,,,/.                   .%/##############           .*.*.           %###%&&%%&#%,            /,,,,,,,,,,,./(((((@%   
+    @@,,,,,,,,,/                  *%#################            /,,*             .#%%(,,,.            (,&,,,,,,(%,,,,@((((@%   
+    @@,,,,,,,,,,(                 &#%###############&             #.,#    .@%#                   *&/,,,,,,#%,,,,,,,,,,@((((@&   
+    @@,,,,,,,,,,.(                *##&#############&,              (,,&   &     ,@%.      ,&*.,,,,,,%#,,,,,,,,,,.,,,&/&((((@&   
+    @@,,,,,,,,,,.,(                 @##&&#######%&%,                %,.&   %,          (@,,,,/&*.,,,,,,,,,,,,,(%,,,,,,@((((@%   
+    @@,,,,,,,,,,,,,/.                 .&%%%%%%@/,,,                  &..&..  (%@,         #*,,,,,,,,,,,,/&*,.,,,,,,,,,@((((@&   
+    @@,,,,,,,,,,,,,,*,                      ....                   .& %,,,,,,,,,,%#*%       @,,,,,*&*.,,.,,,,,,,.*%,,,@((((@&   
+    @@,,,,,,,,,,,,,,,*,                                         (%,.,,.,,,,%%,.,,,,,,&       /#.,,,,,,,,,..,&/.,,,/,,.@((((@&   
+    @@,,,,,,,,,,,,,,,,,*                                 ,&(,.,,,,,,,&#,,,,,,,,,,,,,,.&        @  /&##&@@@/.,,,,,,(,,,&((((@&   
+    @@,,,,,,,,,,,,,,,,,,/                          #%,,,,,,,,,*&(,,,,,,,,,,,.,,,,##,,,#@                        ,@(,.,#((((@&   
+    @@,,,,,,,,,,,,,,,,,,,#                  (&*,,,,,,,,,,&(,,,,,,,,,,,,,,,,(&,,,,,,,@  ,&                          @,,#((((@&   
+    @@,,,,,,,,,,,,,,,,,,,,%          *@/,,,,,,.,,,/@/,,,,,,,,,,,,,,.,/&*,,,,,,,,,,,*.,,@,#                           @(((((@&   
+    @@,,,,,,,,,,,,,,,,,,,,,&* .%(,,,,,,,,,,,#%*,,,,,,,,,,,,,,,,(&*,,,,,,,,,,,.,*&*,.,,%,(##                           *%(((@&   
+    @@,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,./&(,,,,,,,,,,,,,,,,,#&,,,,,,,,,,,,,.*&*.,,,.,,,,,,%,,@,                            @((@&   
+    @@,,,,,,,,,,,,,,,,,,,,,,,.,&%,,,,,,,,,,,,,,,.,,%%,,,,,,,,,,,,,,,&(,,%,,,,,,.,,,,,,,#,.%.                             /#@&   
+    @@,,,,,,,,,,,,,,,,,,#&,,,.,,,,,,,,,,,,,,*&(,,,,,,,,,,,,,,,%(,,,,,,,,%,%       .@,,,#%*,                               *@%   
+    @@,,,,,,,,,,,*&(,,,,,,,,,,,,,,,,,./&*.,,,,,,,,,,,,,,%#,,,,,,,,,,,,,,#,,&*                                              @%   
+    @@,,.,,%%,,,,,,,,,,,,,,,,,,,(&*,,,,,,,,,,,,,,,%#,,,,/,,,,,,,,,,,,,,,#,,,,,,@                                           @%   
+    @@(,,,,,,,,,,,,,,,,,.,&#,,,,,,,,,,,,,,,,&/.,,,,,,,,,(,,,,,,,,,,,,,,,(,,,,,,,,@/.                                       @%   
+    @@,,,,,,,,,,,,.,&(,,,,,,,,,,,,,,,*&*,,,,,,,,,,,,,,,,/,,,,,,,,,,,,,,,/,,,,,,,,,,,,,.@%                                  @#   
+    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+    Python interpreter :                                                                                                       
+     &&&&&&&&&&&&&@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&&&&%    
+    &@((((((((((((((((((((((((((((((((((((((((((((((((((((((((%&%####%@((((((((((((((((((((((#(((((#((((((((((((((((((((((#@    
+    @@((((((((((((((((((((((((((((((((((((&#&@(.    @   %  ,&&############&(((((((((((((((((((&((((((&(((((((((((((((((#%%&@    
+    @@((((((((((((((((((((((((((((((((((.          .%@   (       @&(/*#&&#######%@&#((((((((((((&((((((&#%&&&&%##(((((((((%@    
+    @@((((((((((((((((((((((((((((((((#              (  /        /.%%.......###########@(((((((((##((((((%((((((((((((((((%@    
+    @@((((((((((((((((((((((((((((((((              %  /       /,.. ..........&###########&((((((((%((((((&(((((((((((((((%@    
+    @@((((((((((((((((((((((((((((((#              ( #     &......##/...........&##########&(((((((((@((((((@(((((((((((%&@@    
+    @@((((((((((((((((((((((((((((((.             %*   %.((.../. . %&%##%&....,...(%########&((((((((((&((((((#(((((((((((%@    
+    @@((((((((((((((((((((((((((((%              *  *,%#&..........,******#&(.,/ ..@##&%####%((((((((((((%(((((&((((((((((%@    
+    @@(((((((((((((((((((((((((%      *        *   ,#%*******#...****(/%,/&&*...//.%#########(((((((((((((#(((((((((((((((%@    
+    @@((((((((((((((((((((((#.          .,    %  (*&****%&***/...****&((%   %......&########%(((((((((((((((&(((((((((((((%@    
+    @@(((((((((((((((((((#*                 ,*  %,***/% (&(**...&*.......,*//......,########&(((((((((((((((#(((((((((((((%@    
+    @@((((((((((((((((&                   /%   #.,,,...%../.(...,.............#.....&&%%####&(((((((((((((((#(((((((((((((%@    
+    @@(((((((((((((#                    ,#%   #,.,#........#......%(............,*/, %%&%%&/&((((((((((((((&((((((((((((((%@    
+    @@(((((((&*       ,&              ,&(#   /,,.%.........,*.,,..#,#.........**(*.. &&#%.../ /(((((((((((@((((((((#&&/,,,#@    
+    @@(((%.               &         ,((((.  *,,,,**,..... #..*(/ ....,,......*(*...... &/.(&#,.%(((((((((&((((((%,,#,,,,,,(@    
+    @@&                     %     ,,%(((&  * ,,,,,,@**...#./%#((***@...*...../,..........*/*&*%(((((((((#(((((&,,%,,,,,,,,(@    
+    @@&#######&/              , .,&(((((# (  ,,,,,,,%...****((&/   .%#.......,............ **(((((((((((#((((,,,,,,,,,,,,,(@    
+    @@############&            *.#((((((#     .,,,,,,*...*@%,...... .......................,(((((((((((&(((#.,*,,,,,,,,,,,(@    
+    @@###############/         @((((((((%       ,,,,,%....,*//#&#/*....................../,(((((((((((&((((,.,,,,,,,,,,,,,(@    
+    @@################%.    ,  &((((((((#*%%(((&,,,,,,&..................................*..%((((((((#((((&,,#,,,,,,,,,,,,(@    
+    @@##################.  ., /((((((((((((((((((&,,,,,, ...............................(....@(((((((#((((*,,/.,,,,,,,,,,,(@    
+    @@##################%  ,,&((((((((((((((((((((((((&......% ..................**/&@/.......#(((((&((((((,,#,,,,,,,,*/(%&@    
+    @@###################/ ,&(((((((((((((((((((((((((,..... ........... .,*#&%%%&%****........,(((#((((((%@*,,,,,,,,,,,,,#@    
+    @@###################*,#((((((((((((((((((((((((((#............,*#@@@%/*********.............#((((%.,%,,,,,,,,,,,,,,,,#@    
+    @@##################%,((((((((((((((((((((((((((((((&&&&#((((***************, .............../ @%/,./,,,,,,,,,,,,,,,,,#@    
+    @@################%%&((((((((((((((((((((((((((((((((((((((((**%....,,,,,..................( %###########%@/.,,,,,,,,,#@    
+    @@###############%%%(((((((((((((((((((((((((((((((((((&%##,.*..%% ..................... %,####################%&,,,,,#@    
+    @@#############%%&(((((((((((((((&&%######%&&(((((@#######%,..........................( &##########################%/,#@    
+    @@###########%%%@&&&@&#((((#&#################%%###########......................../,&################################&@    
+    @@#########%%&############%#################&#############% &.................. %,&################%&&%###############&@    
+    @@######%@@%################&##############################& &.............,%.&##########%&&%#########################&@    
+    @@###%&%%####################%#########################&&####% %,..,/#/ *&#####%&&####################################&@    
+    @@############################%#####################################%&################################################%@    
+    @@##############################################################%%####################################################%@    
+    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+
+""")
+        print(e)
