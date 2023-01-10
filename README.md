@@ -2,9 +2,9 @@
 
 ## Current state
 
-Finished and not maintained anymore
+Data visualisation
 
-## prerequises
+## Prerequises (Scraping part)
 
 Python 3.11.1 64-bit
 
@@ -29,6 +29,20 @@ Firefox
 * unidecode
 * warnings
 
+## Prerequises (data visualisation)
+
+Python 3.11.1 64-bit
+
+Firefox
+
+*Tested on Fedora release 37 (Thirty Seven) x86_64 kernel 6.0.15-300.fc37.x86_64 but it should works on most linux distro
+
+* pandas
+* matplotlib
+* seaborn
+* numpy
+* openpyxl
+
 ## Recommended system requirements
 
 CPU: 8core (Intel i7-10875H)
@@ -41,7 +55,7 @@ Vram: /
 
 HDD: 15GB of free space (SSD recommanded because of the large number of small files)
 
-## What it does
+## What it does (Scraping part)
 
 this project creates a dataset from immoweb (be-fr) in the form of a csv file of this shape
 
@@ -106,7 +120,6 @@ this project creates a dataset from immoweb (be-fr) in the form of a csv file of
 1. Store the previous dictionary as a csv file of the shape below
 2. Print the average rent, the average price and a multiplicator in months to have the value of the house
 
-
 | ID     | To rent | To sell | Price  | Number of rooms | ... | zipcode | type        |
 | ------ | ------- | ------- | ------ | --------------- | --- | ------- | ----------- |
 | id 1   | False   | True    | 97000  | 3               | ... | 4000    | Appartement |
@@ -120,7 +133,6 @@ this project creates a dataset from immoweb (be-fr) in the form of a csv file of
 ## How to use it
 
 just run scraper.py and it should do the trick but your can import the file as a library and use the functions in your own project
-
 
 ---
 
