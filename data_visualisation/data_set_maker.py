@@ -226,9 +226,13 @@ class immoweb_data():
         """
 
         self.data = self.data[
-            (self.data[column_of_bool] == True) & (self.data[column_of_range] > min_t) & (self.data[column_of_range] < max_t) 
+            (self.data[column_of_bool] == True) & 
+            (self.data[column_of_range] > min_t) & 
+            (self.data[column_of_range] < max_t) 
             | 
-            (self.data[column_of_bool] == False) & (self.data[column_of_range] > min_f) & (self.data[column_of_range] < max_f)]
+            (self.data[column_of_bool] == False) & 
+            (self.data[column_of_range] > min_f) & 
+            (self.data[column_of_range] < max_f)]
 
         return None
 
@@ -285,6 +289,94 @@ class immoweb_data():
         """
             
         return self.data[column].values
+
+    def get_set_of_values_of_collumn(self , column : str):
+
+        """
+        :param column: name of the column to get the values of
+        :return: the set of values of the column asked
+        """
+                    
+        return self.data[column].unique()
+
+    def get_values_of_collumns(self , columns : list[str]):
+            
+        """
+        :param columns: names of the columns to get the values of
+        :return: the values of the columns asked
+        """
+    
+        return self.data[columns].values
+
+    def get_set_of_values_of_collumns(self , columns : list[str]):
+                
+        """
+        :param columns: names of the columns to get the values of
+        :return: the set of values of the columns asked
+        """
+        
+        return self.data[columns].unique()
+
+    def Change_value_of_collumn(self , column : str , old_value : str , new_value : str):
+            
+        """
+        Changes the value of a column
+        :param column: name of the column to change the value of
+        :param old_value: old value of the column
+        :param new_value: new value of the column
+        """
+                
+        self.data.loc[self.data[column] == old_value, column] = new_value
+    
+        return None
+
+    def Change_value_of_collumns(self , columns : list[str] , 
+    old_values : list[str] , new_values : list[str]):
+                    
+        """
+        Changes the value of a column
+        :param columns: names of the columns to change the value of
+        :param old_values: old values of the columns
+        :param new_values: new values of the columns
+        """
+                        
+        for i in range(len(columns)):
+            self.data.loc[self.data[columns[i]] == old_values[i], columns[i]] = new_values[i]
+            
+        return None
+
+    def Change_values_of_collumn(self , column : str , 
+    old_values : list[str] , new_values : list[str]):
+        
+        """
+        Changes a list of values of a column
+        :param column: name of the column to change the value of
+        :param old_values: old values of the column
+        :param new_values: new values of the column
+        """
+
+        for i in range(len(old_values)):
+            self.data.loc[self.data[column] == old_values[i], column] = new_values[i]
+        
+        return None
+
+    def new_collumn_by_separation(self , origin_column : str , new_column : str , 
+    value_set1 : list[any] , value_set2 : list[any]):
+                
+        """
+        Creates a new column by separating the values of an other column
+        :param origin_column: name of the column to separate
+        :param new_column: name of the new column
+        :param value_set1: set of values to put in the new column
+        :param value_set2: set of values to put in the new column
+        """
+                        
+        self.data[new_column] = self.data[origin_column].apply(
+            lambda x: True if x in value_set1 else False if x in value_set2 else np.nan)
+            
+        return None
+
+
 
 #--------------------------------------------------------------------------------------------MATH
 
@@ -462,7 +554,7 @@ if __name__ == "__main__":
 
     data.drop_columns(["Surface of the land", "Surface area of the plot of land", 
     "column_3", "column_4", "To rent", "Open fire", "coordonnees", "geom",
-    "Terrace", "Area of the terrace", "INS", "type" , "Swimming pool", "Garden",
+    "Terrace", "Area of the terrace", "INS", "Swimming pool", "Garden",
     "Area of the garden", "State of the building", "Fully equipped kitchen", 
     "Furnished", "Number of facades"])
 
@@ -478,6 +570,38 @@ if __name__ == "__main__":
     data.drop_rows_by_collumn_value_range_and_bool(
         "To sell" , "Price by M**2", 200 , 20_000, 1, 1_000)
 
+
+    old_types = ['Ferme', 'Appartement', 'Logementétudiant', 'Penthouse', 
+                 'Appartementdeservice', 'Chalet', 'Maison', 'Rez-de-chaussée', 
+                 'Maisondemaître', 'Autresbiens', 'Maisondecampagne', 'Loft', 
+                 'Maisonbel-étage', 'Pavillon', 'Duplex', 'Triplex', 'Studio', 
+                 'Immeublemixte', 'Bienexceptionnel', 'Château', 'Immeuble', 
+                 'Manoir', 'Bungalow', 'Villa']
+
+    new_types = ['Farm', 'Apartment', 'Student housing', 'Penthouse',
+                 'Service apartment', 'Chalet', 'House', 'Ground floor',
+                 'Master house', 'Other goods', 'Country house', 'Loft',
+                 'Bel-etage house', 'Pavilion', 'Duplex', 'Triplex', 'Studio',
+                 'Mixed building', 'Exceptional property', 'Castle', 'Building',
+                 'Manor', 'Bungalow', 'Villa']
+
+    appartments = ['Apartment', 'Student housing', 'Penthouse', 'Service apartment',
+                    'Studio', 'Duplex', 'Triplex']
+
+    houses = ['Farm', 'Chalet', 'House', 'Ground floor', 'Master house', 'Other goods',
+                'Country house', 'Loft', 'Bel-etage house', 'Pavilion', 'Mixed building',
+                'Exceptional property', 'Castle', 'Building', 'Manor', 'Bungalow', 'Villa']
+
+    #divide new_types in two categories "house" or "appartment"
+
+
+    data.Change_values_of_collumn("type", old_types, new_types)
+
+    data.new_collumn_by_separation("type", "Appartment", appartments, houses)
+
     data.save_data("data_visualisation/")
+    
+
+    
 
     print(data)

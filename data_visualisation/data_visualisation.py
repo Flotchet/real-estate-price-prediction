@@ -90,4 +90,29 @@ euros by square meter
     
     plt.show()
 
+    #plot the relation between price and type in a bar plot
+    plt.title("Relation between median price by square meter and the type of goods")
+
+
+    y = data_to_sell.groupby("type").median()
+    y = y.sort_values(by="Price by M**2", ascending=False)["Price by M**2"]
+    x = y.index
+
+    #remove first element
+    x = x[1:]
+    y = y[1:]
+
+    plt.barh(x,y)
+
+    for index, value in enumerate(y):
+        plt.text(value, index, str("%.2f" % value))
+
+    plt.show()
+
+
+
+
+
+
+
 
