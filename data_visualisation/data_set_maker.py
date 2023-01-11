@@ -181,7 +181,7 @@ class immoweb_data():
         :param values: values of the column to drop the rows of
         """
                     
-        self.data = self.data[~self.data[column].isin(values)]
+        self.data = self.data[self.data[column].isin(values)]
         
         return None
 
@@ -194,7 +194,7 @@ class immoweb_data():
         """
 
         for i in range(len(columns)):
-            self.data = self.data[~self.data[columns[i]].isin(values[i])]
+            self.data = self.data[self.data[columns[i]].isin(values[i])]
 
         return None
 
@@ -208,6 +208,27 @@ class immoweb_data():
         """
 
         self.data = self.data[(self.data[column] > min) & (self.data[column] < max)]
+
+        return None
+
+    def drop_rows_by_collumn_value_range_and_bool(self, 
+    column_of_bool : str, column_of_range : str , 
+    min_t : any , max_t : any, min_f : any , max_f : any):
+
+        """
+        Drops rows from the data attribute of the class
+        :param column_of_bool: name of the column to drop the rows of
+        :param column_of_range: name of the column to drop the rows of
+        :param min_t: minimum value of the column to drop the rows of
+        :param max_t: maximum value of the column to drop the rows of
+        :param min_f: minimum value of the column to drop the rows of
+        :param max_f: maximum value of the column to drop the rows of
+        """
+
+        self.data = self.data[
+            (self.data[column_of_bool] == True) & (self.data[column_of_range] > min_t) & (self.data[column_of_range] < max_t) 
+            | 
+            (self.data[column_of_bool] == False) & (self.data[column_of_range] > min_f) & (self.data[column_of_range] < max_f)]
 
         return None
 
@@ -412,17 +433,23 @@ def make_more_data():
     Creates the data for the visualisation
     """
     #get the data from xlsx by page
-    data_2022 = pd.read_excel("data_visualisation/Population_par_commune.xlsx", sheet_name="Population 2022")
+    data_2022 = pd.read_excel(
+        "data_visualisation/Population_par_commune.xlsx", sheet_name="Population 2022")
 
     #get the data from xlsx by page
-    data_2017 = pd.read_excel("data_visualisation/Population_par_commune.xlsx", sheet_name="Population 2017")
+    data_2021 = pd.read_excel(
+        "data_visualisation/Population_par_commune.xlsx", sheet_name="Population 2021")
 
-    data_2022["Population variation"]  = (data_2022["Total"] - data_2017["Total"])/data_2017["Total"]
+    data_2022["Population variation"]  = (data_2022["Total"] - data_2021["Total"]
+                                            )/data_2021["Total"]
     data_2022.dropna()
     data_2022.to_csv("data_visualisation/Population_par_commune.csv", index=False)
 
     INS = pd.read_excel("data_visualisation/INS.xlsx")
     INS.to_csv("data_visualisation/INS.csv", index=False)
+    
+    taxes = pd.read_excel("data_visualisation/taxes.xlsx")
+    taxes.to_csv("data_visualisation/taxes.csv", index=False)
 
 if __name__ == "__main__":
 
@@ -431,6 +458,7 @@ if __name__ == "__main__":
     data.add_column("data_visualisation/code-postaux.csv", "zipcode")
     data.add_column("data_visualisation/INS.csv", "zipcode")
     data.add_column("data_visualisation/Population_par_commune.csv", "INS")
+    data.add_column("data_visualisation/taxes.csv", "INS")
 
     data.drop_columns(["Surface of the land", "Surface area of the plot of land", 
     "column_3", "column_4", "To rent", "Open fire", "coordonnees", "geom",
@@ -440,11 +468,15 @@ if __name__ == "__main__":
 
     data.drop_rows_by_collumns("Price")
     data.drop_rows_by_collumns("Living Area")
-    data.drop_rows_by_collumn_value_range("Price", 200, 50_000_000)
-    data.drop_rows_by_collumn_value_range("Living Area", 0, 20000)
+    data.drop_rows_by_collumn_value_range_and_bool(
+        "To sell" , "Price", 50_000 , 50_000_000, 200, 20_000)
+    data.drop_rows_by_collumn_value_range("Living Area", 0, 20_000)
     data.dropna("Number of rooms")
 
     data.new_by_div("Price" , "Living Area" , "Price by M**2")
+
+    data.drop_rows_by_collumn_value_range_and_bool(
+        "To sell" , "Price by M**2", 200 , 20_000, 1, 1_000)
 
     data.save_data("data_visualisation/")
 

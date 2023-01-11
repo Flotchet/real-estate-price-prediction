@@ -1,16 +1,10 @@
-# real-estate-price-prediction (Global README.md)
+# real-estate-price-prediction (Scraping README.md)
 
 ## Current state
 
-Data visualisation
+Finished - not maintained anymore
 
-Total number of data : 78193 
-
-Total number of features : 29
-
-Total number of excluded features : 17
-
-## Prerequises (Scraping part)
+## Prerequises
 
 Python 3.11.1 64-bit
 
@@ -35,21 +29,6 @@ Firefox
 * unidecode
 * warnings
 
-## Prerequises (data visualisation)
-
-Python 3.11.1 64-bit
-
-Firefox
-
-*Tested on Fedora release 37 (Thirty Seven) x86_64 kernel 6.0.15-300.fc37.x86_64 but it should works on most linux distro
-
-* pandas
-* matplotlib
-* seaborn
-* numpy
-* openpyxl
-
-
 ## Recommended system requirements
 
 CPU: 8core (Intel i7-10875H)
@@ -62,7 +41,7 @@ Vram: /
 
 HDD: 15GB of free space (SSD recommanded because of the large number of small files)
 
-## What it does (Scraping part)
+## What it does
 
 this project creates a dataset from immoweb (be-fr) in the form of a csv file of this shape
 
