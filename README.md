@@ -6,9 +6,9 @@ Data visualisation
 
 Total number of data : 78193 
 
-Total number of features : 29
+Total number of features : 30
 
-Total number of excluded features : 17
+Total number of excluded features : 16
 
 ## Prerequises (Scraping part)
 
