@@ -1,20 +1,146 @@
 import pandas as pd
 import numpy as np
+from dataclasses import dataclass
 
-class immoweb_data():
+#Do the Municipal Taxes influence the median price by square meter of the propreties? If yes how?
+#What kind of proprety I should buy if I want to make a new hotel based on the price by square meter?
+@dataclass
+class DataStructure():
 
     """
     Class that loads the data from the csv file into 
     a DataFrame and allows to add, drop and modify columns and rows
+
+    Attributes
+    ----------
+    data_csv : str
+        file path of the csv file
+
+    data : pd.DataFrame
+        DataFrame that contains the data from the csv file
+
+    Non static methods
+    ------------------
+    get_data()
+
+    save_data()
+
+    add_column()
+
+    add_columns()
+
+    drop_column()
+
+    drop_columns()
+
+    drop_rows_by_column()
+
+    drop_rows_by_columns()
+
+    drop_rows_by_index()
+
+    drop_rows_by_column_value()
+
+    drop_rows_by_column_values()
+
+    drop_rows_by_columns_values()
+
+    drop_rows_by_column_value_range()
+
+    drop_rows_by_column_value_range_and_bool()
+
+    get_column()
+
+    get_columns()
+
+    get_columns_by_type()
+
+    get_columns_by_types()
+
+    get_columns_by_name()
+
+    get_values_of_column()
+
+    get_set_of_values_of_column()
+
+    get_set_of_values_of_columns()
+
+    drop_rows_by_column_value_range()
+
+    drop_rows_by_column_value_range_and_bool()
+
+    get_column()
+
+    get_columns()
+
+    get_columns_by_type()
+
+    get_columns_by_types()
+
+    get_columns_by_name()
+
+    get_values_of_column()
+
+    get_set_of_values_of_column()
+
+    get_set_of_values_of_columns()
+
+    Change_value_of_column()
+
+    Change_value_of_columns()
+
+    Change_values_of_column()
+    
+    new_column_by_separation()
+
+    dropna()
+
+    new_by_div()
+
+    new_by_mult()
+
+    new_by_add()
+
+    new_by_sub()
+
+    new_by_pow()
+
+    new_by_log()
+
+    new_by_sqrt()
+
+    new_by_exp()
+
+    new_by_sin()
+
+    new_by_fft()
+
+    new_by_ifft()
+
+    Static methods
+    --------------
+
+    None
     """
+
+    data_csv : str
+    data : pd.DataFrame
 
 #---------------------------------------------------------------------------------------------INIT
 
-    def __init__(self , data_csv : str = "data_visualisation/data.csv"):
+    def __init__(self , data_csv : str = "data_visualisation/data.csv") -> None:
 
         """
         Constructor that loads the data from the csv file into a DataFrame
-        :param data_csv: file path of the csv file
+
+        Parameters
+        ----------
+        data_csv : str
+            file path of the csv file
+
+        Returns
+        -------
+        None
         """
     
         self.data_csv = data_csv
@@ -25,15 +151,23 @@ class immoweb_data():
 
 #---------------------------------------------------------------------------------------------REPR
 
-    def __repr__(self):
+    def __repr__(self) -> str:
 
         """
-        String representation of the class that shows the file path, shape of the dataframe, head and tail of the dataframe
-        :return: string representation of the class
+        Returns a string representation of the class
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        repre : str
+            string representation of the class
         """
 
         repre = f"""
-        immoweb_data object
+        DataStructure object
         --------------------
 
         from file: {self.data_csv}
@@ -57,32 +191,58 @@ class immoweb_data():
 
 #----------------------------------------------------------------------------------------------QOF
 
-    def get_data(self):
+    def get_data(self) -> pd.DataFrame:
 
         """
-        :return: the data attribute of the class
+        Returns the data attribute of the class
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        self.data : pd.DataFrame
+            DataFrame that contains the data from the csv file
         """
 
         return self.data
 
-    def save_data(self , where : str = ""):
+    def save_data(self , where : str = "") -> None:
 
         """
-        Saves the data attribute of the class into a csv file
-        :param where: file path where to save the csv file
-        :return: None
+        Saves the data attribute of the class as a csv file
+
+        Parameters
+        ----------
+        where : str
+            file path where to save the csv file
+
+        Returns
+        -------
+        None
         """
 
-        self.data.to_csv(where + str(id(self)) + "_immoweb_data.csv", index=False)
+        self.data.to_csv(where + str(id(self)) + "_DataStructure.csv", index=False)
 
         return None
 
-    def add_column(self , csv : str , corresponding_column : str):
+    def add_column(self , csv : str , corresponding_column : str) -> None:
 
         """
         Adds a column to the data attribute of the class
-        :param csv: file path of the csv file to add
-        :param corresponding_column: name of the column that is common between the two csv files
+
+        Parameters
+        ----------
+        csv : str
+            file path of the csv file to add
+
+        corresponding_column : str
+            name of the column that is common between the two csv files
+
+        Returns
+        -------
+        None
         """
 
         new_data = pd.read_csv(csv)
@@ -91,12 +251,22 @@ class immoweb_data():
 
         return None
 
-    def add_columns(self , csvs : list[str] , corresponding_columns : list[str]):
+    def add_columns(self , csvs : list[str] , corresponding_columns : list[str]) -> None:
 
         """
         Adds multiple columns to the data attribute of the class
-        :param csvs: file paths of the csv files to add
-        :param corresponding_columns: names of the columns that are common between the two csv files
+
+        Parameters
+        ----------
+        csvs : list[str]
+            file paths of the csv files to add
+
+        corresponding_columns : list[str]
+            names of the columns that are common between the two csv files
+
+        Returns
+        -------
+        None
         """
 
         for i in range(len(csvs)):
@@ -106,91 +276,142 @@ class immoweb_data():
 
         return None
 
-    def drop_column(self , column : str):
+    def drop_column(self , column : str) -> None:
 
         """
         Drops a column from the data attribute of the class
-        :param column: name of the column to drop
+        
+        Parameters
+        ----------
+        column : str
+            name of the column to drop
+
+        Returns
+        -------
+        None
         """
             
         self.data = self.data.drop(column, axis=1)
     
         return None
 
-    def drop_columns(self , columns : list[str]):
+    def drop_columns(self , columns : list[str]) -> None:
 
         """
         Drops multiple columns from the data attribute of the class
-        :param columns: names of the columns to drop
+
+        Parameters
+        ----------
+        columns : list[str]
+            names of the columns to drop
+
+        Returns
+        -------
+        None
         """
 
         self.data = self.data.drop(columns, axis=1)
 
         return None
 
-    def drop_rows_by_collumns(self, column : str):
+    def drop_rows_by_column(self, column : str) -> None:
 
         """
         Drops rows from the data attribute of the class
-        :param column: name of the column to drop the rows of
+
+        Parameters
+        ----------
+        column : str
+            name of the column to drop the rows of
+
+        Returns
+        -------
+        None
         """
             
         self.data = self.data.dropna(subset=[column])
     
         return None
     
-    def drop_rows_by_collumns(self, columns : list[str]):
+    def drop_rows_by_columns(self, columns : list[str]) -> None:
 
         """
         Drops rows from the data attribute of the class
-        :param columns: names of the columns to drop the rows of
+
+        Parameters
+        ----------
+        columns : list[str]
+            names of the columns to drop the rows of
+
+        Returns
+        -------
+        None
         """
 
         self.data = self.data.dropna(subset=columns)
 
         return None
 
-    def drop_rows_by_collumn_value(self, column : str , value : any):
+    def drop_rows_by_column_value(self, column : str , value : any) -> None:
 
         """
         Drops rows from the data attribute of the class
-        :param column: name of the column to drop the rows of
-        :param value: value of the column to drop the rows of
+        
+        Parameters
+        ----------
+        column : str
+            name of the column to drop the rows of
+
+        value : any
+            value of the column to drop the rows of
+        
+        Returns
+        -------
+        None
         """
             
         self.data = self.data[self.data[column] != value]
     
         return None
 
-    def dropna(self, column : str):
+    def drop_rows_by_column_values(self, column : str , values : list[any]) -> None:
 
         """
         Drops rows from the data attribute of the class
-        :param column: name of the column to drop the rows of
-        """
 
-        self.data = self.data.dropna(subset=[column])
+        Parameters
+        ----------
+        column : str
+            name of the column to drop the rows of
 
-        return None
+        values : list[any]
+            values of the column to drop the rows of
 
-    def drop_rows_by_collumn_values(self, column : str , values : list[any]):
-
-        """
-        Drops rows from the data attribute of the class
-        :param column: name of the column to drop the rows of
-        :param values: values of the column to drop the rows of
+        Returns
+        -------
+        None
         """
                     
         self.data = self.data[self.data[column].isin(values)]
         
         return None
 
-    def drop_rows_by_collumns_values(self, columns : list[str] , values : list[list[any]]):
+    def drop_rows_by_columns_values(self, columns : list[str] , values : list[list[any]]):
 
         """
         Drops rows from the data attribute of the class
-        :param columns: names of the columns to drop the rows of
-        :param values: values of the columns to drop the rows of
+
+        Parameters
+        ----------
+        columns : list[str]
+            names of the columns to drop the rows of
+
+        values : list[list[any]]
+            values of the columns to drop the rows of
+
+        Returns
+        -------
+        None
         """
 
         for i in range(len(columns)):
@@ -198,31 +419,61 @@ class immoweb_data():
 
         return None
 
-    def drop_rows_by_collumn_value_range(self, column : str , min : any , max : any):
+    def drop_rows_by_column_value_range(self, column : str , min : any , max : any) -> None:
 
         """
         Drops rows from the data attribute of the class
-        :param column: name of the column to drop the rows of
-        :param min: minimum value of the column to drop the rows of
-        :param max: maximum value of the column to drop the rows of
+
+        Parameters
+        ----------
+        column : str
+            name of the column to drop the rows of
+
+        min : any
+            minimum value of the column to drop the rows of
+
+        max : any
+            maximum value of the column to drop the rows of
+
+        Returns
+        -------
+        None
         """
 
         self.data = self.data[(self.data[column] > min) & (self.data[column] < max)]
 
         return None
 
-    def drop_rows_by_collumn_value_range_and_bool(self, 
+    def drop_rows_by_column_value_range_and_bool(self, 
     column_of_bool : str, column_of_range : str , 
-    min_t : any , max_t : any, min_f : any , max_f : any):
+    min_t : any , max_t : any, min_f : any , max_f : any) -> None:
 
         """
         Drops rows from the data attribute of the class
-        :param column_of_bool: name of the column to drop the rows of
-        :param column_of_range: name of the column to drop the rows of
-        :param min_t: minimum value of the column to drop the rows of
-        :param max_t: maximum value of the column to drop the rows of
-        :param min_f: minimum value of the column to drop the rows of
-        :param max_f: maximum value of the column to drop the rows of
+
+        Parameters
+        ----------
+        column_of_bool : str
+            name of the column to drop the rows of
+
+        column_of_range : str
+            name of the column to drop the rows of  
+
+        min_t : any
+            minimum value of the column to drop the rows of
+
+        max_t : any
+            maximum value of the column to drop the rows of
+
+        min_f : any
+            minimum value of the column to drop the rows of
+
+        max_f : any
+            maximum value of the column to drop the rows of
+
+        Returns
+        -------
+        None
         """
 
         self.data = self.data[
@@ -236,108 +487,214 @@ class immoweb_data():
 
         return None
 
-    def get_column(self , column : str):
+    def get_column(self , column : str) -> pd.DataFrame:
 
         """
-        :param column: name of the column to get
-        :return: the column asked
+        Parameters
+        ----------
+        column : str
+            name of the column to get
+
+        Returns
+        -------
+        pd.DataFrame
+            the column asked
         """
             
         return self.data[column]
 
-    def get_columns(self , columns : list[str]):
+    def get_columns(self , columns : list[str]) -> pd.DataFrame:
 
         """
-        :param columns: names of the columns to get
-        :return: the columns asked
+        Parameters
+        ----------
+        columns : list[str]
+            names of the columns to get
+
+        Returns
+        -------
+        pd.DataFrame
+            the columns asked
         """
                 
         return self.data[columns]
 
-    def get_columns_by_type(self , type : str):
+    def get_columns_by_type(self , type : str) -> pd.DataFrame:
 
         """
-        :param type: type of the columns to get
-        :return: the columns asked
+        Parameters
+        ----------
+        type : str
+            type of the columns to get
+
+        Returns
+        -------
+        pd.DataFrame
+            the columns asked
         """
                 
         return self.data.select_dtypes(include=[type])
 
-    def get_columns_by_types(self , types : list):
+    def get_columns_by_types(self , types : list[str]) -> pd.DataFrame:
 
         """
-        :param types: types of the columns to get
-        :return: the columns asked
+        Parameters
+        ----------
+        types : list[str]
+            types of the columns to get
+
+        Returns
+        -------
+        pd.DataFrame
+            the columns asked
         """
                     
         return self.data.select_dtypes(include=types)
 
-    def get_columns_by_name(self , names : list[str]):
+    def get_columns_by_name(self , names : list[str]) -> pd.DataFrame:
 
         """
-        :param names: names of the columns to get
-        :return: the columns asked
+        Parameters
+        ----------
+        names : list[str]
+            names of the columns to get
+
+        Returns
+        -------
+        pd.DataFrame
+            the columns asked
         """
 
         return self.data[names]
 
-    def get_values_of_collumn(self , column : str):
+    def get_values_of_column(self , column : str) -> np.ndarray:
 
         """
-        :param column: name of the column to get the values of
-        :return: the values of the column asked
+        Parameters
+        ----------
+        column : str
+            name of the column to get the values of
+
+        Returns
+        -------
+        np.ndarray
+            the values of the column asked
         """
             
         return self.data[column].values
 
-    def get_set_of_values_of_collumn(self , column : str):
+    def get_set_of_values_of_column(self , column : str) -> np.ndarray:
 
         """
-        :param column: name of the column to get the values of
-        :return: the set of values of the column asked
+        Parameters
+        ----------
+        column : str
+            name of the column to get the values of
+
+        Returns
+        -------
+        np.ndarray
+            the set of values of the column asked
         """
                     
         return self.data[column].unique()
 
-    def get_values_of_collumns(self , columns : list[str]):
+    def get_values_of_columns(self , columns : list[str]) -> np.ndarray:
             
         """
-        :param columns: names of the columns to get the values of
-        :return: the values of the columns asked
+        Parameters
+        ----------
+        columns : list[str]
+            names of the columns to get the values of
+
+        Returns
+        -------
+        np.ndarray
+            the values of the columns asked
         """
     
         return self.data[columns].values
 
-    def get_set_of_values_of_collumns(self , columns : list[str]):
+    def get_set_of_values_of_column(self , column : list) -> np.ndarray:
+    
+        """
+        Parameters
+        ----------
+        column : list
+            name of the column to get the values of
+
+        Returns
+        -------
+        np.ndarray
+            the set of values of the column asked
+        """
+
+        
+        return self.data[column].unique()
+
+    def get_set_of_values_of_columns(self , columns : list[str]) -> np.ndarray:
                 
         """
-        :param columns: names of the columns to get the values of
-        :return: the set of values of the columns asked
+        Parameters
+        ----------
+        columns : list[str]
+            names of the columns to get the values of
+
+        Returns
+        -------
+        np.ndarray
+            the set of values of the columns asked
         """
         
         return self.data[columns].unique()
 
-    def Change_value_of_collumn(self , column : str , old_value : str , new_value : str):
+    def Change_value_of_column(self , column : str , old_value : str , new_value : str):
             
         """
         Changes the value of a column
-        :param column: name of the column to change the value of
-        :param old_value: old value of the column
-        :param new_value: new value of the column
+        
+        Parameters
+        ----------
+        column : str
+            name of the column to change the value of
+
+        old_value : str
+            old value of the column
+
+        new_value : str
+            new value of the column
+
+        Returns
+        -------
+
+        None
         """
+
                 
         self.data.loc[self.data[column] == old_value, column] = new_value
     
         return None
 
-    def Change_value_of_collumns(self , columns : list[str] , 
+    def Change_value_of_columns(self , columns : list[str] , 
     old_values : list[str] , new_values : list[str]):
                     
         """
-        Changes the value of a column
-        :param columns: names of the columns to change the value of
-        :param old_values: old values of the columns
-        :param new_values: new values of the columns
+        Changes the value of a list of columns  
+        
+        Parameters
+        ----------
+        columns : list[str]
+            names of the columns to change the value of
+
+        old_values : list[str]
+            old values of the columns
+
+        new_values : list[str]
+            new values of the columns
+
+        Returns
+        -------
+        None
         """
                         
         for i in range(len(columns)):
@@ -345,14 +702,26 @@ class immoweb_data():
             
         return None
 
-    def Change_values_of_collumn(self , column : str , 
+    def Change_values_of_column(self , column : str , 
     old_values : list[str] , new_values : list[str]):
         
         """
-        Changes a list of values of a column
-        :param column: name of the column to change the value of
-        :param old_values: old values of the column
-        :param new_values: new values of the column
+        Changes the values of a column
+
+        Parameters
+        ----------
+        column : str
+            name of the column to change the values of
+
+        old_values : list[str]
+            old values of the column
+
+        new_values : list[str]
+            new values of the column
+
+        Returns
+        -------
+        None
         """
 
         for i in range(len(old_values)):
@@ -360,15 +729,29 @@ class immoweb_data():
         
         return None
 
-    def new_collumn_by_separation(self , origin_column : str , new_column : str , 
-    value_set1 : list[any] , value_set2 : list[any]):
+    def new_column_by_separation(self , origin_column : str , new_column : str , 
+    value_set1 : list[any] , value_set2 : list[any]) -> None:
                 
         """
-        Creates a new column by separating the values of an other column
-        :param origin_column: name of the column to separate
-        :param new_column: name of the new column
-        :param value_set1: set of values to put in the new column
-        :param value_set2: set of values to put in the new column
+        Creates a new column by separating the values of an origin column
+
+        Parameters
+        ----------
+        origin_column : str
+            name of the origin column
+
+        new_column : str
+            name of the new column
+
+        value_set1 : list[any]
+            values of the new column that will be True
+
+        value_set2 : list[any]
+            values of the new column that will be False
+
+        Returns
+        -------
+        None
         """
                         
         self.data[new_column] = self.data[origin_column].apply(
@@ -376,142 +759,278 @@ class immoweb_data():
             
         return None
 
+    def dropna(self, column : str) -> None:
 
+        """
+        Drops the rows with NaN values in a column
+
+        Parameters
+        ----------
+        column : str
+            name of the column to drop the NaN values of
+
+        Returns
+        -------
+        None
+        """
+
+        self.data = self.data.dropna(subset=[column])
+
+        return None
 
 #--------------------------------------------------------------------------------------------MATH
 
-    def new_by_div(self , col1 : str , col2 : str , new_col : str):
+    def new_by_div(self , col1 : str , col2 : str , new_col : str) -> None:
 
         """
         Creates a new column by dividing two columns
-        :param col1: name of the first column
-        :param col2: name of the second column
-        :param new_col: name of the new column
+
+        Parameters
+        ----------
+        col1 : str
+            name of the first column
+
+        col2 : str
+            name of the second column
+
+        new_col : str
+            name of the new column
+
+        Returns
+        -------
+        None
         """
             
         self.data[new_col] = self.data[col1] / self.data[col2]
     
         return None
 
-    def new_by_mult(self , col1 : str , col2 : str , new_col : str):
+    def new_by_mult(self , col1 : str , col2 : str , new_col : str) -> None:
 
         """
         Creates a new column by multiplying two columns
-        :param col1: name of the first column
-        :param col2: name of the second column
-        :param new_col: name of the new column
+
+        Parameters
+        ----------
+        col1 : str
+            name of the first column
+
+        col2 : str
+            name of the second column
+
+        new_col : str
+            name of the new column
+
+        Returns
+        -------
+        None
         """
                 
         self.data[new_col] = self.data[col1] * self.data[col2]
         
         return None
 
-    def new_by_add(self , col1 : str , col2 : str , new_col : str):
+    def new_by_add(self , col1 : str , col2 : str , new_col : str) -> None:
 
         """
         Creates a new column by adding two columns
-        :param col1: name of the first column
-        :param col2: name of the second column
-        :param new_col: name of the new column
+
+        Parameters
+        ----------
+        col1 : str
+            name of the first column
+
+        col2 : str
+            name of the second column
+
+        new_col : str
+            name of the new column
+
+        Returns
+        -------
+        None
         """
                         
         self.data[new_col] = self.data[col1] + self.data[col2]
                 
         return None 
 
-    def new_by_sub(self , col1 : str , col2 : str , new_col : str):
+    def new_by_sub(self , col1 : str , col2 : str , new_col : str) -> None:
 
         """
         Creates a new column by subtracting two columns
-        :param col1: name of the first column
-        :param col2: name of the second column
-        :param new_col: name of the new column
+
+        Parameters
+        ----------
+        col1 : str
+            name of the first column
+
+        col2 : str
+            name of the second column
+
+        new_col : str
+            name of the new column
+
+        Returns
+        -------
+        None
         """
 
         self.data[new_col] = self.data[col1] - self.data[col2]
                 
         return None 
 
-    def new_by_pow(self , col1 : str , col2 : str , new_col : str):
+    def new_by_pow(self , col1 : str , col2 : str , new_col : str) -> None:
 
         """
-        Creates a new column by raising the first column to the power of the second column
-        :param col1: name of the first column
-        :param col2: name of the second column
-        :param new_col: name of the new column
+        Creates a new column by taking the power of two columns
+        
+        Parameters
+        ----------
+        col1 : str
+            name of the first column
+
+        col2 : str
+            name of the second column
+
+        new_col : str
+            name of the new column
+
+        Returns
+        -------
+        None
         """
     
         self.data[new_col] = self.data[col1] ** self.data[col2]
                     
         return None
 
-    def new_by_sqrt(self , col1 : str , new_col : str):
+    def new_by_sqrt(self , col1 : str , new_col : str) -> None:
 
         """
         Creates a new column by taking the square root of the first column
-        :param col1: name of the first column
-        :param new_col: name of the new column
-        """
+
+        Parameters
+        ----------
+        col1 : str
+            name of the first column
+
+        new_col : str
+            name of the new column
+
+        Returns
+        -------
+        None
+        """   
 
         self.data[new_col] = self.data[col1] ** 0.5
                             
         return None
 
-    def new_by_log(self , col1 : str , new_col : str):
+    def new_by_log(self , col1 : str , new_col : str) -> None:
 
         """
         Creates a new column by taking the log of the first column
-        :param col1: name of the first column
-        :param new_col: name of the new column
+
+        Parameters
+        ----------
+        col1 : str
+            name of the first column
+
+        new_col : str
+            name of the new column
+
+        Returns
+        -------
+        None
         """
 
         self.data[new_col] = np.log(self.data[col1])
                                 
         return None
 
-    def new_by_exp(self , col1 : str , new_col : str):
+    def new_by_exp(self , col1 : str , new_col : str) -> None:
 
         """
         Creates a new column by taking the exp of the first column
-        :param col1: name of the first column
-        :param new_col: name of the new column
+
+        Parameters
+        ----------
+        col1 : str
+            name of the first column
+
+        new_col : str
+            name of the new column
+
+        Returns
+        -------
+        None
         """
 
         self.data[new_col] = np.exp(self.data[col1])
                                     
         return None
 
-    def new_by_sin(self , col1 : str , new_col : str):
+    def new_by_sin(self , col1 : str , new_col : str) -> None:
 
         """
         Creates a new column by taking the sin of the first column
-        :param col1: name of the first column
-        :param new_col: name of the new column
+        
+        Parameters
+        ----------
+        col1 : str
+            name of the first column
+
+        new_col : str
+            name of the new column
+
+        Returns
+        -------
+        None
         """
 
         self.data[new_col] = np.sin(self.data[col1])
                                         
         return None
 
-    def new_by_fft(self , col1 : str , new_col : str):
+    def new_by_fft(self , col1 : str , new_col : str) -> None:
 
         """
         Creates a new column by taking the fft of the first column
-        :param col1: name of the first column
-        :param new_col: name of the new column
-        """
+        
+        Parameters
+        ----------
+        col1 : str
+            name of the first column
 
+        new_col : str
+            name of the new column
+
+        Returns
+        -------
+        None
+        """
             
         self.data[new_col] = np.fft.fft(self.data[col1])
                                                 
         return None
 
-    def new_by_ifft(self , col1 : str , new_col : str):
+    def new_by_ifft(self , col1 : str , new_col : str) -> None:
 
         """
         Creates a new column by taking the ifft of the first column
-        :param col1: name of the first column
-        :param new_col: name of the new column
+        
+        Parameters
+        ----------
+        col1 : str
+            name of the first column
+
+        new_col : str
+            name of the new column
+
+        Returns
+        -------
+        None
         """
 
         self.data[new_col] = np.fft.ifft(self.data[col1])
@@ -543,9 +1062,12 @@ def make_more_data():
     taxes = pd.read_excel("data_visualisation/taxes.xlsx")
     taxes.to_csv("data_visualisation/taxes.csv", index=False)
 
+
 if __name__ == "__main__":
 
-    data = immoweb_data()
+    data = DataStructure()
+    #print all methods of data
+    print(dir(data))
 
     data.add_column("data_visualisation/code-postaux.csv", "zipcode")
     data.add_column("data_visualisation/INS.csv", "zipcode")
@@ -558,16 +1080,16 @@ if __name__ == "__main__":
     "Area of the garden", "State of the building", "Fully equipped kitchen", 
     "Furnished", "Number of facades"])
 
-    data.drop_rows_by_collumns("Price")
-    data.drop_rows_by_collumns("Living Area")
-    data.drop_rows_by_collumn_value_range_and_bool(
+    data.drop_rows_by_columns("Price")
+    data.drop_rows_by_columns("Living Area")
+    data.drop_rows_by_column_value_range_and_bool(
         "To sell" , "Price", 50_000 , 50_000_000, 200, 20_000)
-    data.drop_rows_by_collumn_value_range("Living Area", 0, 20_000)
+    data.drop_rows_by_column_value_range("Living Area", 0, 20_000)
     data.dropna("Number of rooms")
 
     data.new_by_div("Price" , "Living Area" , "Price by M**2")
 
-    data.drop_rows_by_collumn_value_range_and_bool(
+    data.drop_rows_by_column_value_range_and_bool(
         "To sell" , "Price by M**2", 200 , 20_000, 1, 1_000)
 
 
@@ -595,11 +1117,11 @@ if __name__ == "__main__":
     #divide new_types in two categories "house" or "appartment"
 
 
-    data.Change_values_of_collumn("type", old_types, new_types)
+    data.Change_values_of_column("type", old_types, new_types)
 
-    data.new_collumn_by_separation("type", "Appartment", appartments, houses)
+    data.new_column_by_separation("type", "Appartment", appartments, houses)
 
-    data.save_data("data_visualisation/")
+    #data.save_data("data_visualisation/")
     
 
     

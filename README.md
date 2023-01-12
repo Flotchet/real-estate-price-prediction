@@ -1,10 +1,15 @@
 # real-estate-price-prediction (Global README.md)
 
+## Project descritpion
+
+This project is part of the data science formation from Becode.org.
+
+
 ## Current state
 
 Data visualisation
 
-Total number of data : 78193 
+Total number of data : 78193
 
 Total number of features : 30
 
@@ -48,7 +53,6 @@ Firefox
 * seaborn
 * numpy
 * openpyxl
-
 
 ## Recommended system requirements
 
