@@ -2,8 +2,6 @@ import pandas as pd
 import numpy as np
 from dataclasses import dataclass
 
-#Do the Municipal Taxes influence the median price by square meter of the propreties? If yes how?
-#What kind of proprety I should buy if I want to make a new hotel based on the price by square meter?
 @dataclass
 class DataStructure():
 
@@ -103,6 +101,8 @@ class DataStructure():
 
     new_by_sub()
 
+    new_by_pow_col()
+
     new_by_pow()
 
     new_by_log()
@@ -141,7 +141,22 @@ class DataStructure():
         Returns
         -------
         None
+
+        Raises
+        ------
+        
+        Exception
+            If the file path is not a csv file
+
+        Exception
+            If data_csv is not a string
         """
+
+        if type(data_csv) != str:
+            raise Exception("data_csv must be a string")
+
+        if data_csv[-4:] != ".csv":
+            raise Exception("data_csv must be a csv file")
     
         self.data_csv = data_csv
         self.data = pd.DataFrame()
@@ -221,7 +236,15 @@ class DataStructure():
         Returns
         -------
         None
+
+        Raises
+        ------
+        Exception
+            If where is not a string  
         """
+
+        if type(where) != str:
+            raise Exception("where must be a string")
 
         self.data.to_csv(where + str(id(self)) + "_DataStructure.csv", index=False)
 
@@ -243,7 +266,33 @@ class DataStructure():
         Returns
         -------
         None
+
+        Raises
+        ------
+        Exception
+            If csv is not a string
+
+        Exception
+            If corresponding_column is not a string
+
+        Exception
+            If corresponding_column is not in the data attribute of the class
+
+        Exception
+            If corresponding_column is not in the csv file
         """
+
+        if type(csv) != str:
+            raise Exception("csv must be a string")
+
+        if type(corresponding_column) != str:
+            raise Exception("corresponding_column must be a string")
+
+        if corresponding_column not in self.data.columns:
+            raise Exception("corresponding_column must be in the data attribute of the class")
+
+        if csv[-4:] != ".csv":
+            raise Exception("data_csv must be a csv file")
 
         new_data = pd.read_csv(csv)
         new_data = new_data.drop_duplicates(subset = corresponding_column)
@@ -267,7 +316,55 @@ class DataStructure():
         Returns
         -------
         None
+
+        Raises
+        ------
+        Exception
+            If csvs is not a list
+
+        Exception
+            If corresponding_columns is not a list
+
+        Exception
+            If csvs and corresponding_columns do not have the same length
+
+        Exception
+            If csvs is not a list of strings
+
+        Exception
+            If corresponding_columns is not a list of strings
+
+        Exception
+            If corresponding_columns is not in the data attribute of the class
+
+        Exception
+            If corresponding_columns is not in the csv file
         """
+
+        if type(csvs) != list:
+            raise Exception("csvs must be a list")
+
+        if type(corresponding_columns) != list:
+            raise Exception("corresponding_columns must be a list")
+
+        if len(csvs) != len(corresponding_columns):
+            raise Exception("csvs and corresponding_columns must have the same length")
+
+        for csv in csvs:
+            if type(csv) != str:
+                raise Exception("csvs must be a list of strings")
+
+        for corresponding_column in corresponding_columns:
+            if type(corresponding_column) != str:
+                raise Exception("corresponding_columns must be a list of strings")
+
+        for corresponding_column in corresponding_columns:
+            if corresponding_column not in self.data.columns:
+                raise Exception("corresponding_columns must be in the data attribute of the class")
+
+        for csv in csvs:
+            if csv[-4:] != ".csv":
+                raise Exception("data_csv must be a csv file")
 
         for i in range(len(csvs)):
             new_data = pd.read_csv(csvs[i])
@@ -289,7 +386,21 @@ class DataStructure():
         Returns
         -------
         None
+
+        Raises
+        ------
+        Exception
+            If column is not a string
+
+        Exception
+            If column is not in the data attribute of the class
         """
+
+        if type(column) != str:
+            raise Exception("column must be a string")
+
+        if column not in self.data.columns:
+            raise Exception("column must be in the data attribute of the class")
             
         self.data = self.data.drop(column, axis=1)
     
@@ -308,7 +419,29 @@ class DataStructure():
         Returns
         -------
         None
+
+        Raises
+        ------
+        Exception
+            If columns is not a list
+
+        Exception
+            If columns is not a list of strings
+
+        Exception
+            If columns is not in the data attribute of the class
         """
+
+        if type(columns) != list:
+            raise Exception("columns must be a list")
+
+        for column in columns:
+            if type(column) != str:
+                raise Exception("columns must be a list of strings")
+
+        for column in columns:
+            if column not in self.data.columns:
+                raise Exception("columns must be in the data attribute of the class")
 
         self.data = self.data.drop(columns, axis=1)
 
@@ -327,7 +460,15 @@ class DataStructure():
         Returns
         -------
         None
+
+        Raises
+        ------
+        Exception
+            If column is not a string
         """
+
+        if type(column) != str:
+            raise Exception("column must be a string")
             
         self.data = self.data.dropna(subset=[column])
     
@@ -346,7 +487,29 @@ class DataStructure():
         Returns
         -------
         None
+
+        Raises
+        ------
+        Exception
+            If columns is not a list
+
+        Exception
+            If columns is not a list of strings
+
+        Exception
+            If columns is not in the data attribute of the class
         """
+
+        if type(columns) != list:
+            raise Exception("columns must be a list")
+
+        for column in columns:
+            if type(column) != str:
+                raise Exception("columns must be a list of strings")
+
+        for column in columns:
+            if column not in self.data.columns:
+                raise Exception("columns must be in the data attribute of the class")
 
         self.data = self.data.dropna(subset=columns)
 
@@ -368,7 +531,21 @@ class DataStructure():
         Returns
         -------
         None
+
+        Raises
+        ------
+        Exception
+            If column is not a string
+
+        Exception
+            If column is not in the data attribute of the class
         """
+
+        if type(column) != str:
+            raise Exception("column must be a string")
+
+        if column not in self.data.columns:
+            raise Exception("column must be in the data attribute of the class")
             
         self.data = self.data[self.data[column] != value]
     
@@ -390,7 +567,21 @@ class DataStructure():
         Returns
         -------
         None
+
+        Raises
+        ------
+        Exception
+            If column is not a string
+
+        Exception
+            If column is not in the data attribute of the class
         """
+
+        if type(column) != str:
+            raise Exception("column must be a string")
+
+        if column not in self.data.columns:
+            raise Exception("column must be in the data attribute of the class")
                     
         self.data = self.data[self.data[column].isin(values)]
         
@@ -412,7 +603,42 @@ class DataStructure():
         Returns
         -------
         None
+
+        Raises
+        ------
+        Exception
+            If columns is not a list
+
+        Exception
+            If columns is not a list of strings
+
+        Exception
+            If columns is not in the data attribute of the class
+
+        Exception
+            If values is not a list
+
+        Exception
+            If values is not a list of lists
         """
+
+        if type(columns) != list:
+            raise Exception("columns must be a list")
+
+        for column in columns:
+            if type(column) != str:
+                raise Exception("columns must be a list of strings")
+
+        for column in columns:
+            if column not in self.data.columns:
+                raise Exception("columns must be in the data attribute of the class")
+
+        if type(values) != list:
+            raise Exception("values must be a list")
+
+        for value in values:
+            if type(value) != list:
+                raise Exception("values must be a list of lists")
 
         for i in range(len(columns)):
             self.data = self.data[self.data[columns[i]].isin(values[i])]
@@ -438,7 +664,45 @@ class DataStructure():
         Returns
         -------
         None
+
+        Raises
+        ------
+        Exception
+            If column is not a string
+
+        Exception
+            If column is not in the data attribute of the class
+
+        Exception
+            If min is not a number
+
+        Exception
+            If max is not a number
+
+        Exception
+            If min is greater than max
+
+        Exception
+            If min is equal to max
         """
+
+        if type(column) != str:
+            raise Exception("column must be a string")
+
+        if column not in self.data.columns:
+            raise Exception("column must be in the data attribute of the class")
+
+        if type(min) != int and type(min) != float:
+            raise Exception("min must be a number")
+
+        if type(max) != int and type(max) != float:
+            raise Exception("max must be a number")
+
+        if min > max:
+            raise Exception("min must be less than or equal to max")
+
+        if min == max:
+            raise Exception("min must be less than max")
 
         self.data = self.data[(self.data[column] > min) & (self.data[column] < max)]
 
@@ -474,7 +738,57 @@ class DataStructure():
         Returns
         -------
         None
+
+        Raises
+        ------
+        Exception
+            If column_of_bool is not a string
+
+        Exception
+            If column_of_bool is not in the data attribute of the class
+
+        Exception
+            If column_of_range is not a string
+
+        Exception
+            If column_of_range is not in the data attribute of the class
+
+        Exception
+            If min_t is greater than max_t
+
+        Exception
+            If min_t is equal to max_t
+
+        Exception
+            If min_f is greater than max_f
+
+        Exception
+            If min_f is equal to max_f
         """
+
+        if type(column_of_bool) != str:
+            raise Exception("column_of_bool must be a string")
+
+        if column_of_bool not in self.data.columns:
+            raise Exception("column_of_bool must be in the data attribute of the class")
+
+        if type(column_of_range) != str:
+            raise Exception("column_of_range must be a string")
+
+        if column_of_range not in self.data.columns:
+            raise Exception("column_of_range must be in the data attribute of the class")
+
+        if min_t > max_t:
+            raise Exception("min_t must be less than or equal to max_t")
+
+        if min_t == max_t:
+            raise Exception("min_t must be less than max_t")
+
+        if min_f > max_f:
+            raise Exception("min_f must be less than or equal to max_f")
+
+        if min_f == max_f:
+            raise Exception("min_f must be less than max_f")
 
         self.data = self.data[
             (self.data[column_of_bool] == True) & 
@@ -499,7 +813,21 @@ class DataStructure():
         -------
         pd.DataFrame
             the column asked
+
+        Raises
+        ------
+        Exception
+            If column is not a string
+
+        Exception
+            If column is not in the data attribute of the class
         """
+
+        if type(column) != str:
+            raise Exception("column must be a string")
+
+        if column not in self.data.columns:
+            raise Exception("column must be in the data attribute of the class")
             
         return self.data[column]
 
@@ -515,7 +843,29 @@ class DataStructure():
         -------
         pd.DataFrame
             the columns asked
+
+        Raises
+        ------
+        Exception
+            If columns is not a list
+
+        Exception
+            If columns is not a list of strings
+
+        Exception
+            If columns is not in the data attribute of the class
         """
+
+        if type(columns) != list:
+            raise Exception("columns must be a list")
+
+        for column in columns:
+            if type(column) != str:
+                raise Exception("columns must be a list of strings")
+
+        for column in columns:
+            if column not in self.data.columns:
+                raise Exception("columns must be in the data attribute of the class")
                 
         return self.data[columns]
 
@@ -531,8 +881,28 @@ class DataStructure():
         -------
         pd.DataFrame
             the columns asked
+
+        Raises
+        ------
+        Exception
+            If type is not a string
+
+        Exception
+            If type is not a valid type
+
+        Exception
+            If type is not in the data attribute of the class
         """
-                
+
+        if type(type) != str:
+            raise Exception("type must be a string")
+            
+        if type not in ["int64" , "float64" , "object" , "bool"]:
+            raise Exception("type must be a valid type")
+
+        if type not in self.data.dtypes:
+            raise Exception("type must be in the data attribute of the class")
+           
         return self.data.select_dtypes(include=[type])
 
     def get_columns_by_types(self , types : list[str]) -> pd.DataFrame:
@@ -547,7 +917,36 @@ class DataStructure():
         -------
         pd.DataFrame
             the columns asked
+
+        Raises
+        ------
+        Exception
+            If types is not a list
+
+        Exception
+            If types is not a list of strings
+
+        Exception
+            If types is not a list of valid types
+
+        Exception
+            If types is not in the data attribute of the class
         """
+
+        if type(types) != list:
+            raise Exception("types must be a list")
+
+        for type in types:
+            if type(type) != str:
+                raise Exception("types must be a list of strings")
+
+        for type in types:
+            if type not in ["int64" , "float64" , "object" , "bool"]:
+                raise Exception("types must be a list of valid types")
+
+        for type in types:
+            if type not in self.data.dtypes:
+                raise Exception("types must be in the data attribute of the class")
                     
         return self.data.select_dtypes(include=types)
 
@@ -563,7 +962,29 @@ class DataStructure():
         -------
         pd.DataFrame
             the columns asked
+
+        Raises
+        ------
+        Exception
+            If names is not a list
+
+        Exception
+            If names is not a list of strings
+
+        Exception
+            If names is not in the data attribute of the class
         """
+
+        if type(names) != list:
+            raise Exception("names must be a list")
+
+        for name in names:
+            if type(name) != str:
+                raise Exception("names must be a list of strings")
+
+        for name in names:
+            if name not in self.data.columns:
+                raise Exception("names must be in the data attribute of the class")
 
         return self.data[names]
 
@@ -579,7 +1000,21 @@ class DataStructure():
         -------
         np.ndarray
             the values of the column asked
+
+        Raises
+        ------
+        Exception
+            If column is not a string
+
+        Exception
+            If column is not in the data attribute of the class
         """
+
+        if type(column) != str:
+            raise Exception("column must be a string")
+
+        if column not in self.data.columns:
+            raise Exception("column must be in the data attribute of the class")
             
         return self.data[column].values
 
@@ -595,7 +1030,21 @@ class DataStructure():
         -------
         np.ndarray
             the set of values of the column asked
+
+        Raises
+        ------
+        Exception
+            If column is not a string
+
+        Exception
+            If column is not in the data attribute of the class
         """
+
+        if type(column) != str:
+            raise Exception("column must be a string")
+
+        if column not in self.data.columns:
+            raise Exception("column must be in the data attribute of the class")
                     
         return self.data[column].unique()
 
@@ -611,11 +1060,33 @@ class DataStructure():
         -------
         np.ndarray
             the values of the columns asked
+
+        Raises
+        ------
+        Exception
+            If columns is not a list
+
+        Exception
+            If columns is not a list of strings
+
+        Exception
+            If columns is not in the data attribute of the class
         """
+
+        if type(columns) != list:
+            raise Exception("columns must be a list")
+
+        for column in columns:
+            if type(column) != str:
+                raise Exception("columns must be a list of strings")
+
+        for column in columns:
+            if column not in self.data.columns:
+                raise Exception("columns must be in the data attribute of the class")
     
         return self.data[columns].values
 
-    def get_set_of_values_of_column(self , column : list) -> np.ndarray:
+    def get_set_of_values_of_column(self , column : list[str]) -> np.ndarray:
     
         """
         Parameters
@@ -627,9 +1098,30 @@ class DataStructure():
         -------
         np.ndarray
             the set of values of the column asked
+
+        Raises
+        ------
+        Exception
+            If columns is not a list
+
+        Exception
+            If columns is not a list of strings
+
+        Exception
+            If columns is not in the data attribute of the class
         """
 
-        
+        if type(column) != list:
+            raise Exception("column must be a list")
+
+        for column in column:
+            if type(column) != str:
+                raise Exception("column must be a list of strings")
+
+        for column in column:
+            if column not in self.data.columns:
+                raise Exception("column must be in the data attribute of the class")
+    
         return self.data[column].unique()
 
     def get_set_of_values_of_columns(self , columns : list[str]) -> np.ndarray:
@@ -644,11 +1136,33 @@ class DataStructure():
         -------
         np.ndarray
             the set of values of the columns asked
+
+        Raises
+        ------
+        Exception
+            If columns is not a list
+
+        Exception
+            If columns is not a list of strings
+
+        Exception
+            If columns is not in the data attribute of the class
         """
+
+        if type(columns) != list:
+            raise Exception("columns must be a list")
+
+        for column in columns:
+            if type(column) != str:
+                raise Exception("columns must be a list of strings")
+
+        for column in columns:
+            if column not in self.data.columns:
+                raise Exception("columns must be in the data attribute of the class")
         
         return self.data[columns].unique()
 
-    def Change_value_of_column(self , column : str , old_value : str , new_value : str):
+    def Change_value_of_column(self , column : str , old_value : any , new_value : any) -> None:
             
         """
         Changes the value of a column
@@ -658,25 +1172,43 @@ class DataStructure():
         column : str
             name of the column to change the value of
 
-        old_value : str
+        old_value : any
             old value of the column
 
-        new_value : str
+        new_value : any
             new value of the column
 
         Returns
         -------
-
         None
+
+        Raises
+        ------
+        Exception
+            If column is not a string
+
+        Exception
+            If column is not in the data attribute of the class
+
+        Exception
+            If old_value is not in the column asked  
         """
 
+        if type(column) != str:
+            raise Exception("column must be a string")
+
+        if column not in self.data.columns:
+            raise Exception("column must be in the data attribute of the class")
+
+        if old_value not in self.data[column].unique():
+            raise Exception("old_value must be in the column asked")
                 
         self.data.loc[self.data[column] == old_value, column] = new_value
     
         return None
 
     def Change_value_of_columns(self , columns : list[str] , 
-    old_values : list[str] , new_values : list[str]):
+    old_values : list[any] , new_values : list[any]) -> None:
                     
         """
         Changes the value of a list of columns  
@@ -695,15 +1227,44 @@ class DataStructure():
         Returns
         -------
         None
+
+        Raises
+        ------
+        Exception
+            If columns is not a list
+
+        Exception
+            If columns is not a list of strings
+
+        Exception
+            If columns is not in the data attribute of the class
+
+        Exception
+            If old_values is not in the columns asked
         """
+
+        if type(columns) != list:
+            raise Exception("columns must be a list")
+
+        for column in columns:
+            if type(column) != str:
+                raise Exception("columns must be a list of strings")
+
+        for column in columns:
+            if column not in self.data.columns:
+                raise Exception("columns must be in the data attribute of the class")
                         
         for i in range(len(columns)):
+
+            if old_values[i] not in self.data[columns[i]].unique():
+                raise Exception("old_values must be in the columns asked")
+
             self.data.loc[self.data[columns[i]] == old_values[i], columns[i]] = new_values[i]
             
         return None
 
     def Change_values_of_column(self , column : str , 
-    old_values : list[str] , new_values : list[str]):
+    old_values : list[str] , new_values : list[str]) -> None:
         
         """
         Changes the values of a column
@@ -722,7 +1283,41 @@ class DataStructure():
         Returns
         -------
         None
+
+        Raises
+        ------
+        Exception
+            If column is not a string
+
+        Exception
+            If column is not in the data attribute of the class
+
+        Exception
+            If old_values is not a list
+
+        Exception
+            If old_values is not a list of strings
+
+        Exception
+            If old_values are not in the column asked
         """
+
+        if type(column) != str:
+            raise Exception("column must be a string")
+
+        if column not in self.data.columns:
+            raise Exception("column must be in the data attribute of the class")
+
+        if type(old_values) != list:
+            raise Exception("old_values must be a list")
+
+        for old_value in old_values:
+            if type(old_value) != str:
+                raise Exception("old_values must be a list of strings")
+
+        for old_value in old_values:
+            if old_value not in self.data[column].unique():
+                raise Exception("old_values must be in the column asked")
 
         for i in range(len(old_values)):
             self.data.loc[self.data[column] == old_values[i], column] = new_values[i]
@@ -752,7 +1347,39 @@ class DataStructure():
         Returns
         -------
         None
+
+        Raises
+        ------
+        Exception
+            If origin_column is not a string
+
+        Exception
+            If origin_column is not in the data attribute of the class
+
+        Exception
+            If new_column is not a string
+
+        Exception
+            If value_set1 is not a list
+
+        Exception
+            If value_set2 is not a list
         """
+
+        if type(origin_column) != str:
+            raise Exception("origin_column must be a string")
+
+        if origin_column not in self.data.columns:
+            raise Exception("origin_column must be in the data attribute of the class")
+
+        if type(new_column) != str:
+            raise Exception("new_column must be a string")
+
+        if type(value_set1) != list:
+            raise Exception("value_set1 must be a list")
+
+        if type(value_set2) != list:
+            raise Exception("value_set2 must be a list")
                         
         self.data[new_column] = self.data[origin_column].apply(
             lambda x: True if x in value_set1 else False if x in value_set2 else np.nan)
@@ -772,7 +1399,21 @@ class DataStructure():
         Returns
         -------
         None
+
+        Raises
+        ------
+        Exception
+            If column is not a string
+
+        Exception
+            If column is not in the data attribute of the class
         """
+
+        if type(column) != str:
+            raise Exception("column must be a string")
+
+        if column not in self.data.columns:
+            raise Exception("column must be in the data attribute of the class")
 
         self.data = self.data.dropna(subset=[column])
 
@@ -799,7 +1440,39 @@ class DataStructure():
         Returns
         -------
         None
+
+        Raises
+        ------
+        Exception
+            If col1 is not a string
+
+        Exception
+            If col1 is not in the data attribute of the class
+
+        Exception
+            If col2 is not a string
+
+        Exception
+            If col2 is not in the data attribute of the class
+
+        Exception
+            If new_col is not a string
         """
+
+        if type(col1) != str:
+            raise Exception("col1 must be a string")
+
+        if col1 not in self.data.columns:
+            raise Exception("col1 must be in the data attribute of the class")
+
+        if type(col2) != str:
+            raise Exception("col2 must be a string")
+
+        if col2 not in self.data.columns:
+            raise Exception("col2 must be in the data attribute of the class")
+
+        if type(new_col) != str:
+            raise Exception("new_col must be a string")
             
         self.data[new_col] = self.data[col1] / self.data[col2]
     
@@ -824,7 +1497,39 @@ class DataStructure():
         Returns
         -------
         None
+
+        Raises
+        ------
+        Exception
+            If col1 is not a string
+
+        Exception
+            If col1 is not in the data attribute of the class
+
+        Exception
+            If col2 is not a string
+
+        Exception
+            If col2 is not in the data attribute of the class
+
+        Exception
+            If new_col is not a string
         """
+
+        if type(col1) != str:
+            raise Exception("col1 must be a string")
+
+        if col1 not in self.data.columns:
+            raise Exception("col1 must be in the data attribute of the class")
+
+        if type(col2) != str:
+            raise Exception("col2 must be a string")
+
+        if col2 not in self.data.columns:
+            raise Exception("col2 must be in the data attribute of the class")
+
+        if type(new_col) != str:
+            raise Exception("new_col must be a string")
                 
         self.data[new_col] = self.data[col1] * self.data[col2]
         
@@ -849,7 +1554,39 @@ class DataStructure():
         Returns
         -------
         None
+
+        Raises
+        ------
+        Exception
+            If col1 is not a string
+
+        Exception
+            If col1 is not in the data attribute of the class
+
+        Exception
+            If col2 is not a string
+
+        Exception
+            If col2 is not in the data attribute of the class
+
+        Exception
+            If new_col is not a string
         """
+
+        if type(col1) != str:
+            raise Exception("col1 must be a string")
+
+        if col1 not in self.data.columns:
+            raise Exception("col1 must be in the data attribute of the class")
+
+        if type(col2) != str:
+            raise Exception("col2 must be a string")
+
+        if col2 not in self.data.columns:
+            raise Exception("col2 must be in the data attribute of the class")
+
+        if type(new_col) != str:
+            raise Exception("new_col must be a string")
                         
         self.data[new_col] = self.data[col1] + self.data[col2]
                 
@@ -874,13 +1611,45 @@ class DataStructure():
         Returns
         -------
         None
+
+        Raises
+        ------
+        Exception
+            If col1 is not a string
+
+        Exception
+            If col1 is not in the data attribute of the class
+
+        Exception
+            If col2 is not a string
+
+        Exception
+            If col2 is not in the data attribute of the class
+
+        Exception
+            If new_col is not a string
         """
+
+        if type(col1) != str:
+            raise Exception("col1 must be a string")
+
+        if col1 not in self.data.columns:
+            raise Exception("col1 must be in the data attribute of the class")
+
+        if type(col2) != str:
+            raise Exception("col2 must be a string")
+
+        if col2 not in self.data.columns:
+            raise Exception("col2 must be in the data attribute of the class")
+
+        if type(new_col) != str:
+            raise Exception("new_col must be a string")
 
         self.data[new_col] = self.data[col1] - self.data[col2]
                 
         return None 
 
-    def new_by_pow(self , col1 : str , col2 : str , new_col : str) -> None:
+    def new_by_pow_col(self , col1 : str , col2 : str , new_col : str) -> None:
 
         """
         Creates a new column by taking the power of two columns
@@ -899,9 +1668,86 @@ class DataStructure():
         Returns
         -------
         None
+
+        Raises
+        ------
+        Exception
+            If col1 is not a string
+
+        Exception
+            If col1 is not in the data attribute of the class
+
+        Exception
+            If col2 is not a string
+
+        Exception
+            If col2 is not in the data attribute of the class
+
+        Exception
+            If new_col is not a string
         """
+
+        if type(col1) != str:
+            raise Exception("col1 must be a string")
+
+        if col1 not in self.data.columns:
+            raise Exception("col1 must be in the data attribute of the class")
+
+        if type(col2) != str:
+            raise Exception("col2 must be a string")
+
+        if col2 not in self.data.columns:
+            raise Exception("col2 must be in the data attribute of the class")
+
+        if type(new_col) != str:
+            raise Exception("new_col must be a string")
     
         self.data[new_col] = self.data[col1] ** self.data[col2]
+                    
+        return None
+
+    def new_by_pow(self , col1 : str , new_col : str , power : float) -> None:
+
+        """
+        Creates a new column by taking the power of a column
+
+        Parameters
+        ----------
+        col1 : str
+            name of the first column
+
+        new_col : str
+            name of the new column
+
+        power : float
+            power to raise the column to
+
+        Returns
+        -------
+        None
+
+        Raises
+        ------
+        Exception
+            If col1 is not a string
+
+        Exception
+            If col1 is not in the data attribute of the class
+
+        Exception
+            If new_col is not a string
+        """
+
+        if type(col1) != str:
+            raise Exception("col1 must be a string")
+
+        if col1 not in self.data.columns:
+            raise Exception("col1 must be in the data attribute of the class")
+
+        if type(new_col) != str:
+            raise Exception("new_col must be a string")
+        
+        self.data[new_col] = self.data[col1] ** power
                     
         return None
 
@@ -921,7 +1767,27 @@ class DataStructure():
         Returns
         -------
         None
+
+        Raises
+        ------
+        Exception
+            If col1 is not a string
+
+        Exception
+            If col1 is not in the data attribute of the class
+
+        Exception
+            If new_col is not a string
         """   
+
+        if type(col1) != str:
+            raise Exception("col1 must be a string")  
+
+        if col1 not in self.data.columns:
+            raise Exception("col1 must be in the data attribute of the class")
+
+        if type(new_col) != str:
+            raise Exception("new_col must be a string")
 
         self.data[new_col] = self.data[col1] ** 0.5
                             
@@ -943,7 +1809,27 @@ class DataStructure():
         Returns
         -------
         None
-        """
+
+        Raises
+        ------
+        Exception
+            If col1 is not a string
+
+        Exception
+            If col1 is not in the data attribute of the class
+
+        Exception
+            If new_col is not a string
+        """   
+
+        if type(col1) != str:
+            raise Exception("col1 must be a string")  
+
+        if col1 not in self.data.columns:
+            raise Exception("col1 must be in the data attribute of the class")
+
+        if type(new_col) != str:
+            raise Exception("new_col must be a string")
 
         self.data[new_col] = np.log(self.data[col1])
                                 
@@ -965,7 +1851,27 @@ class DataStructure():
         Returns
         -------
         None
-        """
+
+        Raises
+        ------
+        Exception
+            If col1 is not a string
+
+        Exception
+            If col1 is not in the data attribute of the class
+
+        Exception
+            If new_col is not a string
+        """   
+
+        if type(col1) != str:
+            raise Exception("col1 must be a string")  
+
+        if col1 not in self.data.columns:
+            raise Exception("col1 must be in the data attribute of the class")
+
+        if type(new_col) != str:
+            raise Exception("new_col must be a string")
 
         self.data[new_col] = np.exp(self.data[col1])
                                     
@@ -987,7 +1893,27 @@ class DataStructure():
         Returns
         -------
         None
-        """
+
+        Raises
+        ------
+        Exception
+            If col1 is not a string
+
+        Exception
+            If col1 is not in the data attribute of the class
+
+        Exception
+            If new_col is not a string
+        """   
+
+        if type(col1) != str:
+            raise Exception("col1 must be a string")  
+
+        if col1 not in self.data.columns:
+            raise Exception("col1 must be in the data attribute of the class")
+
+        if type(new_col) != str:
+            raise Exception("new_col must be a string")
 
         self.data[new_col] = np.sin(self.data[col1])
                                         
@@ -1009,7 +1935,27 @@ class DataStructure():
         Returns
         -------
         None
-        """
+
+        Raises
+        ------
+        Exception
+            If col1 is not a string
+
+        Exception
+            If col1 is not in the data attribute of the class
+
+        Exception
+            If new_col is not a string
+        """   
+
+        if type(col1) != str:
+            raise Exception("col1 must be a string")  
+
+        if col1 not in self.data.columns:
+            raise Exception("col1 must be in the data attribute of the class")
+
+        if type(new_col) != str:
+            raise Exception("new_col must be a string")
             
         self.data[new_col] = np.fft.fft(self.data[col1])
                                                 
@@ -1031,17 +1977,45 @@ class DataStructure():
         Returns
         -------
         None
-        """
+
+        Raises
+        ------
+        Exception
+            If col1 is not a string
+
+        Exception
+            If col1 is not in the data attribute of the class
+
+        Exception
+            If new_col is not a string
+        """   
+
+        if type(col1) != str:
+            raise Exception("col1 must be a string")  
+
+        if col1 not in self.data.columns:
+            raise Exception("col1 must be in the data attribute of the class")
+
+        if type(new_col) != str:
+            raise Exception("new_col must be a string")
 
         self.data[new_col] = np.fft.ifft(self.data[col1])
                                                         
         return None
      
 
-def make_more_data():
+def make_more_data() -> None:
 
     """
     Creates the data for the visualisation
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    None
     """
     #get the data from xlsx by page
     data_2022 = pd.read_excel(
