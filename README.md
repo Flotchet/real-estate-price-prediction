@@ -10,7 +10,7 @@ It includes: web scraping, data cleaning, data visualisation,  machine learning,
 
 ## Current state
 
-Data visualisation
+Machine Learning
 
 ## What it does (In order)
 
