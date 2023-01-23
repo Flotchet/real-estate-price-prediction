@@ -2956,6 +2956,7 @@ if __name__ == "__main__":
     data.new_column_by_separation("type", "Appartment", appartments, houses)
 
     #data.save_data("data_visualisation/")
+    data.save_data("data_visualisation/", "data_visualisation/")
     
 
     
