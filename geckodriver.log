@@ -1,0 +1,245 @@
+1674549326603	geckodriver	INFO	Listening on 127.0.0.1:53451
+1674549326603	geckodriver	INFO	Listening on 127.0.0.1:49323
+1674549326603	geckodriver	INFO	Listening on 127.0.0.1:51075
+1674549326603	geckodriver	INFO	Listening on 127.0.0.1:52827
+1674549326604	geckodriver	INFO	Listening on 127.0.0.1:34721
+1674549326609	geckodriver	INFO	Listening on 127.0.0.1:55591
+1674549326609	geckodriver	INFO	Listening on 127.0.0.1:33539
+1674549326618	geckodriver	INFO	Listening on 127.0.0.1:39445
+1674549326632	geckodriver	INFO	Listening on 127.0.0.1:59553
+1674549326644	geckodriver	INFO	Listening on 127.0.0.1:53091
+1674549326656	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--remote-debugging-port" "57743" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofile46U7Fp"
+1674549326656	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--remote-debugging-port" "60563" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileP8NxHF"
+1674549326656	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--remote-debugging-port" "58273" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofile0T1Fxt"
+1674549326659	geckodriver	INFO	Listening on 127.0.0.1:57901
+1674549326660	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--remote-debugging-port" "55301" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileYGIYBO"
+1674549326665	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--remote-debugging-port" "53891" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileurncYF"
+1674549326665	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--remote-debugging-port" "51171" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileTm6UaB"
+1674549326672	geckodriver	INFO	Listening on 127.0.0.1:37249
+1674549326673	geckodriver	INFO	Listening on 127.0.0.1:42363
+1674549326677	geckodriver	INFO	Listening on 127.0.0.1:47081
+1674549326680	geckodriver	INFO	Listening on 127.0.0.1:58417
+1674549326685	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--remote-debugging-port" "43927" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofiletU3Ke1"
+1674549326700	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--remote-debugging-port" "58813" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileshz7Dc"
+1674549326716	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--remote-debugging-port" "40081" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilep7m3Qt"
+1674549326737	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--remote-debugging-port" "39043" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileNJsvnA"
+1674549326744	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--remote-debugging-port" "44631" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileks912v"
+1674549326744	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--remote-debugging-port" "59935" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileeQu7B6"
+1674549326757	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--remote-debugging-port" "52625" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileCnFURG"
+1674549326814	geckodriver	INFO	Listening on 127.0.0.1:55099
+1674549327193	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--remote-debugging-port" "51545" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileu7vSIy"
+1674549327262	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--remote-debugging-port" "56855" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofilebjXyKU"
+1674549327382	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--remote-debugging-port" "53463" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "/tmp/rust_mozprofileyW2VLr"
+Crash Annotation GraphicsCriticalError: |[0][GFX1-]: glxtest: VA-API test failed: failed to initialise VAAPI connection. (t=1.07865) [GFX1-]: glxtest: VA-API test failed: failed to initialise VAAPI connection.
+Crash Annotation GraphicsCriticalError: |[0][GFX1-]: glxtest: VA-API test failed: failed to initialise VAAPI connection. (t=1.60733) [GFX1-]: glxtest: VA-API test failed: failed to initialise VAAPI connection.
+Crash Annotation GraphicsCriticalError: |[0][GFX1-]: glxtest: VA-API test failed: failed to initialise VAAPI connection. (t=1.17487) [GFX1-]: glxtest: VA-API test failed: failed to initialise VAAPI connection.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+Crash Annotation GraphicsCriticalError: |[0][GFX1-]: glxtest: VA-API test failed: failed to initialise VAAPI connection. (t=1.71148) [GFX1-]: glxtest: VA-API test failed: failed to initialise VAAPI connection.
+Crash Annotation GraphicsCriticalError: |[0][GFX1-]: glxtest: VA-API test failed: failed to initialise VAAPI connection. (t=1.62781) [GFX1-]: glxtest: VA-API test failed: failed to initialise VAAPI connection.
+Crash Annotation GraphicsCriticalError: |[0][GFX1-]: glxtest: VA-API test failed: failed to initialise VAAPI connection. (t=1.64486) [GFX1-]: glxtest: VA-API test failed: failed to initialise VAAPI connection.
+Crash Annotation GraphicsCriticalError: |[0][GFX1-]: glxtest: VA-API test failed: failed to initialise VAAPI connection. (t=1.63867) [GFX1-]: glxtest: VA-API test failed: failed to initialise VAAPI connection.
+Crash Annotation GraphicsCriticalError: |[0][GFX1-]: glxtest: VA-API test failed: failed to initialise VAAPI connection. (t=1.68009) [GFX1-]: glxtest: VA-API test failed: failed to initialise VAAPI connection.
+Crash Annotation GraphicsCriticalError: |[0][GFX1-]: glxtest: VA-API test failed: failed to initialise VAAPI connection. (t=1.01264) [GFX1-]: glxtest: VA-API test failed: failed to initialise VAAPI connection.
+Crash Annotation GraphicsCriticalError: |[0][GFX1-]: glxtest: VA-API test failed: failed to initialise VAAPI connection. (t=1.74215) [GFX1-]: glxtest: VA-API test failed: failed to initialise VAAPI connection.
+Crash Annotation GraphicsCriticalError: |[0][GFX1-]: glxtest: VA-API test failed: failed to initialise VAAPI connection. (t=1.74682) [GFX1-]: glxtest: VA-API test failed: failed to initialise VAAPI connection.
+Crash Annotation GraphicsCriticalError: |[0][GFX1-]: glxtest: VA-API test failed: failed to initialise VAAPI connection. (t=1.71651) [GFX1-]: glxtest: VA-API test failed: failed to initialise VAAPI connection.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+Crash Annotation GraphicsCriticalError: |[0][GFX1-]: glxtest: VA-API test failed: failed to initialise VAAPI connection. (t=1.75814) [GFX1-]: glxtest: VA-API test failed: failed to initialise VAAPI connection.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+Crash Annotation GraphicsCriticalError: |[0][GFX1-]: glxtest: VA-API test failed: failed to initialise VAAPI connection. (t=1.77538) [GFX1-]: glxtest: VA-API test failed: failed to initialise VAAPI connection.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+Crash Annotation GraphicsCriticalError: |[0][GFX1-]: glxtest: VA-API test failed: failed to initialise VAAPI connection. (t=1.75283) [GFX1-]: glxtest: VA-API test failed: failed to initialise VAAPI connection.
+Crash Annotation GraphicsCriticalError: |[0][GFX1-]: glxtest: VA-API test failed: failed to initialise VAAPI connection. (t=1.77719) [GFX1-]: glxtest: VA-API test failed: failed to initialise VAAPI connection.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+1674549328460	Marionette	INFO	Marionette enabled
+ATTENTION: default value of option mesa_glthread overridden by environment.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+1674549328470	Marionette	INFO	Listening on port 36585
+1674549328474	Marionette	INFO	Marionette enabled
+1674549328475	Marionette	INFO	Marionette enabled
+1674549328480	Marionette	INFO	Listening on port 39959
+ATTENTION: default value of option mesa_glthread overridden by environment.
+1674549328482	Marionette	INFO	Listening on port 34889
+1674549328481	Marionette	INFO	Marionette enabled
+1674549328483	Marionette	INFO	Marionette enabled
+ATTENTION: default value of option mesa_glthread overridden by environment.
+1674549328488	Marionette	INFO	Listening on port 41955
+1674549328489	Marionette	INFO	Listening on port 45401
+1674549328499	Marionette	INFO	Marionette enabled
+ATTENTION: default value of option mesa_glthread overridden by environment.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+1674549328505	Marionette	INFO	Listening on port 35687
+ATTENTION: default value of option mesa_glthread overridden by environment.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+1674549328514	Marionette	INFO	Marionette enabled
+ATTENTION: default value of option mesa_glthread overridden by environment.
+1674549328517	Marionette	INFO	Marionette enabled
+ATTENTION: default value of option mesa_glthread overridden by environment.
+1674549328520	Marionette	INFO	Listening on port 41639
+1674549328521	Marionette	INFO	Marionette enabled
+1674549328526	Marionette	INFO	Listening on port 33707
+1674549328528	Marionette	INFO	Marionette enabled
+ATTENTION: default value of option mesa_glthread overridden by environment.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+1674549328533	Marionette	INFO	Listening on port 40561
+1674549328535	Marionette	INFO	Marionette enabled
+Read port: 34889
+1674549328539	Marionette	INFO	Listening on port 44255
+1674549328541	Marionette	INFO	Listening on port 39291
+Read port: 39959
+Read port: 39291
+1674549328553	Marionette	INFO	Marionette enabled
+1674549328553	Marionette	INFO	Marionette enabled
+ATTENTION: default value of option mesa_glthread overridden by environment.
+1674549328554	Marionette	INFO	Marionette enabled
+Read port: 33707
+Read port: 41639
+Read port: 35687
+1674549328559	Marionette	INFO	Listening on port 34263
+1674549328560	Marionette	INFO	Listening on port 40699
+1674549328561	Marionette	INFO	Listening on port 45805
+Read port: 44255
+Read port: 36585
+ATTENTION: default value of option mesa_glthread overridden by environment.
+Read port: 41955
+1674549328568	Marionette	INFO	Marionette enabled
+ATTENTION: default value of option mesa_glthread overridden by environment.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+1674549328575	Marionette	INFO	Listening on port 45127
+ATTENTION: default value of option mesa_glthread overridden by environment.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+Read port: 45401
+Read port: 40699
+1674549328590	Marionette	INFO	Marionette enabled
+ATTENTION: default value of option mesa_glthread overridden by environment.
+1674549328597	Marionette	INFO	Listening on port 39879
+Read port: 40561
+Read port: 45805
+Read port: 34263
+ATTENTION: default value of option mesa_glthread overridden by environment.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+Read port: 39879
+ATTENTION: default value of option mesa_glthread overridden by environment.
+Read port: 45127
+ATTENTION: default value of option mesa_glthread overridden by environment.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+ATTENTION: default value of option mesa_glthread overridden by environment.
+WebDriver BiDi listening on ws://127.0.0.1:52625
+ATTENTION: default value of option mesa_glthread overridden by environment.
+WebDriver BiDi listening on ws://127.0.0.1:51171
+WebDriver BiDi listening on ws://127.0.0.1:53463
+WebDriver BiDi listening on ws://127.0.0.1:44631
+WebDriver BiDi listening on ws://127.0.0.1:56855
+WebDriver BiDi listening on ws://127.0.0.1:39043
+WebDriver BiDi listening on ws://127.0.0.1:57743
+WebDriver BiDi listening on ws://127.0.0.1:58273
+WebDriver BiDi listening on ws://127.0.0.1:51545
+WebDriver BiDi listening on ws://127.0.0.1:55301
+WebDriver BiDi listening on ws://127.0.0.1:58813
+1674549328816	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+1674549328819	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+1674549328831	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+WebDriver BiDi listening on ws://127.0.0.1:40081
+WebDriver BiDi listening on ws://127.0.0.1:53891
+WebDriver BiDi listening on ws://127.0.0.1:60563
+1674549328861	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+1674549328861	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+1674549328862	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+1674549328865	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+WebDriver BiDi listening on ws://127.0.0.1:59935
+WebDriver BiDi listening on ws://127.0.0.1:43927
+1674549328897	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+1674549328906	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+1674549328908	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+1674549328942	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+1674549328944	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+1674549328949	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+1674549328953	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+1674549328965	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+1674549328980	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileTm6UaB/search.json.mozlz4", (void 0)))
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileu7vSIy/search.json.mozlz4", (void 0)))
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileks912v/search.json.mozlz4", (void 0)))
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofilebjXyKU/search.json.mozlz4", (void 0)))
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileCnFURG/search.json.mozlz4", (void 0)))
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileYGIYBO/search.json.mozlz4", (void 0)))
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileyW2VLr/search.json.mozlz4", (void 0)))
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofile46U7Fp/search.json.mozlz4", (void 0)))
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileNJsvnA/search.json.mozlz4", (void 0)))
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileshz7Dc/search.json.mozlz4", (void 0)))
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofiletU3Ke1/search.json.mozlz4", (void 0)))
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileP8NxHF/search.json.mozlz4", (void 0)))
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofile0T1Fxt/search.json.mozlz4", (void 0)))
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileurncYF/search.json.mozlz4", (void 0)))
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileeQu7B6/search.json.mozlz4", (void 0)))
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofilep7m3Qt/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:53463/devtools/browser/a32d6ed3-82f2-48f4-945f-671b1e67e488
+DevTools listening on ws://127.0.0.1:40081/devtools/browser/919bf3fe-7469-4e96-a182-cede047ec8e8
+DevTools listening on ws://127.0.0.1:44631/devtools/browser/594e4fd4-07bc-4f02-ac40-b97bd192eff9
+DevTools listening on ws://127.0.0.1:52625/devtools/browser/ad3dbd70-e19f-4b60-af2c-a2033d3b3dab
+DevTools listening on ws://127.0.0.1:51545/devtools/browser/ccb58771-892f-4f64-aadb-7d800e1e0f25
+DevTools listening on ws://127.0.0.1:56855/devtools/browser/48c6858f-3ab2-43a7-88c4-9518eb7cf62b
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Crash Annotation GraphicsCriticalError: |[C0][GFX1-]: Receive IPC close with reason=AbnormalShutdown (t=4.48198) Exiting due to channel error.
+Exiting due to channel error.
+Crash Annotation GraphicsCriticalError: |[C0][GFX1-]: Receive IPC close with reason=AbnormalShutdown (t=1.22621) Exiting due to channel error.
+Exiting due to channel error.
+Crash Annotation GraphicsCriticalError: |[C0][GFX1-]: Receive IPC close with reason=AbnormalShutdown (t=4.23635) Crash Annotation GraphicsCriticalError: |[C0][GFX1-]: Receive IPC close with reason=AbnormalShutdown (t=1.48931) Exiting due to channel error.
+Crash Annotation GraphicsCriticalError: |[C0][GFX1-]: Receive IPC close with reason=AbnormalShutdown (t=3.67103) Exiting due to channel error.
+Crash Annotation GraphicsCriticalError: |[C0][GFX1-]: Receive IPC close with reason=AbnormalShutdown (t=3.99415) Exiting due to channel error.
+Crash Annotation GraphicsCriticalError: |[C0][GFX1-]: Receive IPC close with reason=AbnormalShutdown (t=4.15128) Crash Annotation GraphicsCriticalError: |[C0][GFX1-]: Receive IPC close with reason=AbnormalShutdown (t=3.90364) Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Crash Annotation GraphicsCriticalError: |[C0][GFX1-]: Receive IPC close with reason=AbnormalShutdown (t=4.40554) 
