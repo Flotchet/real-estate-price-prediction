@@ -136,7 +136,6 @@ def make_sets(csv : str = "Machine_learning/data_for_regression.csv") -> dict[st
     #load data
     data : pd.DataFrame = pd.read_csv(csv)
     data                = data[data["To sell"] == True]
-
     #make a dict with the dataframes
     data_dict : dict[str : pd.DataFrame] = {
                                             'Bruxelles-Capitale': split_set(data, 0 , 1300),
@@ -275,7 +274,7 @@ def get_models() -> dict[str : any]:
     for k in range(5,200):
         models[f'KNeighborsRegressorK{k}'] = KNeighborsRegressor(n_neighbors=k)
 
-    for m,n in product(range(50,351,10), range(20,301,10)):
+    for m,n in product(range(50,351,25), range(20,301,25)):
         models[f'RandomForestRegressorM{m}N{n}'] = RandomForestRegressor(max_depth = m, n_estimators = n)
 
     return models
@@ -284,6 +283,8 @@ def get_models() -> dict[str : any]:
 
 
 if __name__ == "__main__":
+
+
 
     #get the data
     data_dict = make_sets()
