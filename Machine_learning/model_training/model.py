@@ -26,6 +26,94 @@ from sklearn.metrics import r2_score
 from warnings import warn
 from concurrent.futures import ProcessPoolExecutor
 
+def region_add(data_dict : dict[str : pd.DataFrame]) -> dict[str : pd.DataFrame]:
+
+    """
+    This function add the region to the data
+    
+    Parameters
+    ----------
+    data_dict : dict[str : pd.DataFrame]
+        The dictionary that contains the data
+        
+    Returns
+    -------
+    dict[str : pd.DataFrame]
+        The dictionary that contains the data with the region added
+        
+    Raise
+    -----
+    TypeError
+        If the data_dict is not a dict[str : pd.DataFrame]
+        
+    Exception
+        If the data_dict does not contains the keys
+        'Province du Brabant wallon'
+        'Province du Brabant flamand'
+        'Province d\'Anvers'
+        'Province du Brabant flamand 2
+        'Province de Limbourg'
+        'Province de Liège'
+        'Province de Namur'
+        'Province du Hainaut 1'
+        'Province de Luxembourg'
+        'Province du Hainaut 2'
+        'Province de Flandre-Occidentale'
+        'Province de Flandre-Orientale'
+    """
+        
+        #check if the data_dict is a dict[str : pd.DataFrame]
+    if not isinstance(data_dict, dict):
+        raise TypeError("The data_dict must be a dict[str : pd.DataFrame]")
+        
+    #check if the data_dict contains the keys
+    if not all(key in data_dict for key in ['Province du Brabant wallon',
+                                            'Province du Brabant flamand',
+                                            'Province d\'Anvers',
+                                            'Province du Brabant flamand 2',
+                                            'Province de Limbourg',
+                                            'Province de Liège',
+                                            'Province de Namur',
+                                            'Province du Hainaut 1',
+                                            'Province de Luxembourg',
+                                            'Province du Hainaut 2',
+                                            'Province de Flandre-Occidentale',
+                                            'Province de Flandre-Orientale']):
+        raise Exception("""The data_dict does not contains the keys 
+        'Province du Brabant wallon', 
+        'Province du Brabant flamand', 
+        'Province d\'Anvers', 
+        'Province du Brabant flamand 2, 
+        'Province de Limbourg', 
+        'Province de Liège', 
+        'Province de Namur', 
+        'Province du Hainaut 1', 
+        'Province de Luxembourg', 
+        'Province du Hainaut 2', 
+        'Province de Flandre-Occidentale', 
+        'Province de Flandre-Orientale'""")
+        
+    #add the region to the data
+    data_dict['Region Wallone'] = data_dict['Province du Brabant wallon']
+    data_dict['Region Wallone'] = data_dict['Region Wallone'].append(data_dict['Province de Liège'])
+    data_dict['Region Wallone'] = data_dict['Region Wallone'].append(data_dict['Province de Namur'])
+    data_dict['Region Wallone'] = data_dict['Region Wallone'].append(data_dict['Province du Hainaut 1'])
+    data_dict['Region Wallone'] = data_dict['Region Wallone'].append(data_dict['Province du Hainaut 2'])
+    data_dict['Region Wallone'] = data_dict['Region Wallone'].append(data_dict['Province de Luxembourg'])
+
+    data_dict['Region Flamande'] = data_dict['Province du Brabant flamand']
+    data_dict['Region Flamande'] = data_dict['Region Flamande'].append(data_dict['Province d\'Anvers'])
+    data_dict['Region Flamande'] = data_dict['Region Flamande'].append(data_dict['Province du Brabant flamand 2'])
+    data_dict['Region Flamande'] = data_dict['Region Flamande'].append(data_dict['Province de Limbourg'])
+    data_dict['Region Flamande'] = data_dict['Region Flamande'].append(data_dict['Province de Flandre-Occidentale'])
+    data_dict['Region Flamande'] = data_dict['Region Flamande'].append(data_dict['Province de Flandre-Orientale'])
+
+    return data_dict
+    
+
+
+
+
 def split_set(df : pd.DataFrame, min_zip : int, max_zip : int) -> pd.DataFrame:
 
     """
@@ -152,6 +240,10 @@ def make_sets(csv : str = "Machine_learning/data_for_regression.csv") -> dict[st
                                             'Province de Flandre-Occidentale': split_set(data, 7999, 9000),
                                             'Province de Flandre-Orientale': split_set(data, 8999, 10000)
                                            }
+
+    data_dict = region_add(data_dict)
+
+    data_dict['Belgique'] = data
 
     return data_dict
 
@@ -288,6 +380,11 @@ if __name__ == "__main__":
 
     #get the data
     data_dict = make_sets()
+
+    #print the size of each element
+    for key, data in data_dict.items():
+        print(f"{key} : {data.shape}")
+
     #verify the data
     data_dict = data_verification(data_dict)
     #get the models
