@@ -11,12 +11,12 @@ from sklearn.neighbors import KNeighborsRegressor
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.svm import SVR
 from sklearn.ensemble import GradientBoostingRegressor
-from sklearn.neural_network import MLPRegressor
+#from sklearn.neural_network import MLPRegressor
 from sklearn.metrics import mean_absolute_error
 
 from tqdm import tqdm
 
-
+from itertools import product
 
 import pandas as pd
 import os
@@ -24,6 +24,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
 from sklearn.metrics import r2_score
 from warnings import warn
+from concurrent.futures import ProcessPoolExecutor
 
 def split_set(df : pd.DataFrame, min_zip : int, max_zip : int) -> pd.DataFrame:
 
@@ -255,15 +256,27 @@ def get_models() -> dict[str : any]:
                                 'Lasso' : Lasso(),
                                 'ElasticNet' : ElasticNet(),
                                 'DecisionTreeRegressor' : DecisionTreeRegressor(),
-                                'RandomForestRegressor' : RandomForestRegressor(),
                                 'GradientBoostingRegressor' : GradientBoostingRegressor(),
-                                'XGBoost' : xgb.XGBRegressor(objective ='reg:squarederror', 
-                                                            learning_rate = 0.045,
-                                                            max_depth = 150, 
-                                                            alpha = 1, 
-                                                            n_estimators = 105)
+                                'SVR' : SVR(),
+                                #'MLPRegressor' : MLPRegressor(hidden_layer_sizes = (100,100,100), max_iter = 500),
+                                'XGBoostSE' : xgb.XGBRegressor(objective ='reg:squarederror', 
+                                                               learning_rate = 0.045,
+                                                               max_depth = 150, 
+                                                               alpha = 1, 
+                                                               n_estimators = 105),
+                                'XGBoostAE' : xgb.XGBRegressor(objective ='reg:absoluteerror', 
+                                                               learning_rate = 0.045,
+                                                               max_depth = 150, 
+                                                               alpha = 1, 
+                                                               n_estimators = 105)
+
                                }
 
+    for k in range(5,200):
+        models[f'KNeighborsRegressorK{k}'] = KNeighborsRegressor(n_neighbors=k)
+
+    for m,n in product(range(50,351,10), range(20,301,10)):
+        models[f'RandomForestRegressorM{m}N{n}'] = RandomForestRegressor(max_depth = m, n_estimators = n)
 
     return models
 
@@ -283,7 +296,7 @@ if __name__ == "__main__":
     results : list[dict[str : any]] = []
 
     #go through the models
-    for name, model in models.items():
+    for name, model in tqdm(models.items()):
 
         #go through the data
         for key, data in data_dict.items():
@@ -317,7 +330,7 @@ if __name__ == "__main__":
                 'R2': r2,
                 'MSE': mse,
                 'MAE': mae,
-                'MAEP': mae/data['Price'].mean()
+                'MAEP': 1 - mae/data['Price'].mean()
             })
 
     #create a dataframe with the results
@@ -325,6 +338,12 @@ if __name__ == "__main__":
 
     #save the results
     results.to_csv('results.csv', index=False)
+
+    #print the results
+    print(results)
+
+    #get best results by procince
+    results = results.groupby('Province').apply(lambda x: x.nlargest(1, 'MAEP'))
 
     #print the results
     print(results)
