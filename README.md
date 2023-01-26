@@ -99,7 +99,7 @@ this project creates a dataset from immoweb (be-fr) in the form of a csv file of
 1. get new data from external sources xlsx and csv
 2. Combine different data set to add features
 3. clean the data by removing outliers and droping NaN and None
-4. Create new features based on t
+4. Create new features and remove others
 5. Remove features that we don't need for the data visualization and create a new csv with the processed data of this form
 
 | ID     | To sell | Price  | Number of rooms | ... | A-Taxe | Price by M**2 | Appartment |
