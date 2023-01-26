@@ -183,6 +183,8 @@ It's worth noting that the XGBoostSE model performed better in some provinces li
 
 It's also important to note that these results are based on a single training and testing set, and additional evaluation methods such as cross-validation should be performed to confirm the robustness of the model.
 
+I also estimate that in a perfect world, we could have a maximum precision of 3777 euros due to the fact that some propreties are perfectly equals except for the price.
+
 ## How to use it
 
 You can launch the main.py to get a simple user interface to launch the project or part of it.
