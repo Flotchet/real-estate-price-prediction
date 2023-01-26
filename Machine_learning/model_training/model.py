@@ -363,14 +363,14 @@ def get_models() -> dict[str : any]:
 
                                }
 
-    for k in range(5,200):
-        models[f'KNeighborsRegressorK{k}'] = KNeighborsRegressor(n_neighbors=k)
 
     for m,n in product(range(50,351,25), range(20,301,25)):
         models[f'RandomForestRegressorM{m}N{n}'] = RandomForestRegressor(max_depth = m, n_estimators = n)
 
-    return models
+    for k in range(5,200):
+        models[f'KNeighborsRegressorK{k}'] = KNeighborsRegressor(n_neighbors=k)
 
+    return models
 
 
 
@@ -398,6 +398,10 @@ if __name__ == "__main__":
 
         #go through the data
         for key, data in data_dict.items():
+
+            #pass for memory reason
+            if key == 'Belgique' and name.startswith('Random'):
+                continue
 
             if model != 'XGBoost':
                 #replace nan
@@ -430,6 +434,7 @@ if __name__ == "__main__":
                 'MAE': mae,
                 'MAEP': 1 - mae/data['Price'].mean()
             })
+        del model
 
     #create a dataframe with the results
     results = pd.DataFrame(results)

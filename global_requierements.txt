@@ -1,0 +1,14 @@
+beautifulsoup4
+gc-python-utils
+multiprocessing
+numpy
+pandas
+psutil
+regex
+selenium
+pycopy-shutil
+tqdm
+Unidecode
+pytest-warnings
+matplotlib
+seaborn

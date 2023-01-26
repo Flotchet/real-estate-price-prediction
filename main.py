@@ -16,10 +16,14 @@ layout = [
             create_menu('deploiment part', []),
             [sg.Text('rest')],
             [sg.Button('Run all', key = 'run all')],
-            [sg.Button('Exit' , key = 'Exit')]
+            [sg.Button('Exit' , key = 'Exit')],
+            [sg.Button('Install needed packages', key = "install")]
         ]
 # Create the window
-window = sg.Window('Immoweb project', layout, element_justification='center')
+window = sg.Window('Immoweb project', 
+                    layout,
+                    default_element_size=(20, 5),
+                    resizable=True,finalize=True)
 
 # Event loop
 while True:
@@ -47,4 +51,13 @@ while True:
     elif event == 'run all':
         print('run all')
 
+
+    elif event == 'install':
+        print('install')
+        #open global_requirement.txt
+        with open('global_requierements.txt') as req:
+            #read line by line
+            for line in req:
+                #run pip install line
+                os.system(f'pip install {line}')
 window.close()

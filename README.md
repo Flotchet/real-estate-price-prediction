@@ -10,7 +10,14 @@ It includes: web scraping, data cleaning, data visualisation,  machine learning,
 
 ## Current state
 
-Machine Learning
+* [X] data acquisition from immoweb
+* [X] data acquisition from statbel
+* [X] data preparation for visualization
+* [X] data preparation for modelisation
+* [X] data visualization
+* [X] modeling
+* [ ] result analysis
+* [ ] deploiment
 
 ## What it does (In order)
 
@@ -114,6 +121,27 @@ this project creates a dataset from immoweb (be-fr) in the form of a csv file of
 ![1673950769757](image/README/1673950803242.png)
 ![1673950769757](image/README/1673950860011.png)
 
+## Train the models
+
+* Prepare the data
+* separate the datset into provinces - region - country
+* adapt each dataset depending on the model
+* Train the models
+
+| Model                                                       | Average Prceision in %                      |
+| ----------------------------------------------------------- | ------------------------------------------- |
+| DecisionTreeRegressor                                       | 77,38                                       |
+| ElasticNet                                                  | 67,67                                       |
+| GradientBoostingRegressor                                   | 80,47                                       |
+| KNeighborsRegressor<br />k = 10-200                         | 76,11 k=200 to 78,87 k=21                   |
+| Lasso                                                       | 76,96                                       |
+| LinearRegression                                            | 76,95                                       |
+| RandomForestRegressor<br />d  = 50 - 350<br />n = 20 - 295 | 80,28 d=350 & n=20<br />81,33 d=150 & n=170 |
+| Ridge                                                       | 76,95                                       |
+| SVR                                                         | 71,11                                       |
+| XGBoost<br />Absolute error mode                            | 69,86                                       |
+| XGBoost<br />Squared  error mode                           | 80,78                                       |
+
 ## How to use it
 
 You can launch the main.py to get a simple user interface to launch the project or part of it.
@@ -128,70 +156,15 @@ Firefox
 
 *Tested on Fedora release 37 (Thirty Seven) x86_64 kernel 6.0.15-300.fc37.x86_64 but it should works on most linux distro
 
-* bs4
-* gc
-* itertools
-* multiprocessing
-* numpy
-* os
-* pandas
-* psutil
-* re
-* selenium
-* shutil
-* time
-* tqdm
-* traceback
-* unidecode
-* warnings
-* matplotlib
-* seaborn
-* dataclasses
+* PySimpleGUI
 
-## Prerequises (Scraping)
-
-Python 3.11.1 64-bit
-
-Firefox
-
-*Tested on Fedora release 37 (Thirty Seven) x86_64 kernel 6.0.15-300.fc37.x86_64 but it should works on most linux distro
-
-* bs4
-* gc
-* itertools
-* multiprocessing
-* numpy
-* os
-* pandas
-* psutil
-* re
-* selenium
-* shutil
-* time
-* tqdm
-* traceback
-* unidecode
-* warnings
-
-## Prerequises (data visualization)
-
-Python 3.11.1 64-bit
-
-Firefox
-
-*Tested on Fedora release 37 (Thirty Seven) x86_64 kernel 6.0.15-300.fc37.x86_64 but it should works on most linux distro
-
-* pandas
-* matplotlib
-* seaborn
-* numpy
-* dataclasses
+Other requierements can be directly installed from the user interface from main.py
 
 ## Recommended system requirements
 
 CPU: 8core (Intel i7-10875H)
 
-RAM: 32GB
+RAM: 64GB (works with 32GB with no other software running)
 
 GPU: /
 
