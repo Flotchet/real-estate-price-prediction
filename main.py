@@ -55,7 +55,7 @@ while True:
     elif event == 'install':
         print('install')
         #open global_requirement.txt
-        with open('global_requierements.txt') as req:
+        with open('requirements.txt') as req:
             #read line by line
             for line in req:
                 #run pip install line
