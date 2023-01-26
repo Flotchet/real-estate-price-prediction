@@ -114,7 +114,7 @@ this project creates a dataset from immoweb (be-fr) in the form of a csv file of
 
 ## Display Graphs
 
-display some graphs about the distribution and some relations between features like these one
+Display some graphs about the distribution and some relations between features like these one
 
 This graph represent the relation between price by square meter and the municipal taxe![1673950769757](image/README/1673950769757.png)
 
@@ -130,8 +130,8 @@ This graph shows the median of the price per square meter for each type of propr
 ## Train the models
 
 * Prepare the data
-* separate the datset into provinces - region - country
-* adapt each dataset depending on the model
+* Separate the datset into provinces - region - country
+* Adapt each dataset depending on the model
 * Train the models
 
 | Model                                                       | Average Prceision in %                      |
