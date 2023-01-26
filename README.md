@@ -16,7 +16,7 @@ It includes: web scraping, data cleaning, data visualisation,  machine learning,
 * [X] data preparation for modelisation
 * [X] data visualization
 * [X] modeling
-* [ ] result analysis
+* [X] result analysis
 * [ ] deploiment
 
 ## What it does (In order)
@@ -114,11 +114,17 @@ this project creates a dataset from immoweb (be-fr) in the form of a csv file of
 
 ## Display Graphs
 
-1. display some graphs about the distribution and some relations between features like these one
+display some graphs about the distribution and some relations between features like these one
 
-![1673950769757](image/README/1673950769757.png)
+This graph represent the relation between price by square meter and the municipal taxe![1673950769757](image/README/1673950769757.png)
+
+This graph shows the distribution of the prices of the propreties that are to sell
 ![1673950769757](image/README/1673950972633.png)
+
+This graph shows the top 10 most expensive cities in term of price per square meter
 ![1673950769757](image/README/1673950803242.png)
+
+This graph shows the median of the price per square meter for each type of proprety
 ![1673950769757](image/README/1673950860011.png)
 
 ## Train the models
@@ -141,6 +147,43 @@ this project creates a dataset from immoweb (be-fr) in the form of a csv file of
 | SVR                                                         | 71,11                                       |
 | XGBoost<br />Absolute error mode                            | 69,86                                       |
 | XGBoost<br />Squared  error mode                           | 80,78                                       |
+
+## Results analysis
+
+From the result that I obtained, It's obvious that there is a model that is clearly ahead in term of precision
+
+| Province            | Model     | R2    | Mean<br />Squared<br />Error | Mean<br />Absolute <br />Precision |
+| ------------------- | --------- | ----- | ---------------------------- | ---------------------------------- |
+| Belgique            | XGBoostSE | 0.601 | 1054082.709                  | 81.6%                              |
+| Bruxelles-Capitale  | XGBoostSE | 0.325 | 984378.209                   | 84.0%                              |
+| Region Flamande     | XGBoostSE | 0.602 | 1006036.804                  | 84.1%                              |
+| Region Wallone      | XGBoostSE | 0.478 | 633641.906                   | 78.7%                              |
+| Province d'Anvers   | XGBoostSE | 0.505 | 695801.057                   | 85.2%                              |
+| Flandre-Occidentale | XGBoostSE | 0.632 | 1516085.148                  | 83.3%                              |
+| Flandre-Orientale   | XGBoostSE | 0.607 | 836908.587                   | 85.1%                              |
+| Limbourg            | XGBoostSE | 0.633 | 573336.521                   | 86.1%                              |
+| Liège              | XGBoostSE | 0.398 | 538363.532                   | 79.7%                              |
+| Luxembourg          | XGBoostSE | 0.547 | 625537.802                   | 81.2%                              |
+| Namur               | XGBoostSE | 0.503 | 577347.691                   | 80.3%                              |
+| Brabant flamand     | XGBoostSE | 0.635 | 702516.832                   | 88.3%                              |
+| Brabant flamand 2   | XGBoostSE | 0.888 | 2794071.127                  | 87.4%                              |
+| Brabant wallon      | XGBoostSE | 0.726 | 880901.734                   | 89.4%                              |
+| Hainaut 1           | XGBoostSE | 0.506 | 291272.189                   | 81.5%                              |
+| Hainaut 2           | XGBoostSE | 0.430 | 354904.131                   | 79.1%                              |
+
+
+
+The table shows the results of an XGBoostSE model applied to different provinces in Belgium. The R-squared value, mean squared error (MSE), mean absolute error (MAE), and mean absolute percentage error (MAPE) are shown for each province.
+
+In general, the R-squared values of the model are moderate to high, with a range of 0.32 to 0.888. This suggests that the model is able to explain a moderate to high amount of the variability in the data. However, it should be noted that a high R-squared value does not necessarily indicate a good model, as it may be overfitting.
+
+The MSE values are also moderate to high, ranging from 695801.05 to 2794071.12. Lower MSE values indicate that the model makes smaller errors in its predictions. The MAE values are also moderate to high, ranging from 635.49 to 992.34. Lower MAE values indicate that the model makes smaller errors in its predictions.
+
+The MAEP values range from 0.77 to 0.86, which indicates that the model's predictions are relatively accurate. However, it should be noted that the MAEP values are not that high, which means that the model may not be accurate in all cases and that further analysis is needed.
+
+It's worth noting that the XGBoostSE model performed better in some provinces like Province du Brabant flamand 2, Province du Brabant wallon and Province de Limbourg, with R-squared values higher than 0.8 and MAEP values less than 0.85. On the other hand, provinces like Bruxelles-Capitale, Province de Liège, Province de Namur, Region Wallone and Province du Hainaut 2 show lower performance.
+
+It's also important to note that these results are based on a single training and testing set, and additional evaluation methods such as cross-validation should be performed to confirm the robustness of the model.
 
 ## How to use it
 
