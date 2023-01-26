@@ -171,7 +171,7 @@ From the result that I obtained, It's obvious that there is a model that is clea
 | Hainaut 1           | XGBoostSE | 0.506 | 291272.189                   | 81.5%                              |
 | Hainaut 2           | XGBoostSE | 0.430 | 354904.131                   | 79.1%                              |
 
-The table shows the results of an XGBoostSE model applied to different provinces or region in Belgium. The R-squared value, mean squared error (MSE), mean absolute error (MAE), and mean absolute precision (MAP) are shown for each province.
+The table shows the results of the best models applied to different provinces or region in Belgium. The R-squared value, mean squared error (MSE), mean absolute error (MAE), and mean absolute precision (MAP) are shown for each province.
 
 In general, the R-squared values of the model are moderate to high, with a range of 0.32 to 0.89. This suggests that the model is able to explain a moderate to high amount of the variability in the data. However, it should be noted that a high R-squared value does not necessarily indicate a good model, as it may be overfitting.
 
