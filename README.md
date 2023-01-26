@@ -17,7 +17,7 @@ It includes: web scraping, data cleaning, data visualisation,  machine learning,
 * [X] data visualization
 * [X] modeling
 * [X] result analysis
-* [ ] deploiment
+* [ ] deployment
 
 ## What it does (In order)
 
