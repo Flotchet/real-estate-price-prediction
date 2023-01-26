@@ -171,15 +171,13 @@ From the result that I obtained, It's obvious that there is a model that is clea
 | Hainaut 1           | XGBoostSE | 0.506 | 291272.189                   | 81.5%                              |
 | Hainaut 2           | XGBoostSE | 0.430 | 354904.131                   | 79.1%                              |
 
-
-
 The table shows the results of an XGBoostSE model applied to different provinces or region in Belgium. The R-squared value, mean squared error (MSE), mean absolute error (MAE), and mean absolute percentage error (MAPE) are shown for each province.
 
 In general, the R-squared values of the model are moderate to high, with a range of 0.32 to 0.888. This suggests that the model is able to explain a moderate to high amount of the variability in the data. However, it should be noted that a high R-squared value does not necessarily indicate a good model, as it may be overfitting.
 
-The MSE values are also moderate to high, ranging from 695801.05 to 2794071.12. Lower MSE values indicate that the model makes smaller errors in its predictions. 
+The MSE values are also moderate to high, ranging from 695801.05 to 2794071.12. Lower MSE values indicate that the model makes smaller errors in its predictions.
 
-The MAP values range from 0.77 to 0.86, which indicates that the model's predictions are relatively accurate. However, it should be noted that the MAP values are not that high, which means that the model may not be accurate in all cases and that further analysis is needed.
+The MAP values range from 0.79 to 0.89, which indicates that the model's predictions are relatively accurate. However, it should be noted that the MAP values are not that high, which means that the model may not be accurate in all cases and that further analysis is needed.
 
 It's worth noting that the XGBoostSE model performed better in some provinces like Province du Brabant flamand 2, Province du Brabant wallon and Province de Limbourg, with R-squared values higher than 0.8 and MAP values less than 0.85. On the other hand, provinces and regions like Bruxelles-Capitale, Province de Liège, Province de Namur, Region Wallone and Province du Hainaut 2 show lower performance.
 
