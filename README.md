@@ -146,7 +146,7 @@ This graph shows the median of the price per square meter for each type of propr
 | Ridge                                                       | 76,95                                       |
 | SVR                                                         | 71,11                                       |
 | XGBoost<br />Absolute error mode                            | 69,86                                       |
-| XGBoost<br />Squared  error mode                           | 80,78                                       |
+| XGBoost<br />Squared  error mode                           | 82,78                                       |
 
 ## Results analysis
 
