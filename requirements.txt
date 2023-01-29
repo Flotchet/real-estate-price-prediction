@@ -12,3 +12,5 @@ Unidecode
 pytest-warnings
 matplotlib
 seaborn
+xgboost
+scikit-learn

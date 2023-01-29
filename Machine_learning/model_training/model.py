@@ -1,6 +1,3 @@
-#use xgboost as regression to make the estimation
-
-#import models
 import xgboost as xgb
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.linear_model import LinearRegression
@@ -14,6 +11,8 @@ from sklearn.ensemble import GradientBoostingRegressor
 #from sklearn.neural_network import MLPRegressor
 from sklearn.metrics import mean_absolute_error
 
+import pickle
+
 from tqdm import tqdm
 
 from itertools import product
@@ -24,7 +23,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
 from sklearn.metrics import r2_score
 from warnings import warn
-from concurrent.futures import ProcessPoolExecutor
 
 def region_add(data_dict : dict[str : pd.DataFrame]) -> dict[str : pd.DataFrame]:
 
@@ -434,6 +432,11 @@ if __name__ == "__main__":
                 'MAE': mae,
                 'MAEP': 1 - mae/data['Price'].mean()
             })
+
+            #save the model
+            with open(f'{name}.pkl', 'wb') as f:
+                pickle.dump(model, f)
+
         del model
 
     #create a dataframe with the results
@@ -450,3 +453,5 @@ if __name__ == "__main__":
 
     #print the results
     print(results)
+
+    
