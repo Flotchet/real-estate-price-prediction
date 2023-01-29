@@ -404,7 +404,6 @@ if __name__ == "__main__":
             if name != 'XGBoostSE':
                 #replace nan
                 data = data.fillna(0)
-                continue
 
             #get the X and y
             X = data.drop(['Price'], axis=1)
