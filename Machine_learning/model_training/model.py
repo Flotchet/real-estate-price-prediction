@@ -404,6 +404,7 @@ if __name__ == "__main__":
             if name != 'XGBoostSE':
                 #replace nan
                 data = data.fillna(0)
+                continue
 
             #get the X and y
             X = data.drop(['Price'], axis=1)
@@ -434,7 +435,7 @@ if __name__ == "__main__":
             })
 
             #save the model
-            with open(f'{name}{key}.pkl', 'wb') as f:
+            with open(f'{name}{key}.pickle', 'wb') as f:
                 pickle.dump(model, f)
 
         del model
