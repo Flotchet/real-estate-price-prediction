@@ -230,6 +230,8 @@ The web application is made using flask. It works in several steps
 
 You can launch the main.py to get a simple user interface to launch the project or part of it.
 
+You can make or use the docker image from the deployment part
+
 You can also launch each part of the project independently or import part of the project as a library (part of the project are already capable of working on any kind of website or data)
 
 ## Prerequises (Global)
