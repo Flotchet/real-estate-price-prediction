@@ -17,7 +17,7 @@ It includes: web scraping, data cleaning, data visualisation,  machine learning,
 * [X] data visualization
 * [X] modeling
 * [X] results analysis
-* [ ] deployment
+* [X] deployment
 
 ## What it does (In order)
 
@@ -187,16 +187,20 @@ I also estimate that in a perfect world, we could have a maximum precision of 37
 
 ### deployment
 
-
 #### Web application
 
 ##### Visuals
 
 ###### idle (first time you get to the page)
+
 ![1](image/README/1.png)
+
 ###### requiered field not entered
+
 ![2](image/README/2.png)
+
 ###### result of the estimation
+
 ![4](image/README/4.png)
 
 ## How to use it
