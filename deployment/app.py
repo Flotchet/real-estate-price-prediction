@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, Markup
+from waitress import serve
 import pickle
 import os
 import pandas as pd
@@ -229,6 +230,7 @@ def result():
 
 
     
+serve(app, host="0.0.0.0", port=8080)
 #load the csv in a data frame
 df = pd.read_csv('data_for_regression.csv')
 
