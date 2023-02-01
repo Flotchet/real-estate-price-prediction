@@ -2000,6 +2000,7 @@ input, select, textarea {
 	}
 
 	input[type="text"],
+input[type="number"],
 	input[type="password"],
 	input[type="email"],
 	select,
@@ -2044,6 +2045,7 @@ input, select, textarea {
 		}
 
 	input[type="text"],
+input[type="number"],
 	input[type="password"],
 	input[type="email"],
 	select {
@@ -2144,6 +2146,7 @@ input, select, textarea {
 	}
 
 	input[type="text"],
+input[type="number"],
 	input[type="password"],
 	input[type="email"],
 	select,
@@ -3445,6 +3448,7 @@ input, select, textarea {
 		}
 
 		#main input[type="text"],
+input[type="number"],
 		#main input[type="password"],
 		#main input[type="email"],
 		#main select,

@@ -94,7 +94,7 @@
 
 								<!-- Form -->
 							<section>
-								<h2>Enter the specifiacation of your proprety</h2>
+								<h2>Enter the specification of your proprety</h2>
 								
 								<form method="post" >
 
@@ -131,10 +131,10 @@
 										</div>
 
 										<div class="col-6 col-12-xsmall">
-											<input type="number" name="zipcode" id="zipcode" value="" placeholder="zipcode ZZZZ" />
+											<input type="number" min="1000" name="zipcode"  max="9999" id="zipcode" value="" placeholder="zipcode ZZZZ" />
 										</div>
 										<div class="col-6 col-12-xsmall">
-											<input type="number" name="number of room" id="number of room" value="" placeholder="number of rooms N" />
+											<input type="number" min="1" name="number of room" max="100" id="number of room" value="" placeholder="number of rooms N" />
 										</div>
 										
 										
@@ -152,13 +152,13 @@
 										</div>
 
 										<div class="col-4 col-12-xsmall">
-											<input type="number" step="0.01" name="Total Area of gardens" id="Total Area of gardens" value="" placeholder="gardens total area" />
+											<input type="number" min="0" step="0.01" max="1000000" name="Total Area of gardens" id="Total Area of gardens" value="" placeholder="gardens total area" />
 										</div>
 										<div class="col-4 col-12-xsmall">
-											<input type="number" step="0.01" name="Total Area of terraces" id="Total Area of terraces" value="" placeholder="terraces total area" />
+											<input type="number" min="0" step="0.01" max="1000000" name="Total Area of terraces" id="Total Area of terraces" value="" placeholder="terraces total area" />
 										</div>
 										<div class="col-4 col-12-xsmall">
-											<input type="number" step="0.01" name="living Area" id="living Area" value="" placeholder="living area" />
+											<input type="number" min="5" step="0.01" max="1000000" name="living Area" id="living Area" value="" placeholder="living area" />
 										</div>
 
 										<div class="col-4 col-12-small">
@@ -195,7 +195,7 @@
 							<dl class="alt">
 								<dt>Title:</dt>
 								<dd>Junior data scientist</dd>
-								<dt>company:</dt>
+								<dt>Company:</dt>
 								<dd><a href="https://becode.org">Becode</dd>
 							</dl>
 							<ul class="icons">

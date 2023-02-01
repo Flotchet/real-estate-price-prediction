@@ -94,7 +94,7 @@ this project creates a dataset from immoweb (be-fr) in the form of a csv file of
 | id n-1 | None    | None    | 54000  | 5               | ... | 1000    | Maison      |
 | id n   | True    | False   | 1000   | 85              | ... | 1010    | Bugalow     |
 
-## Combine other dataset to the previous one and Cleaning the data
+### Combine other dataset to the previous one and Cleaning the data
 
 1. get new data from external sources xlsx and csv
 2. Combine different data set to add features
@@ -112,7 +112,7 @@ this project creates a dataset from immoweb (be-fr) in the form of a csv file of
 | id n-1 | True    | 54000  | 5               | ... | 93     | 1100          | True       |
 | id n   | False   | 1000   | 85              | ... | 98     | 17            | True       |
 
-## Display Graphs
+### Display Graphs
 
 Display some graphs about the distribution and some relations between features like these one
 
@@ -127,7 +127,7 @@ This graph shows the top 10 most expensive cities in term of price per square me
 This graph shows the median of the price per square meter for each type of proprety
 ![1673950769757](image/README/1673950860011.png)
 
-## Train the models
+### Train the models
 
 * Prepare the data
 * Separate the datset into provinces - region - country
@@ -148,7 +148,7 @@ This graph shows the median of the price per square meter for each type of propr
 | XGBoost<br />Absolute error mode                            | 69,86                                       |
 | XGBoost<br />Squared  error mode                           | 82,78                                       |
 
-## Results analysis
+#### Results analysis
 
 From the result that I obtained, It's obvious that there is a model that is clearly ahead in term of precision
 
@@ -183,7 +183,21 @@ It's worth noting that the XGBoostSE model performed better in some provinces li
 
 It's also important to note that these results are based on a single training and testing set, and additional evaluation methods such as cross-validation should be performed to confirm the robustness of the model.
 
-I also estimate that in a perfect world, we could have a maximum precision of 3777 euros due to the fact that some propreties are perfectly equals except for the price.
+I also estimate that in a perfect world, we could have a maximum precision of 3777 euros due to the fact that some propreties are perfectly similar except for the price.
+
+### deployment
+
+
+#### Web application
+
+##### Visuals
+
+###### idle (first time you get to the page)
+![1](image/README/1.png)
+###### requiered field not entered
+![2](image/README/2.png)
+###### result of the estimation
+![4](image/README/4.png)
 
 ## How to use it
 
