@@ -189,6 +189,29 @@ I also estimate that in a perfect world, we could have a maximum precision of 37
 
 #### Web application
 
+The web application is made using flask. It works in several steps
+
+**Initialization**
+
+1. Load the CSV file with the original data
+2. Load the pickle files containing the machine learning models
+3. Create the conversion dictionaries to adapt the data to the models
+   - zipcode to median price at given
+   - zipcode-zipcode to tax at given zipcode
+   - proprety type to median price at given proprety type
+4. Run the app
+
+**Application**
+
+1. Render the idle page
+2. Get the user data with the form of the web interface
+3. Verify the data to make sure they are plausible or even possible
+4. (Render the page with errors if needed and go back to step 2)
+5. Transform the data for the model
+6. Get the model corresponding to the zipcode
+7. Predict the price with the model
+8. Render the page with the result (go back to step 2)
+
 ##### Visuals
 
 ###### idle (first time you get to the page)
