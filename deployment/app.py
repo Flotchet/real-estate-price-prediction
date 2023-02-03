@@ -3,9 +3,9 @@ from waitress import serve
 import pickle
 import os
 import pandas as pd
+import datetime
 
 app = Flask(__name__, template_folder='templates', static_folder='templates/assets')
-
 
 def prepare_zipcode(df : pd.DataFrame) -> dict[int:float]:
     #create zipcode conversion table
@@ -48,7 +48,6 @@ def prepare_tax(df : pd.DataFrame) -> dict[int:float]:
         zipcode[z] = df2[df2['zipcode'] == z]['Taxe'].mean()
 
     return zipcode
-
 
 def get_name(zipcode : int) -> str:
 
@@ -139,21 +138,23 @@ def result():
     #living area
     surface = request.form['living Area']
 
-    
-    value = 0
-    
+
+    value : float = 0
+
     #check if the data are correct
-    result = check(immo, zipcode, room, surface)
+    result : str = check(immo, zipcode, room, surface)
 
     if result != "":
         return render_template('index.html', result=Markup(result))
 
     zipcode = int(zipcode)  
+
     room = int(room)
+
     surface = float(surface)
 
     #other usefull form field
-    garden = request.form['Total Area of gardens']
+    garden : str = request.form['Total Area of gardens']
     try:
         garden = float(garden)
     except:
@@ -186,7 +187,7 @@ def result():
         Equiped = False
 
 
-    
+
 
     name = get_name(zipcode)
     try:
@@ -197,7 +198,7 @@ def result():
     if zipcode not in zipcode_converter.keys():
         return render_template('index.html', result=f"Sorry the zipcode: {zipcode} doesn't exist")
     zipcode_v = zipcode_converter[zipcode]
-    
+
     if immo not in type_converter.keys():
         return render_template('index.html', result=f"Sorry the type: {immo} doesn't exist")
     immo_v = type_converter[immo]
@@ -226,18 +227,25 @@ def result():
     value = current_mdl.predict(data)*surface
     value = round(value[0])
 
+    #save to log
+    with open('log.txt', 'a') as f:
+        f.write(f"{datetime.datetime.now()} : {immo} {zipcode} {room} {surface} {garden} {terrace} {furnished} {Equiped} {value}\n")
+
     return render_template('index.html', result=f"Your {immo} has a value of approximatly {value} euros. (The selected model is XGboost{name})")
 
 
     
-serve(app, host="0.0.0.0", port=8080)
+#serve(app, host="0.0.0.0", port=8080)
 #load the csv in a data frame
-df = pd.read_csv('data_for_regression.csv')
+df : pd.DataFrame = pd.read_csv('data_for_regression.csv')
 
 zipcode_converter : dict[int:float] = prepare_zipcode(df)
 tax_converter : dict[int:float] = prepare_tax(df)
 type_converter : dict[str:float] = prepare_type(df)
 
 models : dict[str:any] = models_loader()
+
+for model in models.keys():
+    print(f"model {model} loaded")
 
 app.run(debug=False)

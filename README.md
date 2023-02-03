@@ -210,7 +210,8 @@ The web application is made using flask. It works in several steps
 5. Transform the data for the model
 6. Get the model corresponding to the zipcode
 7. Predict the price with the model
-8. Render the page with the result (go back to step 2)
+8. Save the values and result inside a log file
+9. Render the page with the result (go back to step 2)
 
 ##### Visuals
 
@@ -230,7 +231,7 @@ The web application is made using flask. It works in several steps
 
 You can launch the main.py to get a simple user interface to launch the project or part of it.
 
-You can make or use the docker image from the deployment part
+You can make the docker image from the deployment part everything is ready for it
 
 You can also launch each part of the project independently or import part of the project as a library (part of the project are already capable of working on any kind of website or data)
 
