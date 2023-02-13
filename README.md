@@ -18,6 +18,8 @@ It includes: web scraping, data cleaning, data visualisation,  machine learning,
 * [X] modeling
 * [X] results analysis
 * [X] deployment
+* [ ] User Interface for the whole project
+* [ ] Compiled version of the project
 
 ## What it does (In order)
 
@@ -185,7 +187,7 @@ It's also important to note that these results are based on a single training an
 
 I also estimate that in a perfect world, we could have a maximum precision of 3777 euros due to the fact that some propreties are perfectly similar except for the price.
 
-### deployment
+### Deployment
 
 #### Web application
 
