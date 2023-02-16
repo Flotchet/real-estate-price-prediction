@@ -1,4 +1,5 @@
 import PySimpleGUI as sg
+from itertools import cycle
 import os 
 
 #make a menu with key 
@@ -19,45 +20,65 @@ layout = [
             [sg.Button('Exit' , key = 'Exit')],
             [sg.Button('Install needed packages', key = "install")]
         ]
+
+
+
+keys = {
+        'Full scraper_key': 'python3 data_acquisition/data_aquisition.py',
+        'URL scraper_key': 'python3 data_acquisition/a_Immoweb_URL__scraper/Immoweb_URL__scraper.py',
+        'HTML scraper_key': 'python3 data_acquisition/b_Immoweb_HTML_scraper/Immoweb_HTML_scraper.py',
+        'Data extractor + csv_key': """
+        python3 data_acquisition/c_Immoweb_data_extractor/Immoweb_data_extractor.py
+        python3 data_acquisition/d_Immoweb_raw_csv_maker/Immoweb_raw_csv_maker.py
+        """,
+
+        'Data preparation for visualization_key': 'python3 data_preparation/data_preparation_for_visualization.py',
+        'Data preparation for regression_key': 'python3 data_preparation/data_preparation_for_regression.py',
+
+        'Data visualisation_key': 'python3 data_visualization/data_visualization.py',
+
+        'Model_key': 'Model',
+
+        'deploiment part_key': 'deployment/app.py',
+
+        'run all': 
+        """
+        python3 data_acquisition/data_aquisition.py
+        python3 data_preparation/data_preparation_for_visualization.py
+        python3 data_preparation/data_preparation_for_regression.py
+        python3 data_visualization/data_visualization.py
+        python3 deployment/app.py
+        """,
+
+        'Exit': 'Exit',
+        'install': 'install',
+    }
+
 # Create the window
 window = sg.Window('Immoweb project', 
                     layout,
                     default_element_size=(20, 5),
                     resizable=True,finalize=True)
 
+
+
 # Event loop
-while True:
+for _ in cycle([True]):
 
     event, values = window.read()
 
-    if event in (None, 'Exit'):
+    if event in keys:
+        if event == "Exit":
+            break
+        if event == "install":
+            with open('requirements.txt') as req:
+                for line in req:
+                    os.system(f'pip install {line}')
+
+        os.system(keys[event])
+
+    if event == None:
         break
-    elif event == 'Full scraper_key':
-        print('Full scraper')
-        #run data_aquisition.py in command 
-        os.system('python3 data_acquisition/data_aquisition.py')
-
-    elif event == 'URL scraper_key':
-        print('URL scraper')
-        #run Immoweb_URL__scraper.py
-        os.system('python3 data_acquisition/a_Immoweb_URL__scraper/Immoweb_URL__scraper.py')
-
-    elif event == 'HTML scraper_key':
-        print('HTML scraper')
-
-    elif event == 'Data extractor + csv_key':
-        print('Data extractor + csv')
-
-    elif event == 'run all':
-        print('run all')
 
 
-    elif event == 'install':
-        print('install')
-        #open global_requirement.txt
-        with open('requirements.txt') as req:
-            #read line by line
-            for line in req:
-                #run pip install line
-                os.system(f'pip install {line}')
 window.close()

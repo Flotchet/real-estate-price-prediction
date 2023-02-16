@@ -18,8 +18,8 @@ It includes: web scraping, data cleaning, data visualisation,  machine learning,
 * [X] modeling
 * [X] results analysis
 * [X] deployment
-* [ ] User Interface for the whole project
-* [ ] Compiled version of the project
+* [X] User Interface for the whole project
+* [ ] Compiled version of the depolyment
 
 ## What it does (In order)
 
