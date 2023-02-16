@@ -229,6 +229,12 @@ The web application is made using flask. It works in several steps
 
 ![4](image/README/4.png)
 
+#### User interface
+
+The project comes with a simple user interface of this form 
+
+![1673950769757](image/README/interface.png)
+
 ## How to use it
 
 You can launch the main.py to get a simple user interface to launch the project or part of it.
