@@ -8,7 +8,7 @@ It aims to predict prices for houses or appartment considering the current state
 
 ## Current state
 
-finalized
+* Finalized
 
 ## What it does (In order)
 

@@ -1,4 +1,4 @@
-# real-estate-price-prediction (Global README.md)
+# Real estate price prediction (Global README.md)
 
 ## Project descritpion
 
@@ -231,7 +231,7 @@ The web application is made using flask. It works in several steps
 
 #### User interface
 
-The project comes with a simple user interface of this form 
+The project comes with a simple user interface of this form
 
 ![1673950769757](image/README/interface.png)
 
