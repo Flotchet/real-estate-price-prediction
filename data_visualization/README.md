@@ -1,4 +1,4 @@
-# Real estate price prediction (Global README.md)
+# Real estate price prediction (Data visualization README.md)
 
 ## Project descritpion
 
