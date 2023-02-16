@@ -14,7 +14,7 @@ layout = [
             create_menu('Data preparation part', ['Data preparation for visualization','Data preparation for regression']),
             create_menu('Data visualisation part', ['Data visualisation']),
             create_menu('Machine learning part', ['Model']),
-            create_menu('deployment part', []),
+            create_menu('Deployment part', []),
             [sg.Text('rest')],
             [sg.Button('Run all', key = 'run all')],
             [sg.Button('Exit' , key = 'Exit')],
@@ -39,7 +39,7 @@ keys = {
 
         'Model_key': 'd_Machine_learning/model_training/model.py',
 
-        'deployment part_key': 'e_deployment/app.py',
+        'Deployment part_key': 'e_Deployment/app.py',
 
         'run all': 
         """
@@ -48,7 +48,7 @@ keys = {
         python3 b_data_preparation/data_preparation_for_regression.py
         python3 c_data_visualization/data_visualization.py
         python3 d_Machine_learning/model_training/model.py
-        python3 e_deployment/app.py
+        python3 e_Deployment/app.py
         """,
 
         'Exit': 'Exit',
