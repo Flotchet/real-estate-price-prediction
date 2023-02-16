@@ -19,6 +19,7 @@ It includes: web scraping, data cleaning, data visualisation,  machine learning,
 * [X] results analysis
 * [X] deployment
 * [X] User Interface for the whole project
+* [ ] Make a database of the logs of users
 * [ ] Compiled version of the depolyment
 
 ## What it does (In order)
