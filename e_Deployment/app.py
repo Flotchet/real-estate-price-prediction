@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, Markup
+from flask_sqlalchemy import SQLAlchemy
 from waitress import serve
 import pickle
 import os
@@ -235,6 +236,11 @@ def result():
 
 
     
+
+#connect to the db
+#db = SQLAlchemy(app)
+
+
 #serve(app, host="0.0.0.0", port=8080)
 #load the csv in a data frame
 df : pd.DataFrame = pd.read_csv('data_for_regression.csv')
