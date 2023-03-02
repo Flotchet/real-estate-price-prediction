@@ -8,6 +8,9 @@ It aims to predict prices for houses or appartment considering the current state
 
 It includes: web scraping, data cleaning, data visualisation,  machine learning, data engineering and a GUI.
 
+Try the app here 
+https://real-estate-price-prediction-a5zb.onrender.com
+
 ## Current state
 
 * [X] data acquisition from immoweb
@@ -18,6 +21,7 @@ It includes: web scraping, data cleaning, data visualisation,  machine learning,
 * [X] modeling
 * [X] results analysis
 * [X] deployment
+* [X] online deployment
 * [X] User Interface for the whole project
 * [ ] Make a database of the logs of users
 * [ ] Compiled version of the depolyment
@@ -237,6 +241,8 @@ The project comes with a simple user interface of this form
 ![1673950769757](image/README/interface.png)
 
 ## How to use it
+
+You can go to https://real-estate-price-prediction-a5zb.onrender.com to try the app.
 
 You can launch the main.py to get a simple user interface to launch the project or part of it.
 
