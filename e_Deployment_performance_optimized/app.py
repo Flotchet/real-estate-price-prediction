@@ -81,7 +81,7 @@ def get_name(zipcode : int) -> str:
     else:
         return ""
 
-def models_loader() -> dict[str : any]:
+def models_loader() -> dict[str : any]: 
     #get the all the file name in the model folder 
     models = {} 
     for file in os.listdir('models'):
