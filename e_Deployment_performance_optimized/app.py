@@ -81,7 +81,7 @@ def get_name(zipcode : int) -> str:
     else:
         return ""
 
-def models_loader() -> dict[str : any]: 
+def models_loader() -> dict[str : any]:
     #get the all the file name in the model folder 
     models = {} 
     for file in os.listdir('models'):
@@ -90,18 +90,6 @@ def models_loader() -> dict[str : any]:
             models[name] = pickle.load(open(f'models/{file}', 'rb'))
 
     return models
-
-def load_mdl(name : str) -> any:
-
-    #load the corresponding model if not found load Belgique.pickle
-    for file in os.listdir('models'):
-        if file.endswith(".pickle") and (file[:-7] == name):
-            return pickle.load(open(f'models/{file}', 'rb'))
-
-    return pickle.load(open('models/Belgique.pickle', 'rb')) 
-
-
-
 
 def check(immo : str, zipcode : str, room : str, surface : str) -> str:
     result = ""
@@ -204,7 +192,7 @@ def result():
 
     name = get_name(zipcode)
     try:
-        current_mdl = load_mdl(name)
+        current_mdl = models[name]
     except:
         return render_template('index.html', result=f"Sorry we don't have a model for {name}")
 
@@ -261,9 +249,9 @@ zipcode_converter : dict[int:float] = prepare_zipcode(df)
 tax_converter : dict[int:float] = prepare_tax(df)
 type_converter : dict[str:float] = prepare_type(df)
 
-#models : dict[str:any] = models_loader()
+models : dict[str:any] = models_loader()
 
-#for model in models.keys():
-    #print(f"model {model} loaded")
+for model in models.keys():
+    print(f"model {model} loaded")
 
 app.run(debug=False)
