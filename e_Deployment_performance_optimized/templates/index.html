@@ -1,0 +1,222 @@
+<!DOCTYPE HTML>
+<!--
+	Stellar by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Propreties value estimator</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<h1>Proprety value estimator</h1>
+					</header>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Content -->
+							<section id="content" class="main">
+								<p>This AI property price estimator uses a machine learning model called XGboost to predict the price of a property based on certain features. These features include the type of property, its location (by zip code), the size of the living area, the number of rooms, and the total area of the terraces and gardens. The model takes into account whether the property is fully equipped with a kitchen and furnished or not. This tool can be used to get an estimate of a property's value with a mean precision from 79 % to 90 % depending on the location.</p>
+
+								<table class="alt">
+									<thead>
+									<tr>
+									  <th><br>Province-Zone</br></th>
+									  <th><br>Expected precision</br></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>Bruxelles</td>
+										<td>84.0%</td>
+									  </tr>
+									<tr>
+									  <td>Anvers</td>
+									  <td>85.2%</td>
+									</tr>
+									<tr>
+									  <td>Flandre-Occidentale</td>
+									  <td>83.3%</td>
+									</tr>
+									<tr>
+									  <td>Flandre-Orientale</td>
+									  <td>85.1%</td>
+									</tr>
+									<tr>
+									  <td>Limbourg</td>
+									  <td>86.1%</td>
+									</tr>
+									<tr>
+									  <td>Liège</td>
+									  <td>79.7%</td>
+									</tr>
+									<tr>
+									  <td>Luxembourg</td>
+									  <td>81.2%</td>
+									</tr>
+									<tr>
+									  <td>Namur</td>
+									  <td>80.3%</td>
+									</tr>
+									<tr>
+									  <td>Brabant flamand</td>
+									  <td>88.3%</td>
+									</tr>
+									<tr>
+									  <td>Brabant flamand 2</td>
+									  <td>87.4%</td>
+									</tr>
+									<tr>
+									  <td>Brabant wallon</td>
+									  <td>89.4%</td>
+									</tr>
+									<tr>
+									  <td>Hainaut 1</td>
+									  <td>81.5%</td>
+									</tr>
+									<tr>
+									  <td>Hainaut 2</td>
+									  <td>79.1%</td>
+									</tr>
+									</tbody>
+								  </table>
+
+
+
+								<!-- Form -->
+							<section>
+								<h2>Enter the specification of your proprety</h2>
+								
+								<form method="post" >
+
+									<div class="row gtr-uniform">
+
+										<div class="col-12">
+											<select name="category" id="category">
+												<option value="">- Category -</option>
+												<option value="Farm">Farm</option>
+  												<option value="Apartment">Apartment</option>
+  												<option value="Student housing">Student housing</option>
+  												<option value="Penthouse">Penthouse</option>
+  												<option value="Service apartment">Service apartment</option>
+  												<option value="Chalet">Chalet</option>
+  												<option value="House">House</option>
+  												<option value="Ground floor">Ground floor</option>
+  												<option value="Master house">Master house</option>
+  												<option value="Country house">Country house</option>
+  												<option value="Loft">Loft</option>
+  												<option value="Bel-etage house">Bel-etage house</option>
+  												<option value="Pavilion">Pavilion</option>
+  												<option value="Duplex">Duplex</option>
+  												<option value="Triplex">Triplex</option>
+  												<option value="Studio">Studio</option>
+  												<option value="Mixed building">Mixed building</option>
+  												<option value="Exceptional property">Exceptional property</option>
+  												<option value="Castle">Castle</option>
+  												<option value="Building">Building</option>
+  												<option value="Manor">Manor</option>
+  												<option value="Bungalow">Bungalow</option>
+  												<option value="Villa">Villa</option>
+												<option value="Other goods">Other goods</option>
+											</select>
+										</div>
+
+										<div class="col-6 col-12-xsmall">
+											<input type="number" min="1000" name="zipcode"  max="9999" id="zipcode" value="" placeholder="zipcode ZZZZ" />
+										</div>
+										<div class="col-6 col-12-xsmall">
+											<input type="number" min="1" name="number of room" max="100" id="number of room" value="" placeholder="number of rooms N" />
+										</div>
+										
+										
+										<div class="col-4 col-12-small">
+											<input type="checkbox" id="Garden" name="Garden">
+											<label for="Garden">Garden(s)</label>
+										</div>
+										<div class="col-4 col-12-small">
+											<input type="checkbox" id="Terrace" name="Terrace">
+											<label for="Terrace">Terrace(s)</label>
+										</div>
+										<div class="col-4 col-12-small">
+											<input type="checkbox" id="Equiped kitchen" name="Equiped kitchen">
+											<label for="Equiped kitchen">Equiped kitchen</label>
+										</div>
+
+										<div class="col-4 col-12-xsmall">
+											<input type="number" min="0" step="0.01" max="1000000" name="Total Area of gardens" id="Total Area of gardens" value="" placeholder="gardens total area" />
+										</div>
+										<div class="col-4 col-12-xsmall">
+											<input type="number" min="0" step="0.01" max="1000000" name="Total Area of terraces" id="Total Area of terraces" value="" placeholder="terraces total area" />
+										</div>
+										<div class="col-4 col-12-xsmall">
+											<input type="number" min="5" step="0.01" max="1000000" name="living Area" id="living Area" value="" placeholder="living area" />
+										</div>
+
+										<div class="col-4 col-12-small">
+											<input type="checkbox" id="Furnished" name="Furnished">
+											<label for="Furnished">Furnished</label>
+										</div>
+
+										<div class="col-12">
+											<ul class="actions">
+												<li><input type="submit" value="Get an estimation" class="primary" /></li>
+												<li><input type="reset" value="Reset" /></li>
+											</ul>
+										</div>
+									</div>
+								</form>
+							</section>
+
+							<section>
+								<h2>{{ result }}</h2>
+							</section>
+					</div>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<section>
+							<h2>About Becode.org</h2>
+							<p>BeCode offers free trainings in the IT sector to anyone motivated to change their life. Whatever way you want to prepare yourself for the 21st century, we have the right training for you! Become a web developer, an AI operator, a DevOps developer, an SAP consultant or end user. No diploma, money or work experience needed. Come as you are, with your motivation.</p>
+							<ul class="actions">
+								<li><a href="https://becode.org/about" class="button">Learn More</a></li>
+							</ul>
+						</section>
+						<section>
+							<h2>Maisse Florent</h2>
+							<dl class="alt">
+								<dt>Title:</dt>
+								<dd>Junior data scientist</dd>
+								<dt>Company:</dt>
+								<dd><a href="https://becode.org">Becode</dd>
+							</dl>
+							<ul class="icons">
+								<li><a href="https://www.linkedin.com/in/florentmaisse/" class="icon brands fa-linkedin alt"><span class="label">Linkedin</span></a></li>
+								<li><a href="https://github.com/Flotchet" class="icon brands fa-github alt"><span class="label">GitHub</span></a></li>
+							</ul>
+						</section>
+						<p class="copyright">&copy; Maisse Florent 2023. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+					</footer>
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
