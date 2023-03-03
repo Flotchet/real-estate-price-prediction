@@ -8,7 +8,7 @@ It aims to predict prices for houses or appartment considering the current state
 
 It includes: web scraping, data cleaning, data visualisation,  machine learning, data engineering and a GUI.
 
-Try the app here 
+Try the app here
 https://real-estate-price-prediction-a5zb.onrender.com
 
 ## Current state
@@ -21,7 +21,8 @@ https://real-estate-price-prediction-a5zb.onrender.com
 * [X] modeling
 * [X] results analysis
 * [X] deployment
-* [X] online deployment
+* [X] Memory optimized deployment for render.com
+* [X] Performance optimized deployment for production
 * [X] User Interface for the whole project
 * [ ] Make a database of the logs of users
 * [ ] Compiled version of the depolyment
