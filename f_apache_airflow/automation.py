@@ -28,16 +28,4 @@ t1 = PythonOperator(
     dag=dag
 )
 
-t2 = PythonOperator(
-    task_id='data prep',
-    python_callable=print(1),
-    dag=dag
-)
-
-t3 = PythonOperator(
-    task_id='model training',
-    python_callable=print(1),
-    dag=dag
-)
-
-t1 >> t2 >> t3
+t1
