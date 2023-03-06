@@ -371,9 +371,7 @@ def get_models() -> dict[str : any]:
     return models
 
 
-
-if __name__ == "__main__":
-
+def training():
 
 
     #get the data
@@ -456,3 +454,6 @@ if __name__ == "__main__":
     print(results)
 
     
+if __name__ == "__main__":
+    training()
+
