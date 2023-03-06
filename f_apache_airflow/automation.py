@@ -11,7 +11,7 @@ from data_aquisition import *
 # Path: f_apache_airflow/automation.py
 
 default_args = {
-    'owner': 'Flotchet',
+    'owner': 'Admin',
     'depends_on_past': False,
     'start_date': datetime(year = 2023, month = 3, day = 6)
     }
@@ -24,4 +24,10 @@ t1 = PythonOperator(
     dag=dag
 )
 
-t1
+t2 = PythonOperator(
+    task_id='Scrape',
+    python_callable=immoweb_scraper(),
+    dag=dag
+)
+
+t1 >> t2
