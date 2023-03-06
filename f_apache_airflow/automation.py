@@ -5,10 +5,6 @@ from datetime import datetime
 import sys
 #add the path to data_aquisition.py to the current working space
 sys.path.append('/home/flotchet/Becode/LIE-Thomas-2-main/content/0.projects/2.immo_eliza/a_data_acquisition')
-#add the path to data_preparation_for_regression.py to the current working space
-sys.path.append('/home/flotchet/Becode/LIE-Thomas-2-main/content/0.projects/2.immo_eliza/b_data_preparation')
-#add the path to model.py to the current working space
-sys.path.append('/home/flotchet/Becode/LIE-Thomas-2-main/content/0.projects/2.immo_eliza/d_Machine_learning/model_training')
 
 from data_aquisition import *
 
