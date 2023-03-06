@@ -24,6 +24,7 @@ https://real-estate-price-prediction-a5zb.onrender.com
 * [X] Memory optimized deployment for render.com
 * [X] Performance optimized deployment for production
 * [X] User Interface for the whole project
+* [ ] Apache airflow scheduling
 * [ ] Make a database of the logs of users
 * [ ] Compiled version of the depolyment
 
