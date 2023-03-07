@@ -4,7 +4,6 @@ from datetime import datetime
 
 import sys
 #add the path to data_aquisition.py to the current working space
-sys.path.append('/home/flotchet/Becode/LIE-Thomas-2-main/content/0.projects/2.immo_eliza/a_data_acquisition')
 
 from data_aquisition import *
 
@@ -16,7 +15,7 @@ default_args = {
     'start_date': datetime(year = 2023, month = 3, day = 6)
     }
 
-dag = DAG('f_apache_airflow', default_args = default_args, schedule_interval = "0 12 32 * *")
+dag = DAG('f_apache_airflow', default_args = default_args, schedule_interval = "0 20 30 * *")
 
 t1 = PythonOperator(
     task_id='Scrape',
@@ -24,10 +23,4 @@ t1 = PythonOperator(
     dag=dag
 )
 
-t2 = PythonOperator(
-    task_id='Scrape',
-    python_callable=immoweb_scraper(),
-    dag=dag
-)
-
-t1 >> t2
+t1
